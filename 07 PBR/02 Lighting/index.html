@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        <link rel="canonical" href="https://learnopengl-cn.github.io/07 PBR/02 Lighting/">
+        <link rel="shortcut icon" href="../../img/favicon.ico">
+
+	<title>光照 - LearnOpenGL CN</title>
+
+        <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../../css/font-awesome-4.0.3.css" rel="stylesheet">
+        <link rel="stylesheet" href="../../css/highlight.css">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link href="../../css/style.css" rel="stylesheet">
+        <link href="../../css/admonition_fix.css" rel="stylesheet">
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+        <script>
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+          ga('create', 'UA-80323542-1', 'auto');
+          ga('send', 'pageview');
+        </script>
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <!-- Main title -->
+            <a class="navbar-brand" href="../..">LearnOpenGL CN</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            <!-- Main navigation -->
+            <ul class="nav navbar-nav">
+            
+            
+                <li >
+                    <a href="../..">主页</a>
+                </li>
+            
+            
+            
+                <li class="dropdown active">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">目录 <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        
+<li >
+    <a href="../../intro/">简介</a>
+</li>
+
+                    
+                        
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">入门</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../01 Getting started/01 OpenGL/">OpenGL</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../01 Getting started/02 Creating a window/">创建窗口</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../01 Getting started/03 Hello Window/">你好，窗口</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../01 Getting started/04 Hello Triangle/">你好，三角形</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../01 Getting started/05 Shaders/">着色器</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../01 Getting started/06 Textures/">纹理</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../01 Getting started/07 Transformations/">变换</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../01 Getting started/08 Coordinate Systems/">坐标系统</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../01 Getting started/09 Camera/">摄像机</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../01 Getting started/10 Review/">复习</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                    
+                        
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">光照</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../02 Lighting/01 Colors/">颜色</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../02 Lighting/02 Basic Lighting/">基础光照</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../02 Lighting/03 Materials/">材质</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../02 Lighting/04 Lighting maps/">光照贴图</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../02 Lighting/05 Light casters/">投光物</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../02 Lighting/06 Multiple lights/">多光源</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../02 Lighting/07 Review/">复习</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                    
+                        
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">模型加载</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../03 Model Loading/01 Assimp/">Assimp</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../03 Model Loading/02 Mesh/">网格</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../03 Model Loading/03 Model/">模型</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                    
+                        
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">高级OpenGL</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../04 Advanced OpenGL/01 Depth testing/">深度测试</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../04 Advanced OpenGL/02 Stencil testing/">模板测试</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../04 Advanced OpenGL/03 Blending/">混合</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../04 Advanced OpenGL/04 Face culling/">面剔除</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../04 Advanced OpenGL/05 Framebuffers/">帧缓冲</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../04 Advanced OpenGL/06 Cubemaps/">立方体贴图</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../04 Advanced OpenGL/07 Advanced Data/">高级数据</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../04 Advanced OpenGL/08 Advanced GLSL/">高级GLSL</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../04 Advanced OpenGL/09 Geometry Shader/">几何着色器</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../04 Advanced OpenGL/10 Instancing/">实例化</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../04 Advanced OpenGL/11 Anti Aliasing/">抗锯齿</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                    
+                        
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">高级光照</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../05 Advanced Lighting/01 Advanced Lighting/">高级光照</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../05 Advanced Lighting/02 Gamma Correction/">Gamma校正</a>
+</li>
+
+        
+            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">阴影</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../05 Advanced Lighting/03 Shadows/01 Shadow Mapping/">阴影映射</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../05 Advanced Lighting/03 Shadows/02 Point Shadows/">点阴影</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../05 Advanced Lighting/03 Shadows/03 CSM/">CSM</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+        
+            
+<li >
+    <a href="../../05 Advanced Lighting/04 Normal Mapping/">法线贴图</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../05 Advanced Lighting/05 Parallax Mapping/">视差贴图</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../05 Advanced Lighting/06 HDR/">HDR</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../05 Advanced Lighting/07 Bloom/">泛光</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../05 Advanced Lighting/08 Deferred Shading/">延迟着色法</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../05 Advanced Lighting/09 SSAO/">SSAO</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                    
+                        
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">PBR</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../01 Theory/">理论</a>
+</li>
+
+        
+            
+<li class="active">
+    <a href="./">光照</a>
+</li>
+
+        
+            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">IBL</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../03 IBL/01 Diffuse irradiance/">漫反射辐照</a>
+</li>
+
+        
+            
+<li >
+    <a href="../03 IBL/02 Specular IBL/">镜面IBL</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+        
+    </ul>
+  </li>
+
+                    
+                        
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">实战</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../06 In Practice/01 Debugging/">调试</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../06 In Practice/02 Text Rendering/">文本渲染</a>
+</li>
+
+        
+            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">2D游戏</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../06 In Practice/2D-Game/01 Breakout/">Breakout</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../06 In Practice/2D-Game/02 Setting up/">准备工作</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../06 In Practice/2D-Game/03 Rendering Sprites/">渲染精灵</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../06 In Practice/2D-Game/04 Levels/">关卡</a>
+</li>
+
+        
+            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">碰撞</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../06 In Practice/2D-Game/05 Collisions/01 Ball/">球</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../06 In Practice/2D-Game/05 Collisions/02 Collision detection/">碰撞检测</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../06 In Practice/2D-Game/05 Collisions/03 Collision resolution/">碰撞处理</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+        
+            
+<li >
+    <a href="../../06 In Practice/2D-Game/06 Particles/">粒子</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../06 In Practice/2D-Game/07 Postprocessing/">后期处理</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../06 In Practice/2D-Game/08 Powerups/">道具</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../06 In Practice/2D-Game/09 Audio/">音效</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../06 In Practice/2D-Game/10 Render Text/">渲染文本</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../06 In Practice/2D-Game/11 Final thoughts/">结语</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+        
+    </ul>
+  </li>
+
+                    
+                        
+<li >
+    <a href="../../legacy/">历史存档</a>
+</li>
+
+                    
+                    </ul>
+                </li>
+            
+            
+            
+                <li >
+                    <a href="../../code_repo/">代码仓库</a>
+                </li>
+            
+            
+            </ul>
+
+            <!-- Search, Navigation and Repo links -->
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                        <i class="fa fa-search"></i> 搜索
+                    </a>
+                </li>
+                <li >
+                    <a rel="next" href="../01 Theory/">
+                        <i class="fa fa-arrow-left"></i> 上一节
+                    </a>
+                </li>
+                <li >
+                    <a rel="prev" href="../03 IBL/01 Diffuse irradiance/">
+                        下一节 <i class="fa fa-arrow-right"></i>
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="https://github.com/LearnOpenGL-CN/LearnOpenGL-CN">
+                        
+                            <i class="fa fa-github"></i>
+                        
+                        GitHub
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="https://www.paypal.me/learnopengl/">
+                            <img class="paypal" src="/img/paypal_logo.png" alt="">
+                        支持原作者
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+        <div class="container">
+            <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#_1">光照</a></li>
+        
+    
+        <li class="main "><a href="#pbr">一个PBR表面模型</a></li>
+        
+            <li><a href="#_2">直接光照明</a></li>
+        
+            <li><a href="#hdr">线性空间和HDR渲染</a></li>
+        
+            <li><a href="#pbr_1">完整的直接光照PBR着色器</a></li>
+        
+    
+        <li class="main "><a href="#pbr_2">带贴图的PBR</a></li>
+        
+    
+    </ul>
+</div></div>
+            <div class="col-md-9" role="main">
+
+<h1 id="_1">光照</h1>
+<table>
+<thead>
+<tr>
+<th>原文</th>
+<th><a href="https://learnopengl.com/#!PBR/Lighting">Lighting</a></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>作者</td>
+<td>JoeyDeVries</td>
+</tr>
+<tr>
+<td>翻译</td>
+<td><a href="https://hellokenlee.github.io/">KenLee</a></td>
+</tr>
+<tr>
+<td>校对</td>
+<td>暂无</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>本节暂未进行完全的重写，错误可能会很多。如果可能的话，请对照原文进行阅读。如果有报告本节的错误，将会延迟至重写之后进行处理。</p>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>译者注： 
+<br>
+阅读本节请熟悉上一节提到的几个名词：
+<br>
+- 辐射通量(Radiant flux)<br>
+- 辐射率(Radiance)<br>
+- 辐照度(Irradiance)<br>
+- 辐射强度(Radiant Intensity)</p>
+</div>
+<p>在<a href="https://learnopengl-cn.github.io/07%20PBR/01%20Theory/">上一个教程</a>中，我们讨论了一些PBR渲染的基础知识。 在本章节中，我们将重点放在把以前讨论过的理论转化为实际的渲染器，这个渲染器将使用直接的（或解析的）光源：比如点光源，定向灯或聚光灯。</p>
+<p>我们先来看看上一个章提到的反射方程的最终版：</p>
+<p>
+<script type="math/tex; mode=display">
+L_o(p,\omega_o) = \int\limits_{\Omega} 
+        (k_d\frac{c}{\pi} + k_s\frac{DFG}{4(\omega_o \cdot n)(\omega_i \cdot n)})
+        L_i(p,\omega_i) n \cdot \omega_i  d\omega_i
+</script>
+</p>
+<p>我们大致上清楚这个反射方程在干什么，但我们仍然留有一些迷雾尚未揭开。比如说我们究竟将怎样表示场景上的辐照度(Irradiance), 辐射率(Radiance) <script type="math/tex">L</script>? 我们知道辐射率<script type="math/tex">L</script>（在计算机图形领域中）表示在给定立体角<script type="math/tex">\omega</script>的情况下光源的辐射通量(Radiant flux)<script type="math/tex">\phi</script>或光源在角度<script type="math/tex">\omega</script>下发送出来的光能。 在我们的情况下，不妨假设立体角<script type="math/tex">\omega</script>无限小，这样辐射度就表示光源在一条光线或单个方向向量上的辐射通量。</p>
+<p>基于以上的知识，我们如何将其转化为以前的教程中积累的一些光照知识呢？ 那么想象一下，我们有一个点光源（一个光源在所有方向具有相同的亮度），它的辐射通量为用RBG表示为<strong>（23.47,21.31,20.79）</strong>。该光源的辐射强度(Radiant Intensity)等于其在所有出射光线的辐射通量。 然而，当我们为一个表面上的特定的点<script type="math/tex">p</script>着色时，在其半球领域<script type="math/tex">\Omega</script>的所有可能的入射方向上，只有一个入射方向向量<script type="math/tex">\omega_i</script>直接来自于该点光源。 假设我们在场景中只有一个光源，位于空间中的某一个点，因而对于<script type="math/tex">p</script>点的其他可能的入射光线方向上的辐射率为0：</p>
+<p><img alt="" src="../../img/07/02/lighting_radiance_direct.png" /></p>
+<p>如果从一开始，我们就假设点光源不受光线衰减（光照强度会随着距离变暗）的影响，那么无论我们把光源放在哪，入射光线的辐射率总是一样的（除去入射角<script type="math/tex">cos\theta</script>对辐射率的影响之外）。 正正是因为无论我们从哪个角度观察它，点光源总具有相同的辐射强度，我们可以有效地将其辐射强度建模为其辐射通量: 一个常量向量<strong>（23.47,21.31,20.79）</strong>。</p>
+<p>然而，辐射率也需要将位置<script type="math/tex">p</script>作为输入，正如所有现实的点光源都会受光线衰减影响一样，点光源的辐射强度应该根据点<script type="math/tex">p</script>所在的位置和光源的位置以及他们之间的距离而做一些缩放。 因此，根据原始的辐射方程，我们会根据表面法向量<script type="math/tex">n</script>和入射角度<script type="math/tex">w_i</script>来缩放光源的辐射强度。</p>
+<p>在实现上来说：对于直接点光源的情况，辐射率函数<script type="math/tex">L</script>先获取光源的颜色值， 然后光源和某点<script type="math/tex">p</script>的距离衰减，接着按照<script type="math/tex">n \cdot w_i</script>缩放，但是仅仅有一条入射角为<script type="math/tex">w_i</script>的光线打在点<script type="math/tex">p</script>上， 这个<script type="math/tex">w_i</script>同时也等于在<script type="math/tex">p</script>点光源的方向向量。写成代码的话会是这样：</p>
+<pre><code class="glsl">vec3  lightColor  = vec3(23.47, 21.31, 20.79);
+vec3  wi          = normalize(lightPos - fragPos);
+float cosTheta    = max(dot(N, Wi), 0.0);
+float attenuation = calculateAttenuation(fragPos, lightPos);
+float radiance    = lightColor * attenuation * cosTheta;
+</code></pre>
+
+<p>除了一些叫法上的差异以外，这段代码对你们来说应该很TM熟悉：这正是我们一直以来怎么计算(漫反射(diffuse))光照的！当涉及到直接照明(direct lighting)时，辐射率的计算方式和我们之前计算当只有一个光源照射在物体表面的时候非常相似。</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>请注意，这个假设是成立的条件是点光源体积无限小，相当于在空间中的一个点。如果我们认为该光源是具有体积的，它的辐射会在一个以上的入射光的方向不等于零。</p>
+</div>
+<p>对于其它类型的从单点发出来的光源我们类似地计算出辐射率。比如，定向光(directional light)拥有恒定的<script type="math/tex">w_i</script>而不会有衰减因子；而一个聚光灯光源则没有恒定的辐射强度，其辐射强度是根据聚光灯的方向向量来缩放的。</p>
+<p>这也让我们回到了对于表面的半球领域(hemisphere)<script type="math/tex">\Omega</script>的积分<script type="math/tex">\int</script>上。由于我们事先知道的所有贡献光源的位置，因此对物体表面上的一个点着色并不需要我们尝试去求解积分。我们可以直接拿光源的（已知的）数目，去计算它们的总辐照度，因为每个光源仅仅只有一个方向上的光线会影响物体表面的辐射率。这使得PBR对直接光源的计算相对简单，因为我们只需要有效地遍历所有有贡献的光源。而当我们后来把环境照明也考虑在内的<a href="">IBL</a>教程中，我们就必须采取积分去计算了，这是因为光线可能会在任何一个方向入射。</p>
+<h1 id="pbr">一个PBR表面模型</h1>
+<p>现在让我们开始写片段着色器来实现上述的PBR模型吧~ 首先我们需要把PBR相关的输入放进片段着色器。</p>
+<pre><code class="glsl">#version 330 core
+out vec4 FragColor;
+in vec2 TexCoords;
+in vec3 WorldPos;
+in vec3 Normal;
+
+uniform vec3 camPos;
+
+uniform vec3  albedo;
+uniform float metallic;
+uniform float roughness;
+uniform float ao;
+</code></pre>
+
+<p>我们把通用的顶点着色器的输出作为输入的一部分。另一部分输入则是物体表面模型的一些材质参数。</p>
+<p>然后再片段着色器的开始部分我们做一下任何光照算法都需要做的计算:</p>
+<pre><code class="glsl">void main()
+{
+    vec3 N = normalize(Normal); 
+    vec3 V = normalize(camPos - WorldPos);
+    [...]
+}
+</code></pre>
+
+<h2 id="_2">直接光照明</h2>
+<p>在本教程的例子中我们会采用总共4个点光源来直接表示场景的辐照度。为了满足反射率方程，我们循环遍历每一个光源，计算他们独立的辐射率然后求和，接着根据BRDF和光源的入射角来缩放该辐射率。我们可以把循环当作在对物体的半球领域对所以直接光源求积分。首先我们来计算一些可以预计算的光照变量：</p>
+<pre><code class="glsl">vec3 Lo = vec3(0.0);
+for(int i = 0; i &lt; 4; ++i) 
+{
+    vec3 L = normalize(lightPositions[i] - WorldPos);
+    vec3 H = normalize(V + L);
+
+    float distance    = length(lightPositions[i] - WorldPos);
+    float attenuation = 1.0 / (distance * distance);
+    vec3 radiance     = lightColors[i] * attenuation; 
+    [...]  
+</code></pre>
+
+<p>由于我们线性空间内计算光照（我们会在着色器的尾部进行Gamma校正），我们使用在物理上更为准确的平方倒数作为衰减。</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>相对于物理上正确来说，你可能仍然想使用常量，线性或者二次衰减方程（他们在物理上相对不准确），却可以为您提供在光的能量衰减更多的控制。</p>
+</div>
+<p>然后，对于每一个光源我们都想计算完整的 Cook-Torrance specular BRDF项：</p>
+<p>
+<script type="math/tex; mode=display">
+\frac{DFG}{4(\omega_o \cdot n)(\omega_i \cdot n)}
+</script>
+</p>
+<p>首先我们想计算的是镜面反射和漫反射的系数， 或者说发生表面反射和折射的光线的比值。 我们从<a href="">上一个教程</a>知道可以使用菲涅尔方程计算：</p>
+<pre><code class="glsl">vec3 fresnelSchlick(float cosTheta, vec3 F0)
+{
+    return F0 + (1.0 - F0) * pow(1.0 - cosTheta, 5.0);
+}  
+</code></pre>
+
+<p>菲涅尔方程返回的是一个物体表面光线被反射的百分比， 也就是我们反射方程中的参数<script type="math/tex">k_s</script>。Fresnel-Schlick近似接受一个参数<code>F0</code>，被称为0°入射角的反射(surface reflection at zero incidence)表示如果直接(垂直)观察表面的时候有多少光线会被反射。 这个参数<code>F0</code>会因为材料不同而不同，而且会因为材质是金属而发生变色。在PBR金属流中我们简单地认为大多数的绝缘体在<code>F0</code>为0.04的时候看起来视觉上是正确的，我们同时会特别指定<code>F0</code>当我们遇到金属表面并且给定反射率的时候。 因此代码上看起来会像是这样：</p>
+<pre><code class="glsl">vec3 F0 = vec3(0.04); 
+F0      = mix(F0, albedo, metallic);
+vec3 F  = fresnelSchlick(max(dot(H, V), 0.0), F0);
+</code></pre>
+
+<p>你可以看到，对于非金属材质来说<code>F0</code>永远保持0.04这个值，我们会根据表面的金属性来改变<code>F0</code>这个值， 并且在原来的<code>F0</code>和反射率中插值计算<code>F0</code>。</p>
+<p>我们已经算出<script type="math/tex">F</script>， 剩下的项就是计算正态分布函数<script type="math/tex">D</script>和几何遮蔽函数<script type="math/tex">G</script>了。</p>
+<p>因此一个直接PBR光照着色器中<script type="math/tex">D</script>和<script type="math/tex">G</script>的计算代码类似于：</p>
+<pre><code class="glsl">float DistributionGGX(vec3 N, vec3 H, float roughness)
+{
+    float a      = roughness*roughness;
+    float a2     = a*a;
+    float NdotH  = max(dot(N, H), 0.0);
+    float NdotH2 = NdotH*NdotH;
+
+    float nom   = a2;
+    float denom = (NdotH2 * (a2 - 1.0) + 1.0);
+    denom = PI * denom * denom;
+
+    return nom / denom;
+}
+
+float GeometrySchlickGGX(float NdotV, float roughness)
+{
+    float r = (roughness + 1.0);
+    float k = (r*r) / 8.0;
+
+    float nom   = NdotV;
+    float denom = NdotV * (1.0 - k) + k;
+
+    return nom / denom;
+}
+float GeometrySmith(vec3 N, vec3 V, vec3 L, float roughness)
+{
+    float NdotV = max(dot(N, V), 0.0);
+    float NdotL = max(dot(N, L), 0.0);
+    float ggx2  = GeometrySchlickGGX(NdotV, roughness);
+    float ggx1  = GeometrySchlickGGX(NdotL, roughness);
+
+    return ggx1 * ggx2;
+}
+</code></pre>
+
+<p>这里比较重要的是和<a href="">上一个教程</a>不同的是，我们直接传了粗糙度(roughness)参数给上述的函数；通过这种方式，我们可以针对每一个不同的项对粗糙度做一些修改。根据迪士尼公司给出的观察以及后来被Epic Games公司采用的光照模型，光照在几何遮蔽函数和正太分布函数中采用粗糙度的平方会让光照看起来更加自然。</p>
+<p>现在两个函数都给出了定义，在计算反射的循环中计算NDF和G项变得非常自然：</p>
+<pre><code class="glsl">float NDF = DistributionGGX(N, H, roughness);       
+float G   = GeometrySmith(N, V, L, roughness);       
+</code></pre>
+
+<p>这样我们就凑够了足够的项来计算Cook-Torrance BRDF:</p>
+<pre><code class="glsl">vec3 nominator    = NDF * G * F;
+float denominator = 4.0 * max(dot(N, V), 0.0) * max(dot(N, L), 0.0) + 0.001; 
+vec3 specular     = nominator / denominator;  
+</code></pre>
+
+<p>注意我们在分母项中加了一个0.001为了避免出现除零错误。</p>
+<p>现在我们终于可以计算每个光源在反射率方程中的贡献值了！因为菲涅尔方程直接给出了<script type="math/tex">k_S</script>， 我们可以使用<code>F</code>表示镜面反射在所有打在物体表面上的光线的贡献。 从<script type="math/tex">k_S</script>我们很容易计算折射的比值<script type="math/tex">k_D</script>：</p>
+<pre><code class="glsl">vec3 kS = F;
+vec3 kD = vec3(1.0) - kS;
+
+kD *= 1.0 - metallic;   
+</code></pre>
+
+<p>我们可以看作<script type="math/tex">k_S</script>表示光能中被反射的能量的比例， 而剩下的光能会被折射， 比值即为<script type="math/tex">k_D</script>。更进一步来说，因为金属不会折射光线，因此不会有漫反射。所以如果表面是金属的，我们会把系数<script type="math/tex">k_D</script>变为0。 这样，我们终于集齐所有变量来计算我们出射光线的值：</p>
+<pre><code class="glsl">    const float PI = 3.14159265359;
+
+    float NdotL = max(dot(N, L), 0.0);        
+    Lo += (kD * albedo / PI + specular) * radiance * NdotL;
+}
+</code></pre>
+
+<p>最终的结果<code>Lo</code>，或者说是出射光线的辐射率，实际上是反射率方程的在半球领域<script type="math/tex">\Omega</script>的积分的结果。但是我们实际上不需要去求积，因为对于所有可能的入射光线方向我们知道只有4个方向的入射光线会影响片段(像素)的着色。因为这样，我们可以直接循环N次计算这些入射光线的方向(N也就是场景中光源的数目)。</p>
+<p>比较重要的是我们没有把<code>kS</code>乘进去我们的反射率方程中，这是因为我们已经在specualr BRDF中乘了菲涅尔系数<code>F</code>了，因为<code>kS</code>等于<code>F</code>，因此我们不需要再乘一次。</p>
+<p>剩下的工作就是加一个环境光照项给<code>Lo</code>，然后我们就拥有了片段的最后颜色：</p>
+<pre><code class="glsl">vec3 ambient = vec3(0.03) * albedo * ao;
+vec3 color   = ambient + Lo;  
+</code></pre>
+
+<h2 id="hdr">线性空间和HDR渲染</h2>
+<p>直到现在，我们假设的所有计算都在线性的颜色空间中进行的，因此我们需要在着色器最后做<a href="">伽马矫正</a>。 在线性空间中计算光照是非常重要的，因为PBR要求所有输入都是线性的，如果不是这样，我们就会得到不正常的光照。另外，我们希望所有光照的输入都尽可能的接近他们在物理上的取值，这样他们的反射率或者说颜色值就会在色谱上有比较大的变化空间。<code>Lo</code>作为结果可能会变大得很快(超过1)，但是因为默认的LDR输入而取值被截断。所以在伽马矫正之前我们采用色调映射使<code>Lo</code>从LDR的值映射为HDR的值。</p>
+<pre><code class="glsl">color = color / (color + vec3(1.0));
+color = pow(color, vec3(1.0/2.2)); 
+</code></pre>
+
+<p>这里我们采用的色调映射方法为Reinhard 操作，使得我们在伽马矫正后可以保留尽可能多的辐照度变化。 我们没有使用一个独立的帧缓冲或者采用后期处理，所以我们需要直接在每一步光照计算后采用色调映射和伽马矫正。</p>
+<p><img alt="" src="../../img/07/02/lighting_linear_vs_non_linear_and_hdr.png" /></p>
+<p>采用线性颜色空间和HDR在PBR渲染管线中非常重要。如果没有这些操作，几乎是不可能正确地捕获到因光照强度变化的细节，这最终会导致你的计算变得不正确，在视觉上看上去非常不自然。</p>
+<h2 id="pbr_1">完整的直接光照PBR着色器</h2>
+<p>现在剩下的事情就是把做好色调映射和伽马矫正的颜色值传给片段着色器的输出，然后我们就拥有了自己的直接光照PBR着色器。 为了完整性，这里给出了完整的代码：</p>
+<pre><code class="glsl">#version 330 core
+out vec4 FragColor;
+in vec2 TexCoords;
+in vec3 WorldPos;
+in vec3 Normal;
+
+// material parameters
+uniform vec3  albedo;
+uniform float metallic;
+uniform float roughness;
+uniform float ao;
+
+// lights
+uniform vec3 lightPositions[4];
+uniform vec3 lightColors[4];
+
+uniform vec3 camPos;
+
+const float PI = 3.14159265359;
+
+float DistributionGGX(vec3 N, vec3 H, float roughness);
+float GeometrySchlickGGX(float NdotV, float roughness);
+float GeometrySmith(vec3 N, vec3 V, vec3 L, float roughness);
+vec3 fresnelSchlickRoughness(float cosTheta, vec3 F0, float roughness);
+
+void main()
+{       
+    vec3 N = normalize(Normal);
+    vec3 V = normalize(camPos - WorldPos);
+
+    vec3 F0 = vec3(0.04); 
+    F0 = mix(F0, albedo, metallic);
+
+    // reflectance equation
+    vec3 Lo = vec3(0.0);
+    for(int i = 0; i &lt; 4; ++i) 
+    {
+        // calculate per-light radiance
+        vec3 L = normalize(lightPositions[i] - WorldPos);
+        vec3 H = normalize(V + L);
+        float distance    = length(lightPositions[i] - WorldPos);
+        float attenuation = 1.0 / (distance * distance);
+        vec3 radiance     = lightColors[i] * attenuation;        
+
+        // cook-torrance brdf
+        float NDF = DistributionGGX(N, H, roughness);        
+        float G   = GeometrySmith(N, V, L, roughness);      
+        vec3 F    = fresnelSchlick(max(dot(H, V), 0.0), F0);       
+
+        vec3 kS = F;
+        vec3 kD = vec3(1.0) - kS;
+        kD *= 1.0 - metallic;     
+
+        vec3 nominator    = NDF * G * F;
+        float denominator = 4.0 * max(dot(N, V), 0.0) * max(dot(N, L), 0.0) + 0.001; 
+        vec3 specular     = nominator / denominator;
+
+        // add to outgoing radiance Lo
+        float NdotL = max(dot(N, L), 0.0);                
+        Lo += (kD * albedo / PI + specular) * radiance * NdotL; 
+    }   
+
+    vec3 ambient = vec3(0.03) * albedo * ao;
+    vec3 color = ambient + Lo;
+
+    color = color / (color + vec3(1.0));
+    color = pow(color, vec3(1.0/2.2));  
+
+    FragColor = vec4(color, 1.0);
+}  
+</code></pre>
+
+<p>希望经过上一个教程的<a href="">理论知识</a>以及学习过关于渲染方程的一些知识后，这个着色器看起来不会太可怕。如果我们采用这个着色器，加上4个点光源和一些球体，同时我们令这些球体的金属性(metallic)和粗糙度(roughness)沿垂直方向和水平方向分别变化，我们会得到这样的结果：</p>
+<p><img alt="" src="../../img/07/02/lighting_result.png" /></p>
+<p>(上述图片)从下往上球体的金属性从0.0变到1.0， 从左到右球体的粗糙度从0.0变到1.0。你可以看到仅仅改变这两个值，显示的效果会发生巨大的改变！</p>
+<p>你可以在<a href="https://learnopengl.com/code_viewer_gh.php?code=src/6.pbr/1.1.lighting/lighting.cpp">这里</a>找到整个demo的完整代码。</p>
+<h1 id="pbr_2">带贴图的PBR</h1>
+<p>把我们系统扩展成可以接受纹理作为参数可以让我们对物体的材质有更多的自定义空间：</p>
+<pre><code class="glsl">[...]
+uniform sampler2D albedoMap;
+uniform sampler2D normalMap;
+uniform sampler2D metallicMap;
+uniform sampler2D roughnessMap;
+uniform sampler2D aoMap;
+
+void main()
+{
+    vec3 albedo     = pow(texture(albedoMap, TexCoords).rgb, 2.2);
+    vec3 normal     = getNormalFromNormalMap();
+    float metallic  = texture(metallicMap, TexCoords).r;
+    float roughness = texture(roughnessMap, TexCoords).r;
+    float ao        = texture(aoMap, TexCoords).r;
+    [...]
+}
+</code></pre>
+
+<p>不过需要注意的是一般来说反射率(albedo)纹理在美术人员创建的时候就已经在sRGB空间了，因此我们需要在光照计算之前先把他们转换到线性空间。一般来说，环境光遮蔽贴图(ambient occlusion maps)也需要我们转换到线性空间。不过金属性(Metallic)和粗糙度(Roughness)贴图大多数时间都会保证在线性空间中。</p>
+<p>只是把之前的球体的材质性质换成纹理属性，就在视觉上有巨大的提升：</p>
+<p><img alt="" src="../../img/07/02/lighting_textured.png" /></p>
+<p>你可以在这里找到纹理贴图过的全部<a href="https://learnopengl.com/code_viewer_gh.php?code=src/6.pbr/1.2.lighting_textured/lighting_textured.cpp">代码</a>， 以及我用的<a href="http://freepbr.com/materials/rusted-iron-pbr-metal-material-alt/">纹理</a>(记得加上一张全白色的ao Map)。注意金属表面会在场景中看起来有点黑，因为他们没有漫反射。它们会在考虑环境镜面光照的时候看起来更加自然，不过这是我们下一个教程的事情了。</p>
+<p>相比起在网上找到的其他PBR渲染结果来说，尽管在视觉上不算是非常震撼，因为我们还没考虑到<a href="">基于图片的关照,IBL</a>。我们现在也算是有了一个基于物理的渲染器了(虽然还没考虑IBL)！你会发现你的光照看起来更加真实了。</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>译者注： 
+<br>
+本章教程有几个小坑原作者没有说清楚，可能是希望读者自己思考，在这译者稍稍提醒一下：
+<br>
+- 首先是球体的生成，主流的球体顶点生成有两种方法，作者源码采用的是UVSphere方法， IcoSpher方法可以参考<a href="http://blog.andreaskahler.com/2009/06/creating-icosphere-mesh-in-code.html">这里</a>
+<br>
+- 对于贴图的PBR来说，我们需要TBN矩阵做坐标转换(切线空间-&gt; 世界空间 或者 世界空间 -&gt; 切线空间，参考 法线贴图 章节。)。这有两种方法，一种是在片段着色器中使用叉乘计算TBN矩阵(作者采用的方法)；另外一种是在根据顶点预计算TBN然后VAO中传入TBN矩阵，理论上来说后者会比较快(但是比较麻烦)，不过在译者的实际测试中两者速度差距不大。</p>
+</div>
+
+<div id="disqus_thread"></div>
+<script>
+    (function() {
+        var d = document, s = d.createElement('script');
+        
+        s.src = '//learnopengl-cn.disqus.com/embed.js';
+        
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>请启用JavaScript以浏览<a href="https://disqus.com/?ref_noscript" rel="nofollow">Disqus评论。</a></noscript></div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            
+            <center>Powered by <a href="http://www.mkdocs.org/">MkDocs</a> and <a href="http://bootswatch.com/yeti/">Yeti</a></center>
+        </footer>
+
+        <script src="../../js/jquery-1.10.2.min.js"></script>
+        <script src="../../js/bootstrap-3.0.3.min.js"></script>
+        <script src="../../js/highlight.pack.js"></script>
+        <script>var base_url = '../..';</script>
+        <script data-main="../../mkdocs/js/search.js" src="../../mkdocs/js/require.js"></script>
+        <script src="../../js/base.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">关闭</span></button>
+                        <h4 class="modal-title" id="exampleModalLabel">搜索</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            请在下面输入你要搜索的文本（仅支持英文）：
+                        </p>
+                        <form role="form">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="搜索..." id="mkdocs-search-query">
+                            </div>
+                        </form>
+                        <div id="mkdocs-search-results"></div>
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

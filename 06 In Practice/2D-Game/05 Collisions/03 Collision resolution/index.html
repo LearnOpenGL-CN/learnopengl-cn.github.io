@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        <link rel="canonical" href="https://learnopengl-cn.github.io/06 In Practice/2D-Game/05 Collisions/03 Collision resolution/">
+        <link rel="shortcut icon" href="../../../../img/favicon.ico">
+
+	<title>碰撞处理 - LearnOpenGL CN</title>
+
+        <link href="../../../../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../../../../css/font-awesome-4.0.3.css" rel="stylesheet">
+        <link rel="stylesheet" href="../../../../css/highlight.css">
+        <link href="../../../../css/base.css" rel="stylesheet">
+        <link href="../../../../css/style.css" rel="stylesheet">
+        <link href="../../../../css/admonition_fix.css" rel="stylesheet">
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+        <script>
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+          ga('create', 'UA-80323542-1', 'auto');
+          ga('send', 'pageview');
+        </script>
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <!-- Main title -->
+            <a class="navbar-brand" href="../../../..">LearnOpenGL CN</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            <!-- Main navigation -->
+            <ul class="nav navbar-nav">
+            
+            
+                <li >
+                    <a href="../../../..">主页</a>
+                </li>
+            
+            
+            
+                <li class="dropdown active">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">目录 <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        
+<li >
+    <a href="../../../../intro/">简介</a>
+</li>
+
+                    
+                        
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">入门</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../../../01 Getting started/01 OpenGL/">OpenGL</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../../01 Getting started/02 Creating a window/">创建窗口</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../../01 Getting started/03 Hello Window/">你好，窗口</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../../01 Getting started/04 Hello Triangle/">你好，三角形</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../../01 Getting started/05 Shaders/">着色器</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../../01 Getting started/06 Textures/">纹理</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../../01 Getting started/07 Transformations/">变换</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../../01 Getting started/08 Coordinate Systems/">坐标系统</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../../01 Getting started/09 Camera/">摄像机</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../../01 Getting started/10 Review/">复习</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                    
+                        
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">光照</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../../../02 Lighting/01 Colors/">颜色</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../../02 Lighting/02 Basic Lighting/">基础光照</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../../02 Lighting/03 Materials/">材质</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../../02 Lighting/04 Lighting maps/">光照贴图</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../../02 Lighting/05 Light casters/">投光物</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../../02 Lighting/06 Multiple lights/">多光源</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../../02 Lighting/07 Review/">复习</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                    
+                        
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">模型加载</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../../../03 Model Loading/01 Assimp/">Assimp</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../../03 Model Loading/02 Mesh/">网格</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../../03 Model Loading/03 Model/">模型</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                    
+                        
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">高级OpenGL</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../../../04 Advanced OpenGL/01 Depth testing/">深度测试</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../../04 Advanced OpenGL/02 Stencil testing/">模板测试</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../../04 Advanced OpenGL/03 Blending/">混合</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../../04 Advanced OpenGL/04 Face culling/">面剔除</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../../04 Advanced OpenGL/05 Framebuffers/">帧缓冲</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../../04 Advanced OpenGL/06 Cubemaps/">立方体贴图</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../../04 Advanced OpenGL/07 Advanced Data/">高级数据</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../../04 Advanced OpenGL/08 Advanced GLSL/">高级GLSL</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../../04 Advanced OpenGL/09 Geometry Shader/">几何着色器</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../../04 Advanced OpenGL/10 Instancing/">实例化</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../../04 Advanced OpenGL/11 Anti Aliasing/">抗锯齿</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                    
+                        
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">高级光照</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../../../05 Advanced Lighting/01 Advanced Lighting/">高级光照</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../../05 Advanced Lighting/02 Gamma Correction/">Gamma校正</a>
+</li>
+
+        
+            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">阴影</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../../../05 Advanced Lighting/03 Shadows/01 Shadow Mapping/">阴影映射</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../../05 Advanced Lighting/03 Shadows/02 Point Shadows/">点阴影</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../../05 Advanced Lighting/03 Shadows/03 CSM/">CSM</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+        
+            
+<li >
+    <a href="../../../../05 Advanced Lighting/04 Normal Mapping/">法线贴图</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../../05 Advanced Lighting/05 Parallax Mapping/">视差贴图</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../../05 Advanced Lighting/06 HDR/">HDR</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../../05 Advanced Lighting/07 Bloom/">泛光</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../../05 Advanced Lighting/08 Deferred Shading/">延迟着色法</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../../05 Advanced Lighting/09 SSAO/">SSAO</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                    
+                        
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">PBR</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../../../07 PBR/01 Theory/">理论</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../../07 PBR/02 Lighting/">光照</a>
+</li>
+
+        
+            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">IBL</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../../../07 PBR/03 IBL/01 Diffuse irradiance/">漫反射辐照</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../../07 PBR/03 IBL/02 Specular IBL/">镜面IBL</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+        
+    </ul>
+  </li>
+
+                    
+                        
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">实战</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../../01 Debugging/">调试</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../02 Text Rendering/">文本渲染</a>
+</li>
+
+        
+            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">2D游戏</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../01 Breakout/">Breakout</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../02 Setting up/">准备工作</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../03 Rendering Sprites/">渲染精灵</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../04 Levels/">关卡</a>
+</li>
+
+        
+            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">碰撞</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../01 Ball/">球</a>
+</li>
+
+        
+            
+<li >
+    <a href="../02 Collision detection/">碰撞检测</a>
+</li>
+
+        
+            
+<li class="active">
+    <a href="./">碰撞处理</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+        
+            
+<li >
+    <a href="../../06 Particles/">粒子</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../07 Postprocessing/">后期处理</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../08 Powerups/">道具</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../09 Audio/">音效</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../10 Render Text/">渲染文本</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../11 Final thoughts/">结语</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+        
+    </ul>
+  </li>
+
+                    
+                        
+<li >
+    <a href="../../../../legacy/">历史存档</a>
+</li>
+
+                    
+                    </ul>
+                </li>
+            
+            
+            
+                <li >
+                    <a href="../../../../code_repo/">代码仓库</a>
+                </li>
+            
+            
+            </ul>
+
+            <!-- Search, Navigation and Repo links -->
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                        <i class="fa fa-search"></i> 搜索
+                    </a>
+                </li>
+                <li >
+                    <a rel="next" href="../02 Collision detection/">
+                        <i class="fa fa-arrow-left"></i> 上一节
+                    </a>
+                </li>
+                <li >
+                    <a rel="prev" href="../../06 Particles/">
+                        下一节 <i class="fa fa-arrow-right"></i>
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="https://github.com/LearnOpenGL-CN/LearnOpenGL-CN">
+                        
+                            <i class="fa fa-github"></i>
+                        
+                        GitHub
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="https://www.paypal.me/learnopengl/">
+                            <img class="paypal" src="/img/paypal_logo.png" alt="">
+                        支持原作者
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+        <div class="container">
+            <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#_1">碰撞处理</a></li>
+        
+            <li><a href="#_2">碰撞重定位</a></li>
+        
+            <li><a href="#_3">碰撞方向</a></li>
+        
+            <li><a href="#aabb-">AABB - 圆碰撞检测</a></li>
+        
+            <li><a href="#-">玩家 - 球碰撞</a></li>
+        
+            <li><a href="#_6">一些注意事项</a></li>
+        
+    
+    </ul>
+</div></div>
+            <div class="col-md-9" role="main">
+
+<h1 id="_1">碰撞处理</h1>
+<table>
+<thead>
+<tr>
+<th>原文</th>
+<th><a href="https://learnopengl.com/#!In-Practice/2D-Game/Collisions/Collision-resolution">Collision resolution</a></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>作者</td>
+<td>JoeyDeVries</td>
+</tr>
+<tr>
+<td>翻译</td>
+<td><a href="https://github.com/aillieo">aillieo</a></td>
+</tr>
+<tr>
+<td>校对</td>
+<td>暂未校对</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>本节暂未进行完全的重写，错误可能会很多。如果可能的话，请对照原文进行阅读。如果有报告本节的错误，将会延迟至重写之后进行处理。</p>
+</div>
+<p>上个教程的最后，我们得到了一种有效的碰撞检测方案。但是球对检测到的碰撞不会有反作用；它仅仅是径直穿过所有的砖块。我们希望球会从撞击到的砖块<strong>反弹</strong>。此教程将讨论如何使用AABB-圆碰撞方案实现这项称为<def>碰撞处理</def>(Collision Resolution)的功能。</p>
+<p>当碰撞发生时，我们希望出现两个现象：重新定位球，以免它进入另一个物体，其次是改变球的速度方向，使它看起来像是物体的反弹。</p>
+<h3 id="_2">碰撞重定位</h3>
+<p>为了把球对象定位到碰撞的AABB的外部，我们必须明确球侵入碰撞框的距离。为此我们要回顾上一节教程中的示意图：</p>
+<p><img alt="" src="../../../../img/06/Breakout/05/03/collisions_aabb_circle_resolution.png" /></p>
+<p>此时球少量进入了AABB，所以检测到了碰撞。我们现在希望将球从移出AABB的外形使其仅仅碰触到AABB，像是没有碰撞一样。为了确定需要将球从AABB中移出多少距离，我们需要找回矢量<script type="math/tex">\bar{R}</script>，它代表的是侵入AABB的程度。为得到<script type="math/tex">\bar{R}</script>我们用球的半径减去<script type="math/tex">\bar{V}</script>。矢量<script type="math/tex">\bar{V}</script>是最近点<script type="math/tex">\bar{P}</script>和球心<script type="math/tex">\bar{C}</script>的差矢量。</p>
+<p>有了<script type="math/tex">\bar{R}</script>之后我们将球的位置偏移<script type="math/tex">\bar{R}</script>就将球直接放置在与AABB紧邻的位置；此时球已经被重定位到合适的位置。</p>
+<h3 id="_3">碰撞方向</h3>
+<p>下一步我们需要确定碰撞之后如何更新球的速度。对于Breakout我们使用以下规则来改变球的速度：</p>
+<ol>
+<li>如果球撞击AABB的右侧或左侧，它的水平速度（<var>x</var>）将会反转。</li>
+<li>如果球撞击AABB的上侧或下侧，它的垂直速度（<var>y</var>）将会反转。</li>
+</ol>
+<p>但是如何判断球撞击AABB的方向呢？解决这一问题有很多种方法，其中之一是对于每个砖块使用4个AABB而不是1个AABB，并把它们放置到砖块的每个边上。使用这种方法我们可以确定被碰撞的是哪个AABB和哪个边。但是有一种使用点乘(dot product)的更简单的方法。</p>
+<p>您或许还记得<a href="../../../../01 Getting started/07 Transformations/">变换</a>教程中点乘可以得到两个正交化的矢量的夹角。如果我们定义指向北、南、西和东的四个矢量，然后计算它们和给定矢量的夹角会怎么样？由这四个方向矢量和给定的矢量点乘积的结果中的最高值（点乘积的最大值为<code>1.0f</code>，代表<code>0</code>度角）即是矢量的方向。</p>
+<p>这一过程如下代码所示：</p>
+<pre><code class="c++">Direction VectorDirection(glm::vec2 target)
+{
+    glm::vec2 compass[] = {
+        glm::vec2(0.0f, 1.0f),  // 上
+        glm::vec2(1.0f, 0.0f),  // 右
+        glm::vec2(0.0f, -1.0f), // 下
+        glm::vec2(-1.0f, 0.0f)  // 左
+    };
+    GLfloat max = 0.0f;
+    GLuint best_match = -1;
+    for (GLuint i = 0; i &lt; 4; i++)
+    {
+        GLfloat dot_product = glm::dot(glm::normalize(target), compass[i]);
+        if (dot_product &gt; max)
+        {
+            max = dot_product;
+            best_match = i;
+        }
+    }
+    return (Direction)best_match;
+}    
+</code></pre>
+
+<p>此函数比较了<var>target</var>矢量和<var>compass</var>数组中各方向矢量。<var>compass</var>数组中与<var>target</var>角度最接近的矢量，即是返回给函数调用者的<var>Direction</var>。这里的<var>Direction</var>是一个<fun>Game</fun>类的头文件中定义的枚举类型：</p>
+<pre><code class="c++">enum Direction {
+    UP,
+    RIGHT,
+    DOWN,
+    LEFT
+};    
+</code></pre>
+
+<p>既然我们已经知道了如何获得<script type="math/tex">\bar{R}</script>以及如何判断球撞击AABB的方向，我们开始编写碰撞处理的代码。</p>
+<h3 id="aabb-">AABB - 圆碰撞检测</h3>
+<p>为了计算碰撞处理所需的数值我们要从碰撞的函数中获取更多的信息而不只只是一个<var>true</var>或<var>false</var>，因此我们要返回一个包含更多信息的<def>tuple</def>，这些信息即是碰撞发生时的方向及差矢量（<script type="math/tex">\bar{R}</script>）。你可以在头文件<var><tuple></var>中找到<var>tuple</var>。</p>
+<p>为了更好组织代码，我们把碰撞相关的数据使用typedef定义为<fun>Collision</fun>：</p>
+<pre><code class="c++">typedef std::tuple&lt;GLboolean, Direction, glm::vec2&gt; Collision;    
+</code></pre>
+
+<p>接下来我们还需要修改<fun>CheckCollision</fun>函数的代码，使其不仅仅返回<var>true</var>或<var>false</var>而是还包含方向和差矢量：</p>
+<pre><code class="c++">Collision CheckCollision(BallObject &amp;one, GameObject &amp;two) // AABB - AABB 碰撞
+{
+    [...]
+    if (glm::length(difference) &lt;= one.Radius)
+        return std::make_tuple(GL_TRUE, VectorDirection(difference), difference);
+    else
+        return std::make_tuple(GL_FALSE, UP, glm::vec2(0, 0));
+}
+</code></pre>
+
+<p><fun>Game</fun>类的<fun>DoCollision</fun>函数现在不仅仅只检测是否出现了碰撞，而且在碰撞发生时会有适当的动作。此函数现在会计算碰撞侵入的程度（如本教程一开始计时的示意图中所示）并且基于碰撞方向使球的位置矢量与其相加或相减。</p>
+<pre><code class="c++">void Game::DoCollisions()
+{
+    for (GameObject &amp;box : this-&gt;Levels[this-&gt;Level].Bricks)
+    {
+        if (!box.Destroyed)
+        {
+            Collision collision = CheckCollision(*Ball, box);
+            if (std::get&lt;0&gt;(collision)) // 如果collision 是 true
+            {
+                // 如果砖块不是实心就销毁砖块
+                if (!box.IsSolid)
+                    box.Destroyed = GL_TRUE;
+                // 碰撞处理
+                Direction dir = std::get&lt;1&gt;(collision);
+                glm::vec2 diff_vector = std::get&lt;2&gt;(collision);
+                if (dir == LEFT || dir == RIGHT) // 水平方向碰撞
+                {
+                    Ball-&gt;Velocity.x = -Ball-&gt;Velocity.x; // 反转水平速度
+                    // 重定位
+                    GLfloat penetration = Ball-&gt;Radius - std::abs(diff_vector.x);
+                    if (dir == LEFT)
+                        Ball-&gt;Position.x += penetration; // 将球右移
+                    else
+                        Ball-&gt;Position.x -= penetration; // 将球左移
+                }
+                else // 垂直方向碰撞
+                {
+                    Ball-&gt;Velocity.y = -Ball-&gt;Velocity.y; // 反转垂直速度
+                    // 重定位
+                    GLfloat penetration = Ball-&gt;Radius - std::abs(diff_vector.y);
+                    if (dir == UP)
+                        Ball-&gt;Position.y -= penetration; // 将球上移
+                    else
+                        Ball-&gt;Position.y += penetration; // 将球下移
+                }
+            }
+        }
+    }
+}    
+</code></pre>
+
+<p>不要被函数的复杂度给吓到，因为它仅仅是我们目前为止的概念的直接转化。首先我们会检测碰撞如果发生了碰撞且砖块不是实心的那么就销毁砖块。然后我们从tuple中获取到了碰撞的方向<var>dir</var>以及表示<script type="math/tex">\bar{V}</script>的差矢量<var>diff_vector</var>，最终完成碰撞处理。</p>
+<p>我们首先检查碰撞方向是水平还是垂直，并据此反转速度。如果是水平方向，我们从<var>diff_vector</var>的x分量计算侵入量RR并根据碰撞方向用球的位置矢量加上或减去它。垂直方向的碰撞也是如此，但是我们要操作各矢量的y分量。</p>
+<p>现在运行你的应用程序，应该会向你展示一套奏效的碰撞方案，但可能会很难真正看到它的效果，因为一旦球碰撞到了一个砖块就会弹向底部并永远丢失。我们可以通过处理玩家挡板的碰撞来修复这一问题。</p>
+<h2 id="-">玩家 - 球碰撞</h2>
+<p>球和玩家之间的碰撞与我们之前讨论的碰撞稍有不同，因为这里应当基于撞击挡板的点与（挡板）中心的距离来改变球的水平速度。撞击点距离挡板的中心点越远，则水平方向的速度就会越大。</p>
+<pre><code class="c++">void Game::DoCollisions()
+{
+    [...]
+    Collision result = CheckCollision(*Ball, *Player);
+    if (!Ball-&gt;Stuck &amp;&amp; std::get&lt;0&gt;(result))
+    {
+        // 检查碰到了挡板的哪个位置，并根据碰到哪个位置来改变速度
+        GLfloat centerBoard = Player-&gt;Position.x + Player-&gt;Size.x / 2;
+        GLfloat distance = (Ball-&gt;Position.x + Ball-&gt;Radius) - centerBoard;
+        GLfloat percentage = distance / (Player-&gt;Size.x / 2);
+        // 依据结果移动
+        GLfloat strength = 2.0f;
+        glm::vec2 oldVelocity = Ball-&gt;Velocity;
+        Ball-&gt;Velocity.x = INITIAL_BALL_VELOCITY.x * percentage * strength; 
+        Ball-&gt;Velocity.y = -Ball-&gt;Velocity.y;
+        Ball-&gt;Velocity = glm::normalize(Ball-&gt;Velocity) * glm::length(oldVelocity);
+    } 
+}
+</code></pre>
+
+<p>在我们完成了球和各砖块的碰撞检测之后，我们来检测球和玩家挡板是否发生碰撞。如果有碰撞（并且球不是被固定在挡板上）我们要计算球的中心与挡板中心的距离和挡板的半边长的百分比。之后球的水平速度会依据它撞击挡板的点到挡板中心的距离来更新。除了更新水平速度之外我们还需要反转它的y方向速度。</p>
+<p>注意旧的速度被存储为<var>oldVelocity</var>。之所以要存储旧的速度是因为我们只更新球的速度矢量中水平方向的速度并保持它的y速度不变。这将意味着矢量的长度会持续变化，其产生的影响是如果球撞击到挡板的边缘则会比撞击到挡板中心有更大(也因此更强)的速度矢量。为此新的速度矢量会正交化然后乘以旧速度矢量的长度。这样一来，球的力量和速度将总是一一致的，无论它撞击到挡板的哪个地方。</p>
+<h3 id="_4">粘板</h3>
+<p>无论你有没有注意到，但当运行代码时，球和玩家挡板的碰撞处理仍旧有一个大问题。以下的视频清楚地展示了将会出现的现象：</p>
+<video src="../../../../img/06/Breakout/05/03/collisions_sticky_paddle.mp4" controls="controls"></video>
+
+<p>这种问题称为<def>粘板问题</def>(Sticky Paddle Issue)，出现的原因是玩家挡板以较高的速度移向球，导致球的中心进入玩家挡板。由于我们没有考虑球的中心在AABB内部的情况，游戏会持续试图对所有的碰撞做出响应，当球最终脱离时，已经对<code>y</code>向速度翻转了多次，以至于无法确定球在脱离后是向上还是向下运动。</p>
+<p>我们可以引入一个小的特殊处理来很容易地修复这种行为，这个处理之所以成为可能是基于我们可以假设碰撞总是发生在挡板顶部的事实。我们总是简单地返回正的<var>y</var>速度而不是反转<var>y</var>速度，这样当它被卡住时也可以立即脱离。</p>
+<pre><code class="c++"> //Ball-&gt;Velocity.y = -Ball-&gt;Velocity.y;
+Ball-&gt;Velocity.y = -1 * abs(Ball-&gt;Velocity.y);  
+</code></pre>
+
+<p>如果你足够仔细就会觉得这一影响仍然是可以被注意到的，但是我个人将此方法当作一种可接受的折衷处理。</p>
+<h3 id="_5">底部边界</h3>
+<p>与经典的Breakout内容相比唯一缺少的就是失败条件了，失败会重置关卡和玩家。在<fun>Game</fun>类的<fun>Update</fun>函数中，我们要检查球是否接触到了底部边界，如果接触到就重置游戏。</p>
+<pre><code class="c++">void Game::Update(GLfloat dt)
+{
+    [...]
+    if (Ball-&gt;Position.y &gt;= this-&gt;Height) // 球是否接触底部边界？
+    {
+        this-&gt;ResetLevel();
+        this-&gt;ResetPlayer();
+    }
+}  
+</code></pre>
+
+<p><fun>ResetLevel</fun>和<fun>ResetPlayer</fun>函数直接重新加载关卡并重置对象的各变量值为原始的值。现在游戏看起来应该是这样的：</p>
+<video src="../../../../img/06/Breakout/05/03/collisions_complete.mp4" controls="controls"></video>
+
+<p>就是这样了，我们创建完成了一个有相似机制的经典Breakout游戏的复制版。这里你可以找到Game类的源代码：<a href="https://learnopengl.com/code_viewer.php?code=in-practice/breakout/game_collisions.h">header</a>，<a href="https://learnopengl.com/code_viewer.php?code=in-practice/breakout/game_collisions">code</a>。</p>
+<h2 id="_6">一些注意事项</h2>
+<p>在视频游戏的发展过程中，碰撞检测是一个困难的话题甚至可能是最大的挑战。大多数的碰撞检测和处理方案是和物理引擎合并在一起的，正如多数现代的游戏中看到的那样。我们在Breakout游戏中使用的碰撞方案是一个非常简单的方案并且是专门给这类游戏所专用的。</p>
+<p>需要强调的是这类碰撞检测和处理方式是不完美的。它只能计算每帧内可能发生的碰撞并且只能计算在该时间步时物体所在的各位置；这意味着如果一个物体拥有一个很大的速度以致于在一帧内穿过了另一个物体，它将看起来像是从来没有与另一个物体碰撞过。因此如果出现掉帧或出现了足够高的速度，这一碰撞检测方案将无法应对。</p>
+<p>（我们使用的碰撞方案）仍然会出现这几个问题：</p>
+<ul>
+<li>如果球运动得足够快，它可能在一帧内完整地穿过一个物体，而不会检测到碰撞。</li>
+<li>如果球在一帧内同时撞击了一个以上的物体，它将会检测到两次碰撞并两次反转速度；这样不改变它的原始速度。</li>
+<li>撞击到砖块的角时会在错误的方向反转速度，这是因为它在一帧内穿过的距离会引发<fun>VectorDirection</fun>返回水平方向还是垂直方向的差别。</li>
+</ul>
+<p>但是，本教程目的在于教会读者们图形学和游戏开发的基础知识。因此，这里的碰撞方案可以服务于此目的；它更容易理解且在正常的场景中可以较好地运作。需要记住的是存在有更好的（更复杂）碰撞方案，在几乎所有的场景中都可以很好地运作（包括可移动的物体）如<def>分离轴定理</def>(Separating Axis Theorem)。</p>
+<p>值得庆幸的是，有大量实用并且常常很高效的物理引擎（使用时间步无关的碰撞方案）可供您在游戏中使用。如果您希望在这一系统中有更深入的探索或需要更高级的物理系统又不理解其中的数学机理，<a href="http://box2d.org/about/">Box2D</a>是一个实现了物理系统和碰撞检测的可以用在您的应用程序中的完美的2D物理库。</p>
+
+<div id="disqus_thread"></div>
+<script>
+    (function() {
+        var d = document, s = d.createElement('script');
+        
+        s.src = '//learnopengl-cn.disqus.com/embed.js';
+        
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>请启用JavaScript以浏览<a href="https://disqus.com/?ref_noscript" rel="nofollow">Disqus评论。</a></noscript></div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            
+            <center>Powered by <a href="http://www.mkdocs.org/">MkDocs</a> and <a href="http://bootswatch.com/yeti/">Yeti</a></center>
+        </footer>
+
+        <script src="../../../../js/jquery-1.10.2.min.js"></script>
+        <script src="../../../../js/bootstrap-3.0.3.min.js"></script>
+        <script src="../../../../js/highlight.pack.js"></script>
+        <script>var base_url = '../../../..';</script>
+        <script data-main="../../../../mkdocs/js/search.js" src="../../../../mkdocs/js/require.js"></script>
+        <script src="../../../../js/base.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">关闭</span></button>
+                        <h4 class="modal-title" id="exampleModalLabel">搜索</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            请在下面输入你要搜索的文本（仅支持英文）：
+                        </p>
+                        <form role="form">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="搜索..." id="mkdocs-search-query">
+                            </div>
+                        </form>
+                        <div id="mkdocs-search-results"></div>
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

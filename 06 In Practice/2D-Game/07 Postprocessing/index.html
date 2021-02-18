@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        <link rel="canonical" href="https://learnopengl-cn.github.io/06 In Practice/2D-Game/07 Postprocessing/">
+        <link rel="shortcut icon" href="../../../img/favicon.ico">
+
+	<title>后期处理 - LearnOpenGL CN</title>
+
+        <link href="../../../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../../../css/font-awesome-4.0.3.css" rel="stylesheet">
+        <link rel="stylesheet" href="../../../css/highlight.css">
+        <link href="../../../css/base.css" rel="stylesheet">
+        <link href="../../../css/style.css" rel="stylesheet">
+        <link href="../../../css/admonition_fix.css" rel="stylesheet">
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+        <script>
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+          ga('create', 'UA-80323542-1', 'auto');
+          ga('send', 'pageview');
+        </script>
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <!-- Main title -->
+            <a class="navbar-brand" href="../../..">LearnOpenGL CN</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            <!-- Main navigation -->
+            <ul class="nav navbar-nav">
+            
+            
+                <li >
+                    <a href="../../..">主页</a>
+                </li>
+            
+            
+            
+                <li class="dropdown active">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">目录 <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        
+<li >
+    <a href="../../../intro/">简介</a>
+</li>
+
+                    
+                        
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">入门</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../../01 Getting started/01 OpenGL/">OpenGL</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../01 Getting started/02 Creating a window/">创建窗口</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../01 Getting started/03 Hello Window/">你好，窗口</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../01 Getting started/04 Hello Triangle/">你好，三角形</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../01 Getting started/05 Shaders/">着色器</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../01 Getting started/06 Textures/">纹理</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../01 Getting started/07 Transformations/">变换</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../01 Getting started/08 Coordinate Systems/">坐标系统</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../01 Getting started/09 Camera/">摄像机</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../01 Getting started/10 Review/">复习</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                    
+                        
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">光照</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../../02 Lighting/01 Colors/">颜色</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../02 Lighting/02 Basic Lighting/">基础光照</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../02 Lighting/03 Materials/">材质</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../02 Lighting/04 Lighting maps/">光照贴图</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../02 Lighting/05 Light casters/">投光物</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../02 Lighting/06 Multiple lights/">多光源</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../02 Lighting/07 Review/">复习</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                    
+                        
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">模型加载</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../../03 Model Loading/01 Assimp/">Assimp</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../03 Model Loading/02 Mesh/">网格</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../03 Model Loading/03 Model/">模型</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                    
+                        
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">高级OpenGL</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../../04 Advanced OpenGL/01 Depth testing/">深度测试</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../04 Advanced OpenGL/02 Stencil testing/">模板测试</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../04 Advanced OpenGL/03 Blending/">混合</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../04 Advanced OpenGL/04 Face culling/">面剔除</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../04 Advanced OpenGL/05 Framebuffers/">帧缓冲</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../04 Advanced OpenGL/06 Cubemaps/">立方体贴图</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../04 Advanced OpenGL/07 Advanced Data/">高级数据</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../04 Advanced OpenGL/08 Advanced GLSL/">高级GLSL</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../04 Advanced OpenGL/09 Geometry Shader/">几何着色器</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../04 Advanced OpenGL/10 Instancing/">实例化</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../04 Advanced OpenGL/11 Anti Aliasing/">抗锯齿</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                    
+                        
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">高级光照</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../../05 Advanced Lighting/01 Advanced Lighting/">高级光照</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../05 Advanced Lighting/02 Gamma Correction/">Gamma校正</a>
+</li>
+
+        
+            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">阴影</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../../05 Advanced Lighting/03 Shadows/01 Shadow Mapping/">阴影映射</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../05 Advanced Lighting/03 Shadows/02 Point Shadows/">点阴影</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../05 Advanced Lighting/03 Shadows/03 CSM/">CSM</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+        
+            
+<li >
+    <a href="../../../05 Advanced Lighting/04 Normal Mapping/">法线贴图</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../05 Advanced Lighting/05 Parallax Mapping/">视差贴图</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../05 Advanced Lighting/06 HDR/">HDR</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../05 Advanced Lighting/07 Bloom/">泛光</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../05 Advanced Lighting/08 Deferred Shading/">延迟着色法</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../05 Advanced Lighting/09 SSAO/">SSAO</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                    
+                        
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">PBR</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../../07 PBR/01 Theory/">理论</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../07 PBR/02 Lighting/">光照</a>
+</li>
+
+        
+            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">IBL</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../../07 PBR/03 IBL/01 Diffuse irradiance/">漫反射辐照</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../07 PBR/03 IBL/02 Specular IBL/">镜面IBL</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+        
+    </ul>
+  </li>
+
+                    
+                        
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">实战</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../01 Debugging/">调试</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../02 Text Rendering/">文本渲染</a>
+</li>
+
+        
+            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">2D游戏</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../01 Breakout/">Breakout</a>
+</li>
+
+        
+            
+<li >
+    <a href="../02 Setting up/">准备工作</a>
+</li>
+
+        
+            
+<li >
+    <a href="../03 Rendering Sprites/">渲染精灵</a>
+</li>
+
+        
+            
+<li >
+    <a href="../04 Levels/">关卡</a>
+</li>
+
+        
+            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">碰撞</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../05 Collisions/01 Ball/">球</a>
+</li>
+
+        
+            
+<li >
+    <a href="../05 Collisions/02 Collision detection/">碰撞检测</a>
+</li>
+
+        
+            
+<li >
+    <a href="../05 Collisions/03 Collision resolution/">碰撞处理</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+        
+            
+<li >
+    <a href="../06 Particles/">粒子</a>
+</li>
+
+        
+            
+<li class="active">
+    <a href="./">后期处理</a>
+</li>
+
+        
+            
+<li >
+    <a href="../08 Powerups/">道具</a>
+</li>
+
+        
+            
+<li >
+    <a href="../09 Audio/">音效</a>
+</li>
+
+        
+            
+<li >
+    <a href="../10 Render Text/">渲染文本</a>
+</li>
+
+        
+            
+<li >
+    <a href="../11 Final thoughts/">结语</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+        
+    </ul>
+  </li>
+
+                    
+                        
+<li >
+    <a href="../../../legacy/">历史存档</a>
+</li>
+
+                    
+                    </ul>
+                </li>
+            
+            
+            
+                <li >
+                    <a href="../../../code_repo/">代码仓库</a>
+                </li>
+            
+            
+            </ul>
+
+            <!-- Search, Navigation and Repo links -->
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                        <i class="fa fa-search"></i> 搜索
+                    </a>
+                </li>
+                <li >
+                    <a rel="next" href="../06 Particles/">
+                        <i class="fa fa-arrow-left"></i> 上一节
+                    </a>
+                </li>
+                <li >
+                    <a rel="prev" href="../08 Powerups/">
+                        下一节 <i class="fa fa-arrow-right"></i>
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="https://github.com/LearnOpenGL-CN/LearnOpenGL-CN">
+                        
+                            <i class="fa fa-github"></i>
+                        
+                        GitHub
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="https://www.paypal.me/learnopengl/">
+                            <img class="paypal" src="/img/paypal_logo.png" alt="">
+                        支持原作者
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+        <div class="container">
+            <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#_1">后期处理</a></li>
+        
+            <li><a href="#shake-it">Shake it</a></li>
+        
+    
+    </ul>
+</div></div>
+            <div class="col-md-9" role="main">
+
+<h1 id="_1">后期处理</h1>
+<table>
+<thead>
+<tr>
+<th>原文</th>
+<th><a href="https://learnopengl.com/#!In-Practice/2D-Game/Postprocessing">Postprocessing</a></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>作者</td>
+<td>JoeydeVries</td>
+</tr>
+<tr>
+<td>翻译</td>
+<td><a href="https://github.com/ShirokoSama">包纸</a></td>
+</tr>
+<tr>
+<td>校对</td>
+<td>暂无</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>本节暂未进行完全的重写，错误可能会很多。如果可能的话，请对照原文进行阅读。如果有报告本节的错误，将会延迟至重写之后进行处理。</p>
+</div>
+<p>如果我们可以通过几个后期处理(Postprocess)特效丰富Breakout游戏的视觉效果的话，会不会是一件很有趣的事情？利用OpenGL的帧缓冲，我们可以相对容易地创造出模糊的抖动效果、反转场景里的所有颜色、做一些“疯狂”的顶点运动、或是使用一些其他有趣的特效。</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>这章教程广泛运用了之前<a href="../../../04 Advanced OpenGL/05 Framebuffers/">帧缓冲</a>与<a href="../../../04 Advanced OpenGL/11 Anti Aliasing/">抗锯齿</a>章节的概念。</p>
+</div>
+<p>在教程的帧缓冲章节里，我们演示了如何使用单个纹理，通过后期处理特效实现有趣的效果（反相、灰度、模糊、锐化、边缘检测）。在Breakout中我们将做一些类似的事情：我们会创建一个帧缓冲对象，并附带一个多重采样的渲染缓冲对象作为其颜色附件。游戏中所有的渲染相关代码都应该渲染至这个多重采样的帧缓冲，然后将其内容传输(<a href="https://en.wikipedia.org/wiki/Bit_blit">Bit blit</a>)至一个不同的帧缓冲中，该帧缓冲用一个纹理作为其颜色附件。这个纹理会包含游戏的渲染后的抗锯齿图像，我们对它应用零或多个后期处理特效后渲染至一个大的2D四边形。（译注：这段表述的复杂流程与教程帧缓冲章节的内容相似，原文中包含大量易混淆的名词与代词，建议读者先仔细理解帧缓冲章节的内容与流程）。</p>
+<p>总结一下这些渲染步骤：</p>
+<ol>
+<li>绑定至多重采样的帧缓冲</li>
+<li>和往常一样渲染游戏</li>
+<li>将多重采样的帧缓冲内容传输至一个普通的帧缓冲中（这个帧缓冲使用了一个纹理作为其颜色缓冲附件）</li>
+<li>解除绑定（绑定回默认的帧缓冲）</li>
+<li>在后期处理着色器中使用来自普通帧缓冲的颜色缓冲纹理</li>
+<li>渲染屏幕大小的四边形作为后期处理着色器的输出</li>
+</ol>
+<p>我们的后期处理着色器允许使用三种特效：<strong>shake</strong>, <strong>confuse</strong>和<strong>chaos</strong>。</p>
+<ul>
+<li><strong>shake</strong>：轻微晃动场景并附加一个微小的模糊效果。</li>
+<li><strong>shake</strong>：反转场景中的颜色并颠倒x轴和y轴。</li>
+<li><strong>chaos</strong>: 利用边缘检测卷积核创造有趣的视觉效果，并以圆形旋转动画的形式移动纹理图片，实现“混沌”特效。</li>
+</ul>
+<p>以下是这些效果的示例：</p>
+<p><img alt="" src="../../../img/06/Breakout/07/postprocessing_effects.png" /></p>
+<p>在2D四边形上操作的顶点着色器如下所示：</p>
+<pre><code class="c++">#version 330 core
+layout (location = 0) in vec4 vertex; // &lt;vec2 position, vec2 texCoords&gt;
+
+out vec2 TexCoords;
+
+uniform bool  chaos;
+uniform bool  confuse;
+uniform bool  shake;
+uniform float time;
+
+void main()
+{
+    gl_Position = vec4(vertex.xy, 0.0f, 1.0f); 
+    vec2 texture = vertex.zw;
+    if(chaos)
+    {
+        float strength = 0.3;
+        vec2 pos = vec2(texture.x + sin(time) * strength, texture.y + cos(time) * strength);        
+        TexCoords = pos;
+    }
+    else if(confuse)
+    {
+        TexCoords = vec2(1.0 - texture.x, 1.0 - texture.y);
+    }
+    else
+    {
+        TexCoords = texture;
+    }
+    if (shake)
+    {
+        float strength = 0.01;
+        gl_Position.x += cos(time * 10) * strength;        
+        gl_Position.y += cos(time * 15) * strength;        
+    }
+}  
+</code></pre>
+
+<p>基于uniform是否被设置为true，顶点着色器可以执行不同的分支。如果<var>chaos</var>或<var>confuse</var>被设置为true，顶点着色器将操纵纹理坐标来移动场景（以圆形动画变换纹理坐标或反转纹理坐标）。因为我们将纹理环绕方式设置为了<var>GL_REPEAT</var>，所以<strong>chaos</strong>特效会导致场景在四边形的各个部分重复。除此之外，如果<strong>shake</strong>被设置为true，它将微量移动顶点位置。需要注意的是，<var>chaos</var>与<var>confuse</var>不应同时为true，而<var>shake</var>则可以与其他特效一起生效。</p>
+<p>当任意特效被激活时，除了偏移顶点的位置和纹理坐标，我们也希望创造显著的视觉效果。我们可以在片段着色器中实现这一点：</p>
+<pre><code class="c++">#version 330 core
+in  vec2  TexCoords;
+out vec4  color;
+
+uniform sampler2D scene;
+uniform vec2      offsets[9];
+uniform int       edge_kernel[9];
+uniform float     blur_kernel[9];
+
+uniform bool chaos;
+uniform bool confuse;
+uniform bool shake;
+
+void main()
+{
+    color = vec4(0.0f);
+    vec3 sample[9];
+    // 如果使用卷积矩阵，则对纹理的偏移像素进行采样
+    if(chaos || shake)
+        for(int i = 0; i &lt; 9; i++)
+            sample[i] = vec3(texture(scene, TexCoords.st + offsets[i]));
+
+    // 处理特效
+    if(chaos)
+    {           
+        for(int i = 0; i &lt; 9; i++)
+            color += vec4(sample[i] * edge_kernel[i], 0.0f);
+        color.a = 1.0f;
+    }
+    else if(confuse)
+    {
+        color = vec4(1.0 - texture(scene, TexCoords).rgb, 1.0);
+    }
+    else if(shake)
+    {
+        for(int i = 0; i &lt; 9; i++)
+            color += vec4(sample[i] * blur_kernel[i], 0.0f);
+        color.a = 1.0f;
+    }
+    else
+    {
+        color =  texture(scene, TexCoords);
+    }
+}
+</code></pre>
+
+<p>这个着色器几乎直接构建自帧缓冲教程的片段着色器，并根据被激活的特效类型进行相应的后期处理。这一次，偏移矩阵(offset matrix)和卷积核作为uniform变量，由应用程序中的代码定义。好处是我们只需要设置这些内容一次，而不必在每个片段着色器执行时重新计算这些矩阵。例如，偏移矩阵的配置如下所示：</p>
+<pre><code class="c++">GLfloat offset = 1.0f / 300.0f;
+GLfloat offsets[9][2] = {
+    { -offset,  offset  },  // 左上
+    {  0.0f,    offset  },  // 中上
+    {  offset,  offset  },  // 右上
+    { -offset,  0.0f    },  // 左中
+    {  0.0f,    0.0f    },  // 正中
+    {  offset,  0.0f    },  // 右中
+    { -offset, -offset  },  // 左下
+    {  0.0f,   -offset  },  // 中下
+    {  offset, -offset  }   // 右下
+};
+glUniform2fv(glGetUniformLocation(shader.ID, &quot;offsets&quot;), 9, (GLfloat*)offsets);  
+</code></pre>
+
+<p>由于所有管理帧缓冲器的概念已经在之前的教程中有过广泛的讨论，所以这次我不会深入其细节。下面是<fun>PostProcessor</fun>类的代码，它管理初始化，读写帧缓冲并将一个四边形渲染至屏幕。如果你理解了帧缓冲与反锯齿章节的教程，你应该可以完全它的代码。</p>
+<ul>
+<li><strong>PostProcessor</strong>：<a href="https://learnopengl.com/code_viewer.php?code=in-practice/breakout/post_processor.h">头文件</a>，<a href="https://learnopengl.com/code_viewer.php?code=in-practice/breakout/post_processor">代码</a></li>
+</ul>
+<p>有趣的是<fun>BeginRender</fun>和<fun>EndRender</fun>函数。由于我们必须将整个游戏场景渲染至帧缓冲中，因此我们可以在场景的渲染代码之前和之后分别调用<fun>BeginRender</fun>和<fun>EndRender</fun>。接着，这个类将处理幕后的帧缓冲操作。在游戏的渲染函数中使用<fun>PostProcessor</fun>类如下所示：</p>
+<pre><code class="c++">PostProcessor   *Effects;
+
+void Game::Render()
+{
+    if (this-&gt;State == GAME_ACTIVE)
+    {
+        Effects-&gt;BeginRender();
+            // 绘制背景
+            // 绘制关卡
+            // 绘制挡板
+            // 绘制粒子
+            // 绘制小球
+        Effects-&gt;EndRender();
+        Effects-&gt;Render(glfwGetTime());
+    }
+}
+</code></pre>
+
+<p>无论我们需要什么，我们只需要将需要的<fun>PostProcessor</fun>类中的特效属性设置为true，其效果就可以立即可见。</p>
+<h2 id="shake-it">Shake it</h2>
+<p>作为这些效果的演示，我们将模拟球击中坚固的混凝土块时的视觉冲击。无论在哪里发生碰撞，只要在短时间内实现晃动(shake)效果，便能增强撞击的冲击感。</p>
+<p>我们只想允许晃动效果持续一小段时间。我们可以通过声明一个持有晃动效果持续时间的变量<var>ShakeTime</var>来实现这个功能。无论碰撞何时发生，我们将这个变量重置为一个特定的持续时间:</p>
+<pre><code class="c++">GLfloat ShakeTime = 0.0f;  
+
+void Game::DoCollisions()
+{
+    for (GameObject &amp;box : this-&gt;Levels[this-&gt;Level].Bricks)
+    {
+        if (!box.Destroyed)
+        {
+            Collision collision = CheckCollision(*Ball, box);
+            if (std::get&lt;0&gt;(collision)) // 如果发生了碰撞
+            {
+                // 如果不是实心的砖块则摧毁
+                if (!box.IsSolid)
+                    box.Destroyed = GL_TRUE;
+                else
+                {   // 如果是实心的砖块则激活shake特效
+                    ShakeTime = 0.05f;
+                    Effects-&gt;Shake = true;
+                }
+                [...]
+            }
+        }    
+    }
+    [...]
+}  
+</code></pre>
+
+<p>然后在游戏的<fun>Update</fun>函数中，我们减少<var>ShakeTime</var>变量的值直到其为0.0，并停用shake特效。</p>
+<pre><code class="c++">void Game::Update(GLfloat dt)
+{
+    [...]
+    if (ShakeTime &gt; 0.0f)
+    {
+        ShakeTime -= dt;
+        if (ShakeTime &lt;= 0.0f)
+            Effects-&gt;Shake = false;
+    }
+}  
+</code></pre>
+
+<p>这样，每当我们碰到一个实心砖块时，屏幕会短暂地抖动与模糊，给玩家一些小球与坚固物体碰撞的视觉反馈。</p>
+<video src="https://learnopengl.com/video/in-practice/breakout/postprocessing_shake.mp4" controls="controls"></video>
+
+<p>你可以在<a href="https://learnopengl.com/code_viewer.php?code=in-practice/breakout/game_postprocessing">这里</a>找到更新后的<fun>Game</fun>类。</p>
+<p>在<a href="../08 Powerups/">下一章</a>关于“道具”的教程中我们将带来另外两种的特效的使用。</p>
+
+<div id="disqus_thread"></div>
+<script>
+    (function() {
+        var d = document, s = d.createElement('script');
+        
+        s.src = '//learnopengl-cn.disqus.com/embed.js';
+        
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>请启用JavaScript以浏览<a href="https://disqus.com/?ref_noscript" rel="nofollow">Disqus评论。</a></noscript></div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            
+            <center>Powered by <a href="http://www.mkdocs.org/">MkDocs</a> and <a href="http://bootswatch.com/yeti/">Yeti</a></center>
+        </footer>
+
+        <script src="../../../js/jquery-1.10.2.min.js"></script>
+        <script src="../../../js/bootstrap-3.0.3.min.js"></script>
+        <script src="../../../js/highlight.pack.js"></script>
+        <script>var base_url = '../../..';</script>
+        <script data-main="../../../mkdocs/js/search.js" src="../../../mkdocs/js/require.js"></script>
+        <script src="../../../js/base.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">关闭</span></button>
+                        <h4 class="modal-title" id="exampleModalLabel">搜索</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            请在下面输入你要搜索的文本（仅支持英文）：
+                        </p>
+                        <form role="form">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="搜索..." id="mkdocs-search-query">
+                            </div>
+                        </form>
+                        <div id="mkdocs-search-results"></div>
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

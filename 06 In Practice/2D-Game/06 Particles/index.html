@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        <link rel="canonical" href="https://learnopengl-cn.github.io/06 In Practice/2D-Game/06 Particles/">
+        <link rel="shortcut icon" href="../../../img/favicon.ico">
+
+	<title>粒子 - LearnOpenGL CN</title>
+
+        <link href="../../../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../../../css/font-awesome-4.0.3.css" rel="stylesheet">
+        <link rel="stylesheet" href="../../../css/highlight.css">
+        <link href="../../../css/base.css" rel="stylesheet">
+        <link href="../../../css/style.css" rel="stylesheet">
+        <link href="../../../css/admonition_fix.css" rel="stylesheet">
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+        <script>
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+          ga('create', 'UA-80323542-1', 'auto');
+          ga('send', 'pageview');
+        </script>
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <!-- Main title -->
+            <a class="navbar-brand" href="../../..">LearnOpenGL CN</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            <!-- Main navigation -->
+            <ul class="nav navbar-nav">
+            
+            
+                <li >
+                    <a href="../../..">主页</a>
+                </li>
+            
+            
+            
+                <li class="dropdown active">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">目录 <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        
+<li >
+    <a href="../../../intro/">简介</a>
+</li>
+
+                    
+                        
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">入门</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../../01 Getting started/01 OpenGL/">OpenGL</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../01 Getting started/02 Creating a window/">创建窗口</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../01 Getting started/03 Hello Window/">你好，窗口</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../01 Getting started/04 Hello Triangle/">你好，三角形</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../01 Getting started/05 Shaders/">着色器</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../01 Getting started/06 Textures/">纹理</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../01 Getting started/07 Transformations/">变换</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../01 Getting started/08 Coordinate Systems/">坐标系统</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../01 Getting started/09 Camera/">摄像机</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../01 Getting started/10 Review/">复习</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                    
+                        
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">光照</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../../02 Lighting/01 Colors/">颜色</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../02 Lighting/02 Basic Lighting/">基础光照</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../02 Lighting/03 Materials/">材质</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../02 Lighting/04 Lighting maps/">光照贴图</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../02 Lighting/05 Light casters/">投光物</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../02 Lighting/06 Multiple lights/">多光源</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../02 Lighting/07 Review/">复习</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                    
+                        
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">模型加载</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../../03 Model Loading/01 Assimp/">Assimp</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../03 Model Loading/02 Mesh/">网格</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../03 Model Loading/03 Model/">模型</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                    
+                        
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">高级OpenGL</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../../04 Advanced OpenGL/01 Depth testing/">深度测试</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../04 Advanced OpenGL/02 Stencil testing/">模板测试</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../04 Advanced OpenGL/03 Blending/">混合</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../04 Advanced OpenGL/04 Face culling/">面剔除</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../04 Advanced OpenGL/05 Framebuffers/">帧缓冲</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../04 Advanced OpenGL/06 Cubemaps/">立方体贴图</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../04 Advanced OpenGL/07 Advanced Data/">高级数据</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../04 Advanced OpenGL/08 Advanced GLSL/">高级GLSL</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../04 Advanced OpenGL/09 Geometry Shader/">几何着色器</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../04 Advanced OpenGL/10 Instancing/">实例化</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../04 Advanced OpenGL/11 Anti Aliasing/">抗锯齿</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                    
+                        
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">高级光照</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../../05 Advanced Lighting/01 Advanced Lighting/">高级光照</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../05 Advanced Lighting/02 Gamma Correction/">Gamma校正</a>
+</li>
+
+        
+            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">阴影</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../../05 Advanced Lighting/03 Shadows/01 Shadow Mapping/">阴影映射</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../05 Advanced Lighting/03 Shadows/02 Point Shadows/">点阴影</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../05 Advanced Lighting/03 Shadows/03 CSM/">CSM</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+        
+            
+<li >
+    <a href="../../../05 Advanced Lighting/04 Normal Mapping/">法线贴图</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../05 Advanced Lighting/05 Parallax Mapping/">视差贴图</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../05 Advanced Lighting/06 HDR/">HDR</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../05 Advanced Lighting/07 Bloom/">泛光</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../05 Advanced Lighting/08 Deferred Shading/">延迟着色法</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../05 Advanced Lighting/09 SSAO/">SSAO</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                    
+                        
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">PBR</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../../07 PBR/01 Theory/">理论</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../07 PBR/02 Lighting/">光照</a>
+</li>
+
+        
+            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">IBL</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../../07 PBR/03 IBL/01 Diffuse irradiance/">漫反射辐照</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../07 PBR/03 IBL/02 Specular IBL/">镜面IBL</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+        
+    </ul>
+  </li>
+
+                    
+                        
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">实战</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../01 Debugging/">调试</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../02 Text Rendering/">文本渲染</a>
+</li>
+
+        
+            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">2D游戏</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../01 Breakout/">Breakout</a>
+</li>
+
+        
+            
+<li >
+    <a href="../02 Setting up/">准备工作</a>
+</li>
+
+        
+            
+<li >
+    <a href="../03 Rendering Sprites/">渲染精灵</a>
+</li>
+
+        
+            
+<li >
+    <a href="../04 Levels/">关卡</a>
+</li>
+
+        
+            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">碰撞</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../05 Collisions/01 Ball/">球</a>
+</li>
+
+        
+            
+<li >
+    <a href="../05 Collisions/02 Collision detection/">碰撞检测</a>
+</li>
+
+        
+            
+<li >
+    <a href="../05 Collisions/03 Collision resolution/">碰撞处理</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+        
+            
+<li class="active">
+    <a href="./">粒子</a>
+</li>
+
+        
+            
+<li >
+    <a href="../07 Postprocessing/">后期处理</a>
+</li>
+
+        
+            
+<li >
+    <a href="../08 Powerups/">道具</a>
+</li>
+
+        
+            
+<li >
+    <a href="../09 Audio/">音效</a>
+</li>
+
+        
+            
+<li >
+    <a href="../10 Render Text/">渲染文本</a>
+</li>
+
+        
+            
+<li >
+    <a href="../11 Final thoughts/">结语</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+        
+    </ul>
+  </li>
+
+                    
+                        
+<li >
+    <a href="../../../legacy/">历史存档</a>
+</li>
+
+                    
+                    </ul>
+                </li>
+            
+            
+            
+                <li >
+                    <a href="../../../code_repo/">代码仓库</a>
+                </li>
+            
+            
+            </ul>
+
+            <!-- Search, Navigation and Repo links -->
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                        <i class="fa fa-search"></i> 搜索
+                    </a>
+                </li>
+                <li >
+                    <a rel="next" href="../05 Collisions/03 Collision resolution/">
+                        <i class="fa fa-arrow-left"></i> 上一节
+                    </a>
+                </li>
+                <li >
+                    <a rel="prev" href="../07 Postprocessing/">
+                        下一节 <i class="fa fa-arrow-right"></i>
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="https://github.com/LearnOpenGL-CN/LearnOpenGL-CN">
+                        
+                            <i class="fa fa-github"></i>
+                        
+                        GitHub
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="https://www.paypal.me/learnopengl/">
+                            <img class="paypal" src="/img/paypal_logo.png" alt="">
+                        支持原作者
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+        <div class="container">
+            <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#_1">粒子</a></li>
+        
+    
+    </ul>
+</div></div>
+            <div class="col-md-9" role="main">
+
+<h1 id="_1">粒子</h1>
+<table>
+<thead>
+<tr>
+<th>原文</th>
+<th><a href="http://learnopengl.com/#!In-Practice/2D-Game/Particles">Particles</a></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>作者</td>
+<td>JoeydeVries</td>
+</tr>
+<tr>
+<td>翻译</td>
+<td><a href="https://github.com/Itanq">ZMANT</a></td>
+</tr>
+<tr>
+<td>校对</td>
+<td>暂无</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>本节暂未进行完全的重写，错误可能会很多。如果可能的话，请对照原文进行阅读。如果有报告本节的错误，将会延迟至重写之后进行处理。</p>
+</div>
+<p>一个微粒,从OpenGL的角度看就是一个总是面向摄像机方向且(通常)包含一个大部分区域是透明的纹理的小四边形。一个微粒本身主要就是一个精灵(sprite),前面我们已经早就使用过了，但是当你把成千上万个这些微粒放在一起的时候,就可以创造出令人疯狂的效果.</p>
+<p>当处理这些微粒的时候，通常是由一个叫做粒子发射器或粒子生成器的东西完成的，从这个地方,持续不断的产生新的微粒并且旧的微粒随着时间逐渐消亡。如果这个粒子发射器产生一个带着类似烟雾纹理的微粒的时候，它的颜色亮度同时又随着与发射器距离的增加而变暗，那么就会产生出灼热的火焰的效果:</p>
+<p><img alt="fire" src="../../../img/06/Breakout/06/particles_example.jpg" /></p>
+<p>一个单一的微粒通常有一个生命值变量，并且从它产生开始就一直在缓慢的减少。一旦它的生命值少于某个极限值（通常是0）我们就会杀掉这个粒子,这样下一个粒子产生时就可以让它来替换那个被杀掉的粒子。一个粒子发射器控制它产生的所有粒子并且根据它们的属性来改变它们的行为。一个粒子通常有下面的属性：</p>
+<pre><code class="c++">struct Particle {
+    glm::vec2 Position, Velocity;
+    glm::vec4 Color;
+    GLfloat Life;
+
+    Particle() 
+      : Position(0.0f), Velocity(0.0f), Color(1.0f), Life(0.0f) { }
+};
+</code></pre>
+
+<p>看上面那个火焰的例子，那个粒子发射器可能在靠近发射器的地方产生每一个粒子，并且有一个向上的速度，这样每个粒子都是朝着正$y$轴方向移动。那似乎有3个不同区域，只是可能相比其他的区域，给了某个区域内的粒子更快的速度。我们也可以看到，$y$轴方向越高的粒子，它们的黄色或者说亮度就越低。一旦某个粒子到达某个高度的时候，它的生命值就会耗尽然后被杀掉；绝不可能直冲云霄。</p>
+<p>你可以想象到用这样一个系统，我们就可以创造一些有趣的效果比如火焰，青烟，烟雾，魔法效果，炮火残渣等等。在Breakout游戏里，我们将会使用下面那个小球来创建一个简单的粒子生成器来制作一些有趣的效果，结果看起来就像这样：</p>
+<video src="../../../img/06/Breakout/06/particles.mp4" controls="controls"></video>
+
+<p>上面那个粒子生成器在这个球的位置产生无数的粒子，根据球移动的速度给了粒子相应的速度，并且根据它们的生命值来改变他们的颜色亮度。</p>
+<p>为了渲染这些粒子，我们将会用到有不同实现的着色器：</p>
+<pre><code class="c++">#version 330 core
+layout (location = 0) in vec4 vertex; // &lt;vec2 position, vec2 texCoords&gt;
+
+out vec2 TexCoords;
+out vec4 ParticleColor;
+
+uniform mat4 projection;
+uniform vec2 offset;
+uniform vec4 color;
+
+void main()
+{
+    float scale = 10.0f;
+    TexCoords = vertex.zw;
+    ParticleColor = color;
+    gl_Position = projection * vec4((vertex.xy * scale) + offset, 0.0, 1.0);
+}
+</code></pre>
+
+<p>以及像素着色器:</p>
+<pre><code class="c++">#version 330 core
+in vec2 TexCoords;
+in vec4 ParticleColor;
+out vec4 color;
+
+uniform sampler2D sprite;
+
+void main()
+{
+    color = (texture(sprite, TexCoords) * ParticleColor);
+}
+</code></pre>
+
+<p>我们获取每个粒子的位置和纹理属性并且设置两个uniform变量：$offset$和$color$来改变每个粒子的输出状态。注意到，在顶点着色器里，我们把这个四边形的粒子缩小了10倍；你也可以把这个缩放变量设置成uniform类型的变量从而控制一些个别的粒子。</p>
+<p>首先,我们需要一个粒子数组，然后用Particle结构体的默认构造函数来实例化。</p>
+<pre><code class="c++">GLuint nr_particles = 500;
+std::vector&lt;Particle&gt; particles;
+
+for (GLuint i = 0; i &lt; nr_particles; ++i)
+    particles.push_back(Particle());
+</code></pre>
+
+<p>然后在每一帧里面，我们都会用一个起始变量来产生一些新的粒子并且对每个粒子（还活着的）更新它们的值。</p>
+<pre><code class="c++">GLuint nr_new_particles = 2;
+// Add new particles
+for (GLuint i = 0; i &lt; nr_new_particles; ++i)
+{
+    int unusedParticle = FirstUnusedParticle();
+    RespawnParticle(particles[unusedParticle], object, offset);
+}
+// Update all particles
+for (GLuint i = 0; i &lt; nr_particles; ++i)
+{
+    Particle &amp;p = particles[i];
+    p.Life -= dt; // reduce life
+    if (p.Life &gt; 0.0f)
+    {   // particle is alive, thus update
+        p.Position -= p.Velocity * dt;
+        p.Color.a -= dt * 2.5;
+    }
+}
+</code></pre>
+
+<p>第一个循环看起来可能有点吓人。因为这些粒子会随着时间消亡，我们就想在每一帧里面产生<code>nr_new_particles</code>个新粒子。但是一开始我们就知道了总的粒子数量是<code>nr_partiles</code>，所以我们不能简单的往粒子数组里面添加新的粒子。否则的话我们很快就会得到一个装满成千上万个粒子的数组，考虑到这个粒子数组里面其实只有一小部分粒子是存活的，这样就太浪费效率了。</p>
+<p>我们要做的就是找到第一个消亡的粒子然后用一个新产生的粒子来更新它。函数<code>FirstUnuseParticle</code>就是试图找到第一个消亡的粒子并且返回它的索引值给调用者。</p>
+<pre><code class="c++">GLuint lastUsedParticle = 0;
+GLuint FirstUnusedParticle()
+{
+    // Search from last used particle, this will usually return almost instantly
+    for (GLuint i = lastUsedParticle; i &lt; nr_particles; ++i){
+        if (particles[i].Life &lt;= 0.0f){
+            lastUsedParticle = i;
+            return i;
+        }
+    }
+    // Otherwise, do a linear search
+    for (GLuint i = 0; i &lt; lastUsedParticle; ++i){
+        if (particles[i].Life &lt;= 0.0f){
+            lastUsedParticle = i;
+            return i;
+        }
+    }
+    // Override first particle if all others are alive
+    lastUsedParticle = 0;
+    return 0;
+}
+</code></pre>
+
+<p>这个函数存储了它找到的上一个消亡的粒子的索引值，由于下一个消亡的粒子索引值总是在上一个消亡的粒子索引值的右边，所以我们首先从它存储的上一个消亡的粒子索引位置开始查找，如果我们没有任何消亡的粒子，我们就简单的做一个线性查找，如果没有粒子消亡就返回索引值<code>0</code>，结果就是第一个粒子被覆盖，需要注意的是，如果是最后一种情况，就意味着你粒子的生命值太长了，在每一帧里面需要产生更少的粒子，或者你只是没有保留足够的粒子，</p>
+<p>之后，一旦粒子数组中第一个消亡的粒子被发现的时候，我们就通过调用<code>RespawnParticle</code>函数更新它的值，函数接受一个<code>Particle</code>对象，一个<code>GameObject</code>对象和一个<code>offset</code>向量:</p>
+<pre><code class="c++">void RespawnParticle(Particle &amp;particle, GameObject &amp;object, glm::vec2 offset)
+{
+    GLfloat random = ((rand() % 100) - 50) / 10.0f;
+    GLfloat rColor = 0.5 + ((rand() % 100) / 100.0f);
+    particle.Position = object.Position + random + offset;
+    particle.Color = glm::vec4(rColor, rColor, rColor, 1.0f);
+    particle.Life = 1.0f;
+    particle.Velocity = object.Velocity * 0.1f;
+}
+</code></pre>
+
+<p>这个函数简单的重置这个粒子的生命值为1.0f，随机的给一个大于<code>0.5</code>的颜色值(经过颜色向量)并且(在物体周围)分配一个位置和速度基于游戏里的物体。</p>
+<p>对于更新函数里的第二个循环遍历了所有粒子，并且对于每个粒子的生命值都减去一个时间差；这样每个粒子的生命值就精确到了秒。然后再检查这个粒子是否是还活着的，若是,则更新它的位置和颜色属性。这里我们缓慢的减少粒子颜色值的<code>alpha</code>值，以至于它看起来就是随着时间而缓慢的消亡。</p>
+<p>最后保留下来就是实际需要渲染的粒子：</p>
+<pre><code class="c++">glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+particleShader.Use();
+for (Particle particle : particles)
+{
+    if (particle.Life &gt; 0.0f)
+    {
+        particleShader.SetVector2f(&quot;offset&quot;, particle.Position);
+        particleShader.SetVector4f(&quot;color&quot;, particle.Color);
+        particleTexture.Bind();
+        glBindVertexArray(particleVAO);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+        glBindVertexArray(0);
+    } 
+} 
+glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+</code></pre>
+
+<p>在这，对于每个粒子，我们一一设置他们的<code>uniform</code>变量<code>offse</code>和<code>color</code>，绑定纹理，然后渲染<code>2D</code>四边形的粒子。有趣的是我们在这看到了两次调用函数<code>glBlendFunc</code>。当要渲染这些粒子的时候，我们使用<code>GL_ONE</code>替换默认的目的因子模式<code>GL_ONE_MINUS_SRC_ALPHA</code>，这样，这些粒子叠加在一起的时候就会产生一些平滑的发热效果，就像在这个教程前面那样使用混合模式来渲染出火焰的效果也是可以的，这样在有大多数粒子的中心就会产生更加灼热的效果。</p>
+<p>因为我们(就像这个系列教程的其他部分一样)喜欢让事情变得有条理，所以我们就创建了另一个类<code>ParticleGenerator</code>来封装我们刚刚谈到的所有功能。你可以在下面的链接里找到源码：</p>
+<blockquote>
+<ul>
+<li><a href="http://www.learnopengl.com/code_viewer.php?code=in-practice/breakout/particle_generator.h">header</a>，<a href="http://www.learnopengl.com/code_viewer.php?code=in-practice/breakout/particle_generator">code</a></li>
+</ul>
+</blockquote>
+<p>然后在游戏代码里,我们创建这样一个粒子发射器并且用<a href="../../../img/06/Breakout/06/particle.png">这个</a>纹理初始化。</p>
+<pre><code class="c++">ParticleGenerator   *Particles; 
+
+void Game::Init()
+{
+    [...]
+    ResourceManager::LoadShader(&quot;shaders/particle.vs&quot;, &quot;shaders/particle.frag&quot;, nullptr, &quot;particle&quot;);
+    [...]
+    ResourceManager::LoadTexture(&quot;textures/particle.png&quot;, GL_TRUE, &quot;particle&quot;); 
+    [...]
+    Particles = new ParticleGenerator(
+        ResourceManager::GetShader(&quot;particle&quot;), 
+        ResourceManager::GetTexture(&quot;particle&quot;), 
+        500
+    );
+}
+</code></pre>
+
+<p>然后我们在<code>Game</code>类的<code>Updata</code>函数里为粒子生成器添加一条更新语句：</p>
+<pre><code class="c++">void Game::Update(GLfloat dt)
+{
+    [...]
+    // Update particles
+    Particles-&gt;Update(dt, *Ball, 2, glm::vec2(Ball-&gt;Radius / 2));
+    [...]
+}
+</code></pre>
+
+<p>每个粒子都将使用球的游戏对象属性对象，每帧产生两个粒子并且他们都是偏向球得中心，最后是渲染粒子：</p>
+<pre><code class="c++">void Game::Render()
+{
+    if (this-&gt;State == GAME_ACTIVE)
+    {
+        [...]
+        // Draw player
+        Player-&gt;Draw(*Renderer);
+        // Draw particles   
+        Particles-&gt;Draw();
+        // Draw ball
+        Ball-&gt;Draw(*Renderer);
+    }
+}
+</code></pre>
+
+<p>注意到，我们是在渲染球体之前且在渲染其他物体之后渲染粒子的，这样，粒子就会在所有其他物体面前，但报纸在球体之后，你可以在<a href="http://learnopengl.com/code_viewer.php?code=in-practice/breakout/game_particles">这里</a>找到更新的<code>game</code>类的源码。</p>
+<p>如果你现在编译并运行你的程序，你可能会看到在球体之后有一条小尾巴。就像这个教程开始的那样，给了这个游戏更加现代化的面貌。这个系统还可以很容易的扩展到更高级效果的主体上，就用这个粒子生成器自由的去实验吧，看看你是否可以创建出你自己的特效。</p>
+
+<div id="disqus_thread"></div>
+<script>
+    (function() {
+        var d = document, s = d.createElement('script');
+        
+        s.src = '//learnopengl-cn.disqus.com/embed.js';
+        
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>请启用JavaScript以浏览<a href="https://disqus.com/?ref_noscript" rel="nofollow">Disqus评论。</a></noscript></div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            
+            <center>Powered by <a href="http://www.mkdocs.org/">MkDocs</a> and <a href="http://bootswatch.com/yeti/">Yeti</a></center>
+        </footer>
+
+        <script src="../../../js/jquery-1.10.2.min.js"></script>
+        <script src="../../../js/bootstrap-3.0.3.min.js"></script>
+        <script src="../../../js/highlight.pack.js"></script>
+        <script>var base_url = '../../..';</script>
+        <script data-main="../../../mkdocs/js/search.js" src="../../../mkdocs/js/require.js"></script>
+        <script src="../../../js/base.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">关闭</span></button>
+                        <h4 class="modal-title" id="exampleModalLabel">搜索</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            请在下面输入你要搜索的文本（仅支持英文）：
+                        </p>
+                        <form role="form">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="搜索..." id="mkdocs-search-query">
+                            </div>
+                        </form>
+                        <div id="mkdocs-search-results"></div>
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

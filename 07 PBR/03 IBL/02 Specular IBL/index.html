@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        <link rel="canonical" href="https://learnopengl-cn.github.io/07 PBR/03 IBL/02 Specular IBL/">
+        <link rel="shortcut icon" href="../../../img/favicon.ico">
+
+	<title>镜面IBL - LearnOpenGL CN</title>
+
+        <link href="../../../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../../../css/font-awesome-4.0.3.css" rel="stylesheet">
+        <link rel="stylesheet" href="../../../css/highlight.css">
+        <link href="../../../css/base.css" rel="stylesheet">
+        <link href="../../../css/style.css" rel="stylesheet">
+        <link href="../../../css/admonition_fix.css" rel="stylesheet">
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+        <script>
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+          ga('create', 'UA-80323542-1', 'auto');
+          ga('send', 'pageview');
+        </script>
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <!-- Main title -->
+            <a class="navbar-brand" href="../../..">LearnOpenGL CN</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            <!-- Main navigation -->
+            <ul class="nav navbar-nav">
+            
+            
+                <li >
+                    <a href="../../..">主页</a>
+                </li>
+            
+            
+            
+                <li class="dropdown active">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">目录 <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        
+<li >
+    <a href="../../../intro/">简介</a>
+</li>
+
+                    
+                        
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">入门</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../../01 Getting started/01 OpenGL/">OpenGL</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../01 Getting started/02 Creating a window/">创建窗口</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../01 Getting started/03 Hello Window/">你好，窗口</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../01 Getting started/04 Hello Triangle/">你好，三角形</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../01 Getting started/05 Shaders/">着色器</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../01 Getting started/06 Textures/">纹理</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../01 Getting started/07 Transformations/">变换</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../01 Getting started/08 Coordinate Systems/">坐标系统</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../01 Getting started/09 Camera/">摄像机</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../01 Getting started/10 Review/">复习</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                    
+                        
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">光照</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../../02 Lighting/01 Colors/">颜色</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../02 Lighting/02 Basic Lighting/">基础光照</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../02 Lighting/03 Materials/">材质</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../02 Lighting/04 Lighting maps/">光照贴图</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../02 Lighting/05 Light casters/">投光物</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../02 Lighting/06 Multiple lights/">多光源</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../02 Lighting/07 Review/">复习</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                    
+                        
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">模型加载</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../../03 Model Loading/01 Assimp/">Assimp</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../03 Model Loading/02 Mesh/">网格</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../03 Model Loading/03 Model/">模型</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                    
+                        
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">高级OpenGL</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../../04 Advanced OpenGL/01 Depth testing/">深度测试</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../04 Advanced OpenGL/02 Stencil testing/">模板测试</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../04 Advanced OpenGL/03 Blending/">混合</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../04 Advanced OpenGL/04 Face culling/">面剔除</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../04 Advanced OpenGL/05 Framebuffers/">帧缓冲</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../04 Advanced OpenGL/06 Cubemaps/">立方体贴图</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../04 Advanced OpenGL/07 Advanced Data/">高级数据</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../04 Advanced OpenGL/08 Advanced GLSL/">高级GLSL</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../04 Advanced OpenGL/09 Geometry Shader/">几何着色器</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../04 Advanced OpenGL/10 Instancing/">实例化</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../04 Advanced OpenGL/11 Anti Aliasing/">抗锯齿</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                    
+                        
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">高级光照</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../../05 Advanced Lighting/01 Advanced Lighting/">高级光照</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../05 Advanced Lighting/02 Gamma Correction/">Gamma校正</a>
+</li>
+
+        
+            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">阴影</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../../05 Advanced Lighting/03 Shadows/01 Shadow Mapping/">阴影映射</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../05 Advanced Lighting/03 Shadows/02 Point Shadows/">点阴影</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../05 Advanced Lighting/03 Shadows/03 CSM/">CSM</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+        
+            
+<li >
+    <a href="../../../05 Advanced Lighting/04 Normal Mapping/">法线贴图</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../05 Advanced Lighting/05 Parallax Mapping/">视差贴图</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../05 Advanced Lighting/06 HDR/">HDR</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../05 Advanced Lighting/07 Bloom/">泛光</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../05 Advanced Lighting/08 Deferred Shading/">延迟着色法</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../05 Advanced Lighting/09 SSAO/">SSAO</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                    
+                        
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">PBR</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../01 Theory/">理论</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../02 Lighting/">光照</a>
+</li>
+
+        
+            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">IBL</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../01 Diffuse irradiance/">漫反射辐照</a>
+</li>
+
+        
+            
+<li class="active">
+    <a href="./">镜面IBL</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+        
+    </ul>
+  </li>
+
+                    
+                        
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">实战</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../../06 In Practice/01 Debugging/">调试</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../06 In Practice/02 Text Rendering/">文本渲染</a>
+</li>
+
+        
+            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">2D游戏</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../../06 In Practice/2D-Game/01 Breakout/">Breakout</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../06 In Practice/2D-Game/02 Setting up/">准备工作</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../06 In Practice/2D-Game/03 Rendering Sprites/">渲染精灵</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../06 In Practice/2D-Game/04 Levels/">关卡</a>
+</li>
+
+        
+            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">碰撞</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../../06 In Practice/2D-Game/05 Collisions/01 Ball/">球</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../06 In Practice/2D-Game/05 Collisions/02 Collision detection/">碰撞检测</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../06 In Practice/2D-Game/05 Collisions/03 Collision resolution/">碰撞处理</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+        
+            
+<li >
+    <a href="../../../06 In Practice/2D-Game/06 Particles/">粒子</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../06 In Practice/2D-Game/07 Postprocessing/">后期处理</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../06 In Practice/2D-Game/08 Powerups/">道具</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../06 In Practice/2D-Game/09 Audio/">音效</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../06 In Practice/2D-Game/10 Render Text/">渲染文本</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../06 In Practice/2D-Game/11 Final thoughts/">结语</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+        
+    </ul>
+  </li>
+
+                    
+                        
+<li >
+    <a href="../../../legacy/">历史存档</a>
+</li>
+
+                    
+                    </ul>
+                </li>
+            
+            
+            
+                <li >
+                    <a href="../../../code_repo/">代码仓库</a>
+                </li>
+            
+            
+            </ul>
+
+            <!-- Search, Navigation and Repo links -->
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                        <i class="fa fa-search"></i> 搜索
+                    </a>
+                </li>
+                <li >
+                    <a rel="next" href="../01 Diffuse irradiance/">
+                        <i class="fa fa-arrow-left"></i> 上一节
+                    </a>
+                </li>
+                <li >
+                    <a rel="prev" href="../../../06 In Practice/01 Debugging/">
+                        下一节 <i class="fa fa-arrow-right"></i>
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="https://github.com/LearnOpenGL-CN/LearnOpenGL-CN">
+                        
+                            <i class="fa fa-github"></i>
+                        
+                        GitHub
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="https://www.paypal.me/learnopengl/">
+                            <img class="paypal" src="/img/paypal_logo.png" alt="">
+                        支持原作者
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+        <div class="container">
+            <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#ibl">镜面反射 IBL</a></li>
+        
+            <li><a href="#hdr">预滤波HDR环境贴图</a></li>
+        
+            <li><a href="#_3">预过滤卷积的伪像</a></li>
+        
+            <li><a href="#brdf">预计算 BRDF</a></li>
+        
+            <li><a href="#ibl_1">完成 IBL 反射</a></li>
+        
+            <li><a href="#_7">进阶阅读</a></li>
+        
+    
+    </ul>
+</div></div>
+            <div class="col-md-9" role="main">
+
+<h1 id="ibl">镜面反射 IBL</h1>
+<table>
+<thead>
+<tr>
+<th>原文</th>
+<th><a href="https://learnopengl.com/PBR/IBL/Specular-IBL">Specular IBL</a></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>作者</td>
+<td>JoeyDeVries</td>
+</tr>
+<tr>
+<td>翻译</td>
+<td><a href="https://github.com/flyingSnow-hu">flyingSnow</a></td>
+</tr>
+<tr>
+<td>校对</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>在<a href="https://learnopengl-cn.github.io/07%20PBR/03%20IBL/01%20Diffuse%20irradiance/">上一节教程</a>中，我们预计算了辐照度图作为光照的间接漫反射部分，以将 PBR 与基于图像的照明相结合。在本教程中，我们将重点关注反射方程的镜面部分：</p>
+<p>
+<script type="math/tex; mode=display">
+L_o(p,\omega_o) = \int\limits_{\Omega} 
+        (k_d\frac{c}{\pi} + k_s\frac{DFG}{4(\omega_o \cdot n)(\omega_i \cdot n)})
+        L_i(p,\omega_i) n \cdot \omega_i  d\omega_i
+</script>
+</p>
+<p>你会注意到 Cook-Torrance 镜面部分（乘以<script type="math/tex">k_s</script>）在整个积分上不是常数，不仅受入射光方向影响，<strong>还</strong>受视角影响。如果试图解算所有入射光方向加所有可能的视角方向的积分，二者组合数会极其庞大，实时计算太昂贵。Epic Games 提出了一个解决方案，他们预计算镜面部分的卷积，为实时计算作了一些妥协，这种方案被称为<def>分割求和近似法</def>（split sum approximation）。
+分割求和近似将方程的镜面部分分割成两个独立的部分，我们可以单独求卷积，然后在 PBR 着色器中求和，以用于间接镜面反射部分 IBL。分割求和近似法类似于我们之前求辐照图预卷积的方法，需要 HDR 环境贴图作为其卷积输入。为了理解，我们回顾一下反射方程，但这次只关注镜面反射部分（在<a href="../](https://learnopengl-cn.github.io/07%20PBR/03%20IBL/01%20Diffuse%20irradiance/)">上一节教程</a>中已经剥离了漫反射部分）：</p>
+<p>
+<script type="math/tex; mode=display">
+L_o(p,\omega_o) = 
+        \int\limits_{\Omega} (k_s\frac{DFG}{4(\omega_o \cdot n)(\omega_i \cdot n)}
+            L_i(p,\omega_i) n \cdot \omega_i  d\omega_i
+            =
+        \int\limits_{\Omega} f_r(p, \omega_i, \omega_o) L_i(p,\omega_i) n \cdot \omega_i  d\omega_i
+</script>
+</p>
+<p>由于与辐照度卷积相同的（性能）原因，我们无法以合理的性能实时求解积分的镜面反射部分。因此，我们最好预计算这个积分，以得到像镜面 IBL 贴图这样的东西，用片段的法线对这张图采样并计算。但是，有一个地方有点棘手：我们能够预计算辐照度图，是因为其积分仅依赖于<script type="math/tex">\omega_i</script>，并且可以将漫反射反射率常数项移出积分，但这一次，积分不仅仅取决于<script type="math/tex">\omega_i</script>，从 BRDF 可以看出：</p>
+<p>
+<script type="math/tex; mode=display">
+f_r(p, w_i, w_o) = \frac{DFG}{4(\omega_o \cdot n)(\omega_i \cdot n)}
+</script>
+</p>
+<p>这次积分还依赖<script type="math/tex">\omega_o</script>，我们无法用两个方向向量采样预计算的立方体图。如前一个教程中所述，位置<script type="math/tex">p</script>与此处无关。在实时状态下，对每种可能的<script type="math/tex">\omega_i</script>和<script type="math/tex">\omega_o</script>的组合预计算该积分是不可行的。
+Epic Games 的分割求和近似法将预计算分成两个单独的部分求解，再将两部分组合起来得到后文给出的预计算结果。分割求和近似法将镜面反射积分拆成两个独立的积分：</p>
+<p>
+<script type="math/tex; mode=display">
+L_o(p,\omega_o) = 
+        \int\limits_{\Omega} L_i(p,\omega_i) d\omega_i
+        *
+        \int\limits_{\Omega} f_r(p, \omega_i, \omega_o) n \cdot \omega_i d\omega_i
+</script>
+</p>
+<p>卷积的第一部分被称为<def>预滤波环境贴图</def>，它类似于辐照度图，是预先计算的环境卷积贴图，但这次考虑了粗糙度。因为随着粗糙度的增加，参与环境贴图卷积的采样向量会更分散，导致反射更模糊，所以对于卷积的每个粗糙度级别，我们将按顺序把模糊后的结果存储在预滤波贴图的 mipmap 中。例如，预过滤的环境贴图在其 5 个 mipmap 级别中存储 5 个不同粗糙度值的预卷积结果，如下图所示：</p>
+<p><img alt="" src="../../../img/07/03/02/ibl_prefilter_map.png" /></p>
+<p>我们使用 Cook-Torrance BRDF 的正态分布函数(NDF)生成采样向量及其散射强度，该函数将法线和视角方向作为输入。由于我们在卷积环境贴图时事先不知道视角方向，因此 Epic Games 假设视角方向——也就是镜面反射方向——总是等于输出采样方向<script type="math/tex">\omega_o</script>，以作进一步近似。翻译成代码如下：</p>
+<pre><code class="c++">vec3 N = normalize(w_o);
+vec3 R = N;
+vec3 V = R;
+</code></pre>
+
+<p>这样，预过滤的环境卷积就不需要关心视角方向了。这意味着当从如下图的角度观察表面的镜面反射时，得到的掠角镜面反射效果不是很好（图片来自文章《Moving Frostbite to PBR》）。然而，通常可以认为这是一个体面的妥协：</p>
+<p><img alt="" src="../../../img/07/03/02/ibl_grazing_angles.png" /></p>
+<p>等式的第二部分等于镜面反射积分的 BRDF 部分。如果我们假设每个方向的入射辐射度都是白色的（因此<script type="math/tex">L(p, x) = 1.0</script> ），就可以在给定粗糙度、光线 <script type="math/tex">\omega_i</script> 法线 <script type="math/tex">n</script> 夹角 <script type="math/tex">n \cdot \omega_i</script> 的情况下，预计算 BRDF 的响应结果。Epic Games 将预计算好的 BRDF 对每个粗糙度和入射角的组合的响应结果存储在一张 2D 查找纹理(LUT)上，称为<def>BRDF积分贴图</def>。2D 查找纹理存储是菲涅耳响应的系数（R 通道）和偏差值（G 通道），它为我们提供了分割版镜面反射积分的第二个部分：</p>
+<p><img alt="" src="../../../img/07/03/02/ibl_brdf_lut.png" /></p>
+<p>生成查找纹理的时候，我们以 BRDF 的输入<script type="math/tex">n⋅\omega_i</script>（范围在 0.0 和 1.0 之间）作为横坐标，以粗糙度作为纵坐标。有了此 BRDF 积分贴图和预过滤的环境贴图，我们就可以将两者结合起来，以获得镜面反射积分的结果：</p>
+<pre><code class="c++">float lod             = getMipLevelFromRoughness(roughness);
+vec3 prefilteredColor = textureCubeLod(PrefilteredEnvMap, refVec, lod);
+vec2 envBRDF          = texture2D(BRDFIntegrationMap, vec2(NdotV, roughness)).xy;
+vec3 indirectSpecular = prefilteredColor * (F * envBRDF.x + envBRDF.y) 
+</code></pre>
+
+<p>至此，你应该对 Epic Games 的分割求和近似法的原理，以及它如何近似求解反射方程的间接镜面反射部分有了一些基本印象。让我们现在尝试一下自己构建预卷积部分。</p>
+<h2 id="hdr">预滤波HDR环境贴图</h2>
+<p>预滤波环境贴图的方法与我们对辐射度贴图求卷积的方法非常相似。对于卷积的每个粗糙度级别，我们将按顺序把模糊后的结果存储在预滤波贴图的 mipmap 中。
+首先，我们需要生成一个新的立方体贴图来保存预过滤的环境贴图数据。为了确保为其 mip 级别分配足够的内存，一个简单方法是调用 <fun>glGenerateMipmap</fun>。</p>
+<pre><code class="c++">unsigned int prefilterMap;
+glGenTextures(1, &amp;prefilterMap);
+glBindTexture(GL_TEXTURE_CUBE_MAP, prefilterMap);
+for (unsigned int i = 0; i &lt; 6; ++i)
+{
+    glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB16F, 128, 128, 0, GL_RGB, GL_FLOAT, nullptr);
+}
+glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR); 
+glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
+</code></pre>
+
+<p>注意，因为我们计划采样 <var>prefilterMap</var> 的 mipmap，所以需要确保将其缩小过滤器设置为 <var>GL_LINEAR_MIPMAP_LINEAR</var> 以启用三线性过滤。它存储的是预滤波的镜面反射，基础 mip 级别的分辨率是每面 128×128，对于大多数反射来说可能已经足够了，但如果场景里有大量光滑材料（想想汽车上的反射），可能需要提高分辨率。</p>
+<p>在上一节教程中，我们使用球面坐标生成均匀分布在半球 <script type="math/tex">\Omega</script> 上的采样向量，以对环境贴图进行卷积。虽然这个方法非常适用于辐照度，但对于镜面反射效果较差。镜面反射依赖于表面的粗糙度，反射光线可能比较松散，也可能比较紧密，但是一定会围绕着反射向量<script type="math/tex">r</script>，除非表面极度粗糙：</p>
+<p><img alt="" src="../../../img/07/03/02/ibl_specular_lobe.png" /></p>
+<p>所有可能出射的反射光构成的形状称为<def>镜面波瓣</def>。随着粗糙度的增加，镜面波瓣的大小增加；随着入射光方向不同，形状会发生变化。因此，镜面波瓣的形状高度依赖于材质。
+在微表面模型里给定入射光方向，则镜面波瓣指向微平面的半向量的反射方向。考虑到大多数光线最终会反射到一个基于半向量的镜面波瓣内，采样时以类似的方式选取采样向量是有意义的，因为大部分其余的向量都被浪费掉了，这个过程称为<def>重要性采样</def>。</p>
+<h3 id="_1">蒙特卡洛积分和重要性采样</h3>
+<p>为了充分理解重要性采样，我们首先要了解一种数学结构，称为<def>蒙特卡洛积分</def>。蒙特卡洛积分主要是统计和概率理论的组合。蒙特卡洛可以帮助我们离散地解决人口统计问题，而不必考虑<strong>所有</strong>人。</p>
+<p>例如，假设您想要计算一个国家所有公民的平均身高。为了得到结果，你可以测量<strong>每个</strong>公民并对他们的身高求平均，这样会得到你需要的<strong>确切</strong>答案。但是，由于大多数国家人海茫茫，这个方法不现实：需要花费太多精力和时间。</p>
+<p>另一种方法是选择一个小得多的<strong>完全随机</strong>（无偏）的人口子集，测量他们的身高并对结果求平均。可能只测量 100 人，虽然答案并非绝对精确，但会得到一个相对接近真相的答案，这个理论被称作<def>大数定律</def>。我们的想法是，如果从总人口中测量一组较小的真正随机样本的<script type="math/tex">N</script>，结果将相对接近真实答案，并随着样本数 <script type="math/tex">N</script> 的增加而愈加接近。</p>
+<p>蒙特卡罗积分建立在大数定律的基础上，并采用相同的方法来求解积分。不为所有可能的（理论上是无限的）样本值 <script type="math/tex">x</script> 求解积分，而是简单地从总体中随机挑选样本 <script type="math/tex">N</script> 生成采样值并求平均。随着 <script type="math/tex">N</script> 的增加，我们的结果会越来越接近积分的精确结果：</p>
+<p>
+<script type="math/tex; mode=display">
+O =  \int\limits_{a}^{b} f(x) dx 
+      = 
+      \frac{1}{N} \sum_{i=0}^{N-1} \frac{f(x)}{pdf(x)}
+</script>
+</p>
+<p>为了求解这个积分，我们在 <script type="math/tex">a</script> 到 <script type="math/tex">b</script> 上采样 <script type="math/tex">N</script> 个随机样本，将它们加在一起并除以样本总数来取平均。<script type="math/tex">pdf</script> 代表<def>概率密度函数</def> (probability density function)，它的含义是特定样本在整个样本集上发生的概率。例如，人口身高的 pdf 看起来应该像这样：</p>
+<p><img alt="" src="../../../img/07/03/02/ibl_pdf.png" /></p>
+<p>从该图中我们可以看出，如果我们对人口任意随机采样，那么挑选身高为 1.70 的人口样本的可能性更高，而样本身高为 1.50 的概率较低。</p>
+<p>当涉及蒙特卡洛积分时，某些样本可能比其他样本具有更高的生成概率。这就是为什么对于任何一般的蒙特卡洛估计，我们都会根据 pdf 将采样值除以或乘以采样概率。到目前为止，我们每次需要估算积分的时候，生成的样本都是均匀分布的，概率完全相等。到目前为止，我们的估计是<def>无偏</def>的，这意味着随着样本数量的不断增加，我们最终将<def>收敛</def>到积分的<strong>精确</strong>解。</p>
+<p>但是，某些蒙特卡洛估算是<def>有偏</def>的，这意味着生成的样本并不是完全随机的，而是集中于特定的值或方向。这些有偏的蒙特卡洛估算具有<def>更快的收敛速度</def>，它们会以更快的速度收敛到精确解，但是由于其有偏性，可能永远不会收敛到精确解。通常来说，这是一个可以接受的折衷方案，尤其是在计算机图形学中。因为只要结果在视觉上可以接受，解决方案的精确性就不太重要。下文我们将会提到一种（有偏的）重要性采样，其生成的样本偏向特定的方向，在这种情况下，我们会将每个样本乘以或除以相应的 pdf 再求和。</p>
+<p>蒙特卡洛积分在计算机图形学中非常普遍，因为它是一种以高效的离散方式对连续的积分求近似而且非常直观的方法：对任何面积/体积进行采样——例如半球 <script type="math/tex">\Omega</script> ——在该面积/体积内生成数量 <script type="math/tex">N</script> 的随机采样，权衡每个样本对最终结果的贡献并求和。</p>
+<p>蒙特卡洛积分是一个庞大的数学主题，在此不再赘述，但有一点需要提到：生成随机样本的方法也多种多样。默认情况下，每次采样都是我们熟悉的完全（伪）随机，不过利用半随机序列的某些属性，我们可以生成虽然是随机样本但具有一些有趣性质的样本向量。例如，我们可以对一种名为<def>低差异序列</def>的东西进行蒙特卡洛积分，该序列生成的仍然是随机样本，但样本分布更均匀：</p>
+<p><img alt="" src="../../../img/07/03/02/ibl_low_discrepancy_sequence.png" /></p>
+<p>当使用低差异序列生成蒙特卡洛样本向量时，该过程称为<def>拟蒙特卡洛积分</def>。拟蒙特卡洛方法具有更快的<def>收敛速度</def>，这使得它对于性能繁重的应用很有用。</p>
+<p>鉴于我们新获得的有关蒙特卡洛（Monte Carlo）和拟蒙特卡洛（Quasi-Monte Carlo）积分的知识，我们可以使用一个有趣的属性来获得更快的收敛速度，这就是<def>重要性采样</def>。我们在前文已经提到过它，但是在镜面反射的情况下，反射的光向量被限制在镜面波瓣中，波瓣的大小取决于表面的粗糙度。既然镜面波瓣外的任何（拟）随机生成的样本与镜面积分无关，因此将样本集中在镜面波瓣内生成是有意义的，但代价是蒙特卡洛估算会产生偏差。</p>
+<p>本质上来说，这就是重要性采样的核心：只在某些区域生成采样向量，该区域围绕微表面半向量，受粗糙度限制。通过将拟蒙特卡洛采样与低差异序列相结合，并使用重要性采样偏置样本向量的方法，我们可以获得很高的收敛速度。因为我们求解的速度更快，所以要达到足够的近似度，我们所需要的样本更少。因此，这套组合方法甚至可以允许图形应用程序实时求解镜面积分，虽然比预计算结果还是要慢得多。</p>
+<h3 id="_2">低差异序列</h3>
+<p>在本教程中，我们将使用重要性采样来预计算间接反射方程的镜面反射部分，该采样基于拟蒙特卡洛方法给出了随机的低差异序列。我们将使用的序列被称为 <def>Hammersley 序列</def>，<a href="http://holger.dammertz.org/stuff/notes_HammersleyOnHemisphere.html">Holger Dammertz</a> 曾仔细描述过它。Hammersley 序列是基于 <def>Van Der Corput 序列</def>，该序列是把十进制数字的二进制表示镜像翻转到小数点右边而得。（译注：原文为 Van Der Corpus 疑似笔误，下文各处同）</p>
+<p>给出一些巧妙的技巧，我们可以在着色器程序中非常有效地生成 Van Der Corput 序列，我们将用它来获得 Hammersley 序列，设总样本数为 <var>N</var>，样本索引为 <var>i</var>：</p>
+<pre><code class="c++">float RadicalInverse_VdC(uint bits) 
+{
+    bits = (bits &lt;&lt; 16u) | (bits &gt;&gt; 16u);
+    bits = ((bits &amp; 0x55555555u) &lt;&lt; 1u) | ((bits &amp; 0xAAAAAAAAu) &gt;&gt; 1u);
+    bits = ((bits &amp; 0x33333333u) &lt;&lt; 2u) | ((bits &amp; 0xCCCCCCCCu) &gt;&gt; 2u);
+    bits = ((bits &amp; 0x0F0F0F0Fu) &lt;&lt; 4u) | ((bits &amp; 0xF0F0F0F0u) &gt;&gt; 4u);
+    bits = ((bits &amp; 0x00FF00FFu) &lt;&lt; 8u) | ((bits &amp; 0xFF00FF00u) &gt;&gt; 8u);
+    return float(bits) * 2.3283064365386963e-10; // / 0x100000000
+}
+// ----------------------------------------------------------------------------
+vec2 Hammersley(uint i, uint N)
+{
+    return vec2(float(i)/float(N), RadicalInverse_VdC(i));
+}  
+</code></pre>
+
+<p>GLSL 的 <fun>Hammersley</fun> 函数可以获取大小为 <var>N</var> 的样本集中的低差异样本 <var>i</var>。</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p><strong>无需位运算的 Hammersley 序列</strong></p>
+<p>并非所有 OpenGL 相关驱动程序都支持位运算符（例如WebGL和OpenGL ES 2.0），在这种情况下，你可能需要不依赖位运算符的替代版本 Van Der Corput 序列：</p>
+<pre><code>float VanDerCorpus(uint n, uint base)
+{
+    float invBase = 1.0 / float(base);
+    float denom   = 1.0;
+    float result  = 0.0;
+
+    for(uint i = 0u; i &lt; 32u; ++i)
+    {
+        if(n &gt; 0u)
+        {
+            denom   = mod(float(n), 2.0);
+            result += denom * invBase;
+            invBase = invBase / 2.0;
+            n       = uint(float(n) / 2.0);
+        }
+    }
+
+    return result;
+}
+// ----------------------------------------------------------------------------
+vec2 HammersleyNoBitOps(uint i, uint N)
+{
+    return vec2(float(i)/float(N), VanDerCorpus(i, 2u));
+}
+</code></pre>
+<p>请注意，由于旧硬件中的 GLSL 循环限制，该序列循环遍历了所有可能的 32 位，性能略差。但是如果你没有位运算符可用的话可以考虑它，它可以在所有硬件上运行。</p>
+</div>
+<h3 id="ggx">GGX 重要性采样</h3>
+<p>有别于均匀或纯随机地（比如蒙特卡洛）在积分半球 <script type="math/tex">\Omega</script> 产生采样向量，我们的采样会根据粗糙度，偏向微表面的半向量的宏观反射方向。采样过程将与我们之前看到的过程相似：开始一个大循环，生成一个随机（低差异）序列值，用该序列值在切线空间中生成样本向量，将样本向量变换到世界空间并对场景的辐射度采样。不同之处在于，我们现在使用低差异序列值作为输入来生成采样向量：</p>
+<pre><code class="c++">const uint SAMPLE_COUNT = 4096u;
+for(uint i = 0u; i &lt; SAMPLE_COUNT; ++i)
+{
+    vec2 Xi = Hammersley(i, SAMPLE_COUNT);   
+}
+</code></pre>
+
+<p>此外，要构建采样向量，我们需要一些方法定向和偏移采样向量，以使其朝向特定粗糙度的镜面波瓣方向。我们可以如理论教程中所述使用 NDF，并将 GGX NDF 结合到 Epic Games 所述的球形采样向量的处理中：</p>
+<pre><code class="c++">vec3 ImportanceSampleGGX(vec2 Xi, vec3 N, float roughness)
+{
+    float a = roughness*roughness;
+
+    float phi = 2.0 * PI * Xi.x;
+    float cosTheta = sqrt((1.0 - Xi.y) / (1.0 + (a*a - 1.0) * Xi.y));
+    float sinTheta = sqrt(1.0 - cosTheta*cosTheta);
+
+    // from spherical coordinates to cartesian coordinates
+    vec3 H;
+    H.x = cos(phi) * sinTheta;
+    H.y = sin(phi) * sinTheta;
+    H.z = cosTheta;
+
+    // from tangent-space vector to world-space sample vector
+    vec3 up        = abs(N.z) &lt; 0.999 ? vec3(0.0, 0.0, 1.0) : vec3(1.0, 0.0, 0.0);
+    vec3 tangent   = normalize(cross(up, N));
+    vec3 bitangent = cross(N, tangent);
+
+    vec3 sampleVec = tangent * H.x + bitangent * H.y + N * H.z;
+    return normalize(sampleVec);
+}
+</code></pre>
+
+<p>基于特定的粗糙度输入和低差异序列值 <var>Xi</var>，我们获得了一个采样向量，该向量大体围绕着预估的微表面的半向量。注意，根据迪士尼对 PBR 的研究，Epic Games 使用了平方粗糙度以获得更好的视觉效果。</p>
+<p>使用低差异 Hammersley 序列和上述定义的样本生成方法，我们可以最终完成预滤波器卷积着色器：</p>
+<pre><code class="c++">#version 330 core
+out vec4 FragColor;
+in vec3 localPos;
+
+uniform samplerCube environmentMap;
+uniform float roughness;
+
+const float PI = 3.14159265359;
+
+float RadicalInverse_VdC(uint bits);
+vec2 Hammersley(uint i, uint N);
+vec3 ImportanceSampleGGX(vec2 Xi, vec3 N, float roughness);
+
+void main()
+{       
+    vec3 N = normalize(localPos);    
+    vec3 R = N;
+    vec3 V = R;
+
+    const uint SAMPLE_COUNT = 1024u;
+    float totalWeight = 0.0;   
+    vec3 prefilteredColor = vec3(0.0);     
+    for(uint i = 0u; i &lt; SAMPLE_COUNT; ++i)
+    {
+        vec2 Xi = Hammersley(i, SAMPLE_COUNT);
+        vec3 H  = ImportanceSampleGGX(Xi, N, roughness);
+        vec3 L  = normalize(2.0 * dot(V, H) * H - V);
+
+        float NdotL = max(dot(N, L), 0.0);
+        if(NdotL &gt; 0.0)
+        {
+            prefilteredColor += texture(environmentMap, L).rgb * NdotL;
+            totalWeight      += NdotL;
+        }
+    }
+    prefilteredColor = prefilteredColor / totalWeight;
+
+    FragColor = vec4(prefilteredColor, 1.0);
+}  
+
+</code></pre>
+
+<p>输入的粗糙度随着预过滤的立方体贴图的 mipmap 级别变化（从0.0到1.0），我们根据据粗糙度预过滤环境贴图，把结果存在 <var>prefilteredColor</var> 里。再用 <var>prefilteredColor</var> 除以采样权重总和，其中对最终结果影响较小（<var>NdotL</var> 较小）的采样最终权重也较小。</p>
+<h3 id="mipmap">捕获预过滤 mipmap 级别</h3>
+<p>剩下要做的就是让 OpenGL 在多个 mipmap 级别上以不同的粗糙度值预过滤环境贴图。有了最开始的辐照度教程作为基础，实际上很简单：</p>
+<pre><code class="c++">prefilterShader.use();
+prefilterShader.setInt(&quot;environmentMap&quot;, 0);
+prefilterShader.setMat4(&quot;projection&quot;, captureProjection);
+glActiveTexture(GL_TEXTURE0);
+glBindTexture(GL_TEXTURE_CUBE_MAP, envCubemap);
+
+glBindFramebuffer(GL_FRAMEBUFFER, captureFBO);
+unsigned int maxMipLevels = 5;
+for (unsigned int mip = 0; mip &lt; maxMipLevels; ++mip)
+{
+    // reisze framebuffer according to mip-level size.
+    unsigned int mipWidth  = 128 * std::pow(0.5, mip);
+    unsigned int mipHeight = 128 * std::pow(0.5, mip);
+    glBindRenderbuffer(GL_RENDERBUFFER, captureRBO);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, mipWidth, mipHeight);
+    glViewport(0, 0, mipWidth, mipHeight);
+
+    float roughness = (float)mip / (float)(maxMipLevels - 1);
+    prefilterShader.setFloat(&quot;roughness&quot;, roughness);
+    for (unsigned int i = 0; i &lt; 6; ++i)
+    {
+        prefilterShader.setMat4(&quot;view&quot;, captureViews[i]);
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, 
+                               GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, prefilterMap, mip);
+
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        renderCube();
+    }
+}
+glBindFramebuffer(GL_FRAMEBUFFER, 0);   
+</code></pre>
+
+<p>这个过程类似于辐照度贴图卷积，但是这次我们将帧缓冲区缩放到适当的 mipmap 尺寸， mip 级别每增加一级，尺寸缩小为一半。此外，我们在 <fun>glFramebufferTexture2D</fun> 的最后一个参数中指定要渲染的目标 mip 级别，然后将要预过滤的粗糙度传给预过滤着色器。</p>
+<p>这样我们会得到一张经过适当预过滤的环境贴图，访问该贴图时指定的 mip 等级越高，获得的反射就越模糊。如果我们在天空盒着色器中显示这张预过滤的环境立方体贴图，并在其着色器中强制在其第一个 mip 级别以上采样，如下所示：</p>
+<pre><code class="c++">vec3 envColor = textureLod(environmentMap, WorldPos, 1.2).rgb;
+</code></pre>
+
+<p>我们得到的结果看起来确实像原始环境的模糊版本：</p>
+<p><img alt="" src="../../../img/07/03/02/ibl_prefilter_map_sample.png" /></p>
+<p>如果 HDR 环境贴图的预过滤看起来差不多没问题，尝试一下不同的 mipmap 级别，观察预过滤贴图随着 mip 级别增加，反射逐渐从锐利变模糊的过程。</p>
+<h2 id="_3">预过滤卷积的伪像</h2>
+<p>当前的预过滤贴图可以在大多数情况下正常工作，不过你迟早会遇到几个与预过滤卷积直接相关的渲染问题。我将在这里列出最常见的一些问题，以及如何修复它们。</p>
+<h3 id="_4">高粗糙度的立方体贴图接缝</h3>
+<p>在具有粗糙表面的表面上对预过滤贴图采样，也就等同于在较低的 mip 级别上对预过滤贴图采样。在对立方体贴图进行采样时，默认情况下，OpenGL不会在立方体面<strong>之间</strong>进行线性插值。由于较低的 mip 级别具有更低的分辨率，并且预过滤贴图代表了与更大的采样波瓣卷积，因此缺乏<strong>立方体的面和面之间的滤波</strong>的问题就更明显：</p>
+<p><img alt="" src="../../../img/07/03/02/ibl_prefilter_seams.png" /></p>
+<p>幸运的是，OpenGL 可以启用 <var>GL_TEXTURE_CUBE_MAP_SEAMLESS</var>，以为我们提供在立方体贴图的面之间进行正确过滤的选项：</p>
+<pre><code class="c++">glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);  
+</code></pre>
+
+<h3 id="_5">预过滤卷积的亮点</h3>
+<p>由于镜面反射中光强度的变化大，高频细节多，所以对镜面反射进行卷积需要大量采样，才能正确反映 HDR 环境反射的混乱变化。我们已经进行了大量的采样，但是在某些环境下，在某些较粗糙的 mip 级别上可能仍然不够，导致明亮区域周围出现点状图案：</p>
+<p><img alt="" src="../../../img/07/03/02/ibl_prefilter_dots.png" /></p>
+<p>一种解决方案是进一步增加样本数量，但在某些情况下还是不够。另一种方案如 <a href="https://chetanjags.wordpress.com/2015/08/26/image-based-lighting/">Chetan Jags</a> 所述，我们可以在预过滤卷积时，不直接采样环境贴图，而是基于积分的 PDF 和粗糙度采样环境贴图的 mipmap ，以减少伪像：</p>
+<pre><code class="c++">float D   = DistributionGGX(NdotH, roughness);
+float pdf = (D * NdotH / (4.0 * HdotV)) + 0.0001; 
+
+float resolution = 512.0; // resolution of source cubemap (per face)
+float saTexel  = 4.0 * PI / (6.0 * resolution * resolution);
+float saSample = 1.0 / (float(SAMPLE_COUNT) * pdf + 0.0001);
+
+float mipLevel = roughness == 0.0 ? 0.0 : 0.5 * log2(saSample / saTexel); 
+</code></pre>
+
+<p>既然要采样 mipmap ，不要忘记在环境贴图上开启三线性过滤：</p>
+<pre><code class="c++">glBindTexture(GL_TEXTURE_CUBE_MAP, envCubemap);
+glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR); 
+</code></pre>
+
+<p>设置立方体贴图的基本纹理后，让 OpenGL 生成 mipmap：</p>
+<pre><code class="c++">// convert HDR equirectangular environment map to cubemap equivalent
+[...]
+// then generate mipmaps
+glBindTexture(GL_TEXTURE_CUBE_MAP, envCubemap);
+glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
+</code></pre>
+
+<p>这个方法效果非常好，可以去除预过滤贴图中较粗糙表面上的大多数甚至全部亮点。</p>
+<h2 id="brdf">预计算 BRDF</h2>
+<p>预过滤的环境贴图已经可以设置并运行，我们可以集中精力于求和近似的第二部分：BRDF。让我们再次简要回顾一下镜面部分的分割求和近似法：</p>
+<p>
+<script type="math/tex; mode=display">
+L_o(p,\omega_o) = 
+        \int\limits_{\Omega} L_i(p,\omega_i) d\omega_i
+        *
+        \int\limits_{\Omega} f_r(p, \omega_i, \omega_o) n \cdot \omega_i d\omega_i
+</script>
+</p>
+<p>我们已经在预过滤贴图的各个粗糙度级别上预计算了分割求和近似的左半部分。右半部分要求我们在 <script type="math/tex">n \cdot \omega_o</script> 、表面粗糙度、菲涅尔系数 <script type="math/tex">F_0</script> 上计算 BRDF 方程的卷积。这等同于在纯白的环境光或者辐射度恒定为 <script type="math/tex">L_i</script>=1.0 的设置下，对镜面 BRDF 求积分。对3个变量做卷积有点复杂，不过我们可以把 <script type="math/tex">F_0</script> 移出镜面 BRDF 方程：</p>
+<p>
+<script type="math/tex; mode=display">
+\int\limits_{\Omega} f_r(p, \omega_i, \omega_o) n \cdot \omega_i d\omega_i = \int\limits_{\Omega} f_r(p, \omega_i, \omega_o) \frac{F(\omega_o, h)}{F(\omega_o, h)} n \cdot \omega_i d\omega_i
+</script>
+</p>
+<p>
+<script type="math/tex">F</script> 为菲涅耳方程。将菲涅耳分母移到 BRDF 下面可以得到如下等式：</p>
+<p>
+<script type="math/tex; mode=display">
+\int\limits_{\Omega} \frac{f_r(p, \omega_i, \omega_o)}{F(\omega_o, h)} F(\omega_o, h)  n \cdot \omega_i d\omega_i
+</script>
+</p>
+<p>用 Fresnel-Schlick 近似公式替换右边的 <script type="math/tex">F</script> 可以得到：</p>
+<p>
+<script type="math/tex; mode=display">
+\int\limits_{\Omega} \frac{f_r(p, \omega_i, \omega_o)}{F(\omega_o, h)} (F_0 + (1 - F_0){(1 - \omega_o \cdot h)}^5)  n \cdot \omega_i d\omega_i
+</script>
+</p>
+<p>让我们用 <script type="math/tex">\alpha</script> 替换 <script type="math/tex">{(1 - \omega_o \cdot h)}^5</script> 以便更轻松地求解 <script type="math/tex">F_0</script>：</p>
+<p>
+<script type="math/tex; mode=display">
+\int\limits_{\Omega} \frac{f_r(p, \omega_i, \omega_o)}{F(\omega_o, h)} (F_0 + (1 - F_0)\alpha)  n \cdot \omega_i d\omega_i
+</script>
+</p>
+<p>
+<script type="math/tex; mode=display">
+\int\limits_{\Omega} \frac{f_r(p, \omega_i, \omega_o)}{F(\omega_o, h)} (F_0 + 1*\alpha - F_0*\alpha)  n \cdot \omega_i d\omega_i
+</script>
+</p>
+<p>
+<script type="math/tex; mode=display">
+\int\limits_{\Omega} \frac{f_r(p, \omega_i, \omega_o)}{F(\omega_o, h)} (F_0 * (1 - \alpha) + \alpha)  n \cdot \omega_i d\omega_i
+</script>
+</p>
+<p>然后我们将菲涅耳函数 <script type="math/tex">F</script> 分拆到两个积分里：</p>
+<p>
+<script type="math/tex; mode=display">
+\int\limits_{\Omega} \frac{f_r(p, \omega_i, \omega_o)}{F(\omega_o, h)} (F_0 * (1 - \alpha))  n \cdot \omega_i d\omega_i
+              +
+    \int\limits_{\Omega} \frac{f_r(p, \omega_i, \omega_o)}{F(\omega_o, h)} (\alpha)  n \cdot \omega_i d\omega_i
+</script>
+</p>
+<p>这样，<script type="math/tex">F_0</script>在整个积分上是恒定的，我们可以从积分中提取出<script type="math/tex">F_0</script>。接下来，我们将<script type="math/tex">\alpha</script>替换回其原始形式，从而得到最终分割求和的 BRDF 方程：</p>
+<p>
+<script type="math/tex; mode=display">
+F_0 \int\limits_{\Omega} f_r(p, \omega_i, \omega_o)(1 - {(1 - \omega_o \cdot h)}^5)  n \cdot \omega_i d\omega_i
+              +
+    \int\limits_{\Omega} f_r(p, \omega_i, \omega_o) {(1 - \omega_o \cdot h)}^5  n \cdot \omega_i d\omega_i
+</script>
+</p>
+<p>公式中的两个积分分别表示 <script type="math/tex">F_0</script> 的比例和偏差。注意，由于 <script type="math/tex">f(p, \omega_i, \omega_o)</script> 已经包含 <script type="math/tex">F</script> 项，它们被约分了，这里的 <script type="math/tex">f</script> 中不计算 <script type="math/tex">F</script> 项。</p>
+<p>和之前卷积环境贴图类似，我们可以对 BRDF 方程求卷积，其输入是 <script type="math/tex">n</script> 和 <script type="math/tex">\omega_o</script> 的夹角，以及粗糙度，并将卷积的结果存储在纹理中。我们将卷积后的结果存储在 2D 查找纹理（Look Up Texture, LUT）中，这张纹理被称为 <def>BRDF 积分贴图</def>，稍后会将其用于 PBR 光照着色器中，以获得间接镜面反射的最终卷积结果。</p>
+<p>BRDF 卷积着色器在 2D 平面上执行计算，直接使用其 2D 纹理坐标作为卷积输入（<var>NdotV</var> 和 <var>roughness</var>）。代码与预滤波器的卷积代码大体相似，不同之处在于，它现在根据 BRDF 的几何函数和 Fresnel-Schlick 近似来处理采样向量：</p>
+<pre><code class="c++">vec2 IntegrateBRDF(float NdotV, float roughness)
+{
+    vec3 V;
+    V.x = sqrt(1.0 - NdotV*NdotV);
+    V.y = 0.0;
+    V.z = NdotV;
+
+    float A = 0.0;
+    float B = 0.0;
+
+    vec3 N = vec3(0.0, 0.0, 1.0);
+
+    const uint SAMPLE_COUNT = 1024u;
+    for(uint i = 0u; i &lt; SAMPLE_COUNT; ++i)
+    {
+        vec2 Xi = Hammersley(i, SAMPLE_COUNT);
+        vec3 H  = ImportanceSampleGGX(Xi, N, roughness);
+        vec3 L  = normalize(2.0 * dot(V, H) * H - V);
+
+        float NdotL = max(L.z, 0.0);
+        float NdotH = max(H.z, 0.0);
+        float VdotH = max(dot(V, H), 0.0);
+
+        if(NdotL &gt; 0.0)
+        {
+            float G = GeometrySmith(N, V, L, roughness);
+            float G_Vis = (G * VdotH) / (NdotH * NdotV);
+            float Fc = pow(1.0 - VdotH, 5.0);
+
+            A += (1.0 - Fc) * G_Vis;
+            B += Fc * G_Vis;
+        }
+    }
+    A /= float(SAMPLE_COUNT);
+    B /= float(SAMPLE_COUNT);
+    return vec2(A, B);
+}
+// ----------------------------------------------------------------------------
+void main() 
+{
+    vec2 integratedBRDF = IntegrateBRDF(TexCoords.x, TexCoords.y);
+    FragColor = integratedBRDF;
+}
+</code></pre>
+
+<p>如你所见，BRDF 卷积部分是从数学到代码的直接转换。我们将角度 <script type="math/tex">\theta</script> 和粗糙度作为输入，以重要性采样产生采样向量，在整个几何体上结合 BRDF 的菲涅耳项对向量进行处理，然后输出每个样本上 <script type="math/tex">F_0</script> 的系数和偏差，最后取平均值。</p>
+<p>你可能回想起<a href="https://learnopengl-cn.github.io/07%20PBR/01%20Theory/">理论</a>教程中的一个细节：与 IBL 一起使用时，BRDF 的几何项略有不同，因为 <script type="math/tex">k</script> 变量的含义稍有不同：</p>
+<p>
+<script type="math/tex; mode=display">
+k_{direct} = \frac{(\alpha + 1)^2}{8}
+</script>
+</p>
+<p>
+<script type="math/tex; mode=display">
+k_{IBL} = \frac{\alpha^2}{2}
+</script>
+</p>
+<p>由于 BRDF 卷积是镜面 IBL 积分的一部分，因此我们要在 Schlick-GGX 几何函数中使用 <script type="math/tex">k_{IBL}</script>：</p>
+<pre><code class="c++">float GeometrySchlickGGX(float NdotV, float roughness)
+{
+    float a = roughness;
+    float k = (a * a) / 2.0;
+
+    float nom   = NdotV;
+    float denom = NdotV * (1.0 - k) + k;
+
+    return nom / denom;
+}
+// ----------------------------------------------------------------------------
+float GeometrySmith(vec3 N, vec3 V, vec3 L, float roughness)
+{
+    float NdotV = max(dot(N, V), 0.0);
+    float NdotL = max(dot(N, L), 0.0);
+    float ggx2 = GeometrySchlickGGX(NdotV, roughness);
+    float ggx1 = GeometrySchlickGGX(NdotL, roughness);
+
+    return ggx1 * ggx2;
+}  
+</code></pre>
+
+<p>请注意，虽然 <script type="math/tex">k</script> 还是从 a 计算出来的，但这里的 a 不是 <var>roughness</var> 的平方——如同最初对 a 的其他解释那样——在这里我们假装平方过了。我不确定这样处理是否与 Epic Games 或迪士尼原始论文不一致，但是直接将 <var>roughness</var> 赋给 a 得到的 BRDF 积分贴图与 Epic Games 的版本完全一致。</p>
+<p>最后，为了存储 BRDF 卷积结果，我们需要生成一张 512 × 512 分辨率的 2D 纹理。</p>
+<pre><code class="c++">unsigned int brdfLUTTexture;
+glGenTextures(1, &amp;brdfLUTTexture);
+
+// pre-allocate enough memory for the LUT texture.
+glBindTexture(GL_TEXTURE_2D, brdfLUTTexture);
+glTexImage2D(GL_TEXTURE_2D, 0, GL_RG16F, 512, 512, 0, GL_RG, GL_FLOAT, 0);
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+</code></pre>
+
+<p>请注意，我们使用的是 Epic Games 推荐的16位精度浮点格式。将环绕模式设置为 <var>GL_CLAMP_TO_EDGE</var> 以防止边缘采样的伪像。
+然后，我们复用同一个帧缓冲区对象，并在 NDC (译注：Normalized Device Coordinates) 屏幕空间四边形上运行此着色器：</p>
+<pre><code class="c++">glBindFramebuffer(GL_FRAMEBUFFER, captureFBO);
+glBindRenderbuffer(GL_RENDERBUFFER, captureRBO);
+glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, 512, 512);
+glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, brdfLUTTexture, 0);
+
+glViewport(0, 0, 512, 512);
+brdfShader.use();
+glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+RenderQuad();
+
+glBindFramebuffer(GL_FRAMEBUFFER, 0);  
+</code></pre>
+
+<p>分割积分和的 BRDF 卷积部分应该得到以下结果：</p>
+<p><img alt="" src="../../../img/07/03/02/ibl_brdf_lut.png" /></p>
+<p>预过滤的环境贴图和 BRDF 的 2D LUT 都已经齐备，我们可以根据分割求和近似法重建间接镜面部分积分了。最后合并的结果将被用作间接镜面反射或环境镜面反射。</p>
+<h2 id="ibl_1">完成 IBL 反射</h2>
+<p>为了使反射方程的间接镜面反射部分正确运行，我们需要将分割求和近似法的两个部分缝合在一起。第一步是将预计算的光照数据声明到 PBR 着色器的最上面：</p>
+<pre><code class="c++">uniform samplerCube prefilterMap;
+uniform sampler2D   brdfLUT;  
+</code></pre>
+
+<p>首先，使用反射向量采样预过滤的环境贴图，获取表面的间接镜面反射。请注意，我们会根据表面粗糙度在合适的 mip 级别采样，以使更粗糙的表面产生更模糊的镜面反射。</p>
+<pre><code class="c++">void main()
+{
+    [...]
+    vec3 R = reflect(-V, N);   
+
+    const float MAX_REFLECTION_LOD = 4.0;
+    vec3 prefilteredColor = textureLod(prefilterMap, R,  roughness * MAX_REFLECTION_LOD).rgb;    
+    [...]
+}
+</code></pre>
+
+<p>在预过滤步骤中，我们仅将环境贴图卷积最多 5 个 mip 级别（0到4），此处记为 <var>MAX_REFLECTION_LOD</var>，以确保不会对一个没有数据的 mip 级别采样。
+然后我们用已知的材质粗糙度和视线-法线夹角作为输入，采样 BRDF LUT。</p>
+<pre><code class="c++">vec3 F        = FresnelSchlickRoughness(max(dot(N, V), 0.0), F0, roughness);
+vec2 envBRDF  = texture(brdfLUT, vec2(max(dot(N, V), 0.0), roughness)).rg;
+vec3 specular = prefilteredColor * (F * envBRDF.x + envBRDF.y);
+</code></pre>
+
+<p>这样我们就从 BRDF LUT 中获得了 <script type="math/tex">F_0</script> 的系数和偏移，这里我们就直接用间接光菲涅尔项 <var>F</var> 代替<script type="math/tex">F_0</script>。把这个结果和 IBL 反射方程左边的预过滤部分结合起来，以重建整个近似积分，存入<var>specular</var>。</p>
+<p>于是我们得到了反射方程的间接镜面反射部分。现在，将其与<a href="https://learnopengl-cn.github.io/07%20PBR/03%20IBL/01%20Diffuse%20irradiance/">上一节教程</a>中的反射方程的漫反射部分结合起来，我们可以获得完整的 PBR IBL 结果：</p>
+<pre><code class="c++">vec3 F = FresnelSchlickRoughness(max(dot(N, V), 0.0), F0, roughness);
+
+vec3 kS = F;
+vec3 kD = 1.0 - kS;
+kD *= 1.0 - metallic;     
+
+vec3 irradiance = texture(irradianceMap, N).rgb;
+vec3 diffuse    = irradiance * albedo;
+
+const float MAX_REFLECTION_LOD = 4.0;
+vec3 prefilteredColor = textureLod(prefilterMap, R,  roughness * MAX_REFLECTION_LOD).rgb;   
+vec2 envBRDF  = texture(brdfLUT, vec2(max(dot(N, V), 0.0), roughness)).rg;
+vec3 specular = prefilteredColor * (F * envBRDF.x + envBRDF.y);
+
+vec3 ambient = (kD * diffuse + specular) * ao; 
+</code></pre>
+
+<p>请注意，<var>specular</var> 没有乘以 <var>kS</var>，因为已经乘过了菲涅耳系数。
+现在，在一系列粗糙度和金属度各异的球上运行此代码，我们终于可以在最终的 PBR 渲染器中看到其真实颜色：</p>
+<p><img alt="" src="../../../img/07/03/02/ibl_specular_result.png" /></p>
+<p>我们甚至可以再疯狂一点，使用一些带酷炫纹理的 <a href="http://freepbr.com/">PBR 材质</a>：</p>
+<p><img alt="" src="../../../img/07/03/02/ibl_specular_result_textured.png" /></p>
+<p>或加载 Andrew Maximov 的<a href="http://artisaverb.info/PBT.html">这款出色的免费 PBR 3D 模型</a>：</p>
+<p><img alt="" src="../../../img/07/03/02/ibl_specular_result_model.png" /></p>
+<p>我敢肯定我们都同意现在的光照看起来更具说服力。更妙的是，无论我们使用哪种环境贴图，我们的光照看起来都是物理正确的。下面，您将看到几张不同的预计算 HDR 贴图，它们完全改变了光照动态，但是不需要调整任何光照变量，在外观上依然正确！</p>
+<p><img alt="" src="../../../img/07/03/02/ibl_specular_result_different_environments.png" /></p>
+<p>好吧，这是一场长长的 PBR 冒险。有很多步骤可能会出错，所以如果遇到问题卡住，请仔细研究<a href="https://learnopengl.com/code_viewer_gh.php?code=src/6.pbr/2.2.1.ibl_specular/ibl_specular.cpp">球形场景</a>或<a href="https://learnopengl.com/code_viewer_gh.php?code=src/6.pbr/2.2.2.ibl_specular_textured/ibl_specular_textured.cpp">带纹理的场景代码</a>示例——也包括所有着色器，或者检查之后在评论中提问。</p>
+<h3 id="_6">下一步是？</h3>
+<p>希望在本教程结束时，你会对 PBR 的相关内容有一个清晰的了解，甚至可以构造并运行一个实际的 PBR 渲染器。在这几节教程中，我们已经在应用程序开始阶段，渲染循环之前，预计算了所有 PBR 相关的基于图像的光照数据。出于教育目的，这很好，但对于任何 PBR 的实践应用来说，都不是很漂亮。首先，预计算实际上只需要执行一次，而不是每次启动时都要做。其次，当使用多个环境贴图时，你必须在每次程序启动时全部预计算一遍，这是个必须步骤。</p>
+<p>因此，通常只需要一次将环境贴图预计算为辐照度贴图和预过滤贴图，然后将其存储在磁盘上（注意，BRDF 积分贴图不依赖于环境贴图，因此只需要计算或加载一次）。这意味着您需要提出一种自定义图像格式来存储 HDR 立方体贴图，包括其 mip 级别。或者将图像存储为某种可用格式——例如支持存储 mip 级别的 .dds——并按其格式加载。</p>
+<p>此外，我们也在教程中描述了<strong>整个</strong>过程，包括生成预计算的 IBL 图像，以帮助我们进一步了解 PBR 管线。此外还可以通过 <a href="https://github.com/dariomanesku/cmftStudio">cmftStudio</a> 或 <a href="https://github.com/derkreature/IBLBaker">IBLBaker</a> 等一些出色的工具为您生成这些预计算贴图，也很好用。</p>
+<p>有一点内容我们跳过了，即如何将预计算的立方体贴图作为<def>反射探针</def>：立方体贴图插值和视差校正。这是一个在场景中放置多个反射探针的过程，这些探针在特定位置拍摄场景的立方体贴图快照，然后我们可以将其卷积，作为相应部分场景的 IBL 数据。基于相机的位置对附近的探针插值，我们可以实现局部的细节丰富的 IBL，受到的唯一限制就是探针放置的数量。这样一来，例如从一个明亮的室外部分移动到较暗的室内部分时，IBL 就能正确更新。我将来会在某个地方编写有关反射探针的教程，但现在，我建议阅读下面 Chetan Jags 的文章来作为入门。</p>
+<h2 id="_7">进阶阅读</h2>
+<ul>
+<li><a href="http://blog.selfshadow.com/publications/s2013-shading-course/karis/s2013_pbs_epic_notes_v2.pdf">Real Shading in Unreal Engine 4</a>：讲解了 Epic Games 的分割求和近似法。IBL PBR 部分的代码就脱胎于此文。</li>
+<li><a href="http://www.trentreed.net/blog/physically-based-shading-and-image-based-lighting/">Physically Based Shading and Image Based Lighting</a>：Trent Reed 的精彩博客文章，介绍了如何将镜面反射 IBL 实时集成到 PBR 管道中。</li>
+<li><a href="https://chetanjags.wordpress.com/2015/08/26/image-based-lighting/">Image Based Lighting</a>：Chetan Jags 对基于镜面反射的 IBL 及其一些注意事项（包括光照探针插值）进行了广泛的讲解。</li>
+<li><a href="https://seblagarde.files.wordpress.com/2015/07/course_notes_moving_frostbite_to_pbr_v32.pdf">Moving Frostbite to PBR</a>：Sébastien Lagarde 和 Charles de Rousiers 撰写的，对于如何将 PBR 集成到 AAA 游戏引擎进行了详尽而深入的概述。</li>
+<li><a href="https://jmonkeyengine.github.io/wiki/jme3/advanced/pbr_part3.html">Physically Based Rendering – Part Three</a>：JMonkeyEngine 团队对 IBL 和 PBR 进行了较高层次的概述。</li>
+<li><a href="https://placeholderart.wordpress.com/2015/07/28/implementation-notes-runtime-environment-map-filtering-for-image-based-lighting/">Implementation Notes: Runtime Environment Map Filtering for Image Based Lighting</a>：Padraic Hennessy 撰写的大量有关预过滤 HDR 环境贴图并显著优化采样过程的文章。</li>
+</ul>
+
+<div id="disqus_thread"></div>
+<script>
+    (function() {
+        var d = document, s = d.createElement('script');
+        
+        s.src = '//learnopengl-cn.disqus.com/embed.js';
+        
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>请启用JavaScript以浏览<a href="https://disqus.com/?ref_noscript" rel="nofollow">Disqus评论。</a></noscript></div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            
+            <center>Powered by <a href="http://www.mkdocs.org/">MkDocs</a> and <a href="http://bootswatch.com/yeti/">Yeti</a></center>
+        </footer>
+
+        <script src="../../../js/jquery-1.10.2.min.js"></script>
+        <script src="../../../js/bootstrap-3.0.3.min.js"></script>
+        <script src="../../../js/highlight.pack.js"></script>
+        <script>var base_url = '../../..';</script>
+        <script data-main="../../../mkdocs/js/search.js" src="../../../mkdocs/js/require.js"></script>
+        <script src="../../../js/base.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">关闭</span></button>
+                        <h4 class="modal-title" id="exampleModalLabel">搜索</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            请在下面输入你要搜索的文本（仅支持英文）：
+                        </p>
+                        <form role="form">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="搜索..." id="mkdocs-search-query">
+                            </div>
+                        </form>
+                        <div id="mkdocs-search-results"></div>
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
