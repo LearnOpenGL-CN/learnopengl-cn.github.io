@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="http://learnopengl.com 系列教程的简体中文翻译">
+        
+        <link rel="canonical" href="https://learnopengl-cn.github.io/01%20Getting%20started/06%20Textures/">
+        <link rel="shortcut icon" href="../../img/favicon.ico">
+
+	<title>纹理 - LearnOpenGL CN</title>
+
+        <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../../css/font-awesome-4.0.3.css" rel="stylesheet">
+        <link rel="stylesheet" href="../../css/highlight.css">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link href="../../css/style.css" rel="stylesheet">
+        <link href="../../css/admonition_fix.css" rel="stylesheet">
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+        <script>
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+          ga('create', 'UA-80323542-1', 'auto');
+          ga('send', 'pageview');
+        </script>
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <!-- Main title -->
+            <a class="navbar-brand" href="../..">LearnOpenGL CN</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            <!-- Main navigation -->
+            <ul class="nav navbar-nav">
+            
+            
+                <li >
+                    <a href="../..">主页</a>
+                </li>
+            
+            
+            
+                <li class="dropdown active">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">目录 <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        
+<li >
+    <a href="../../intro/">简介</a>
+</li>
+
+                    
+                        
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">入门</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../01%20OpenGL/">OpenGL</a>
+</li>
+
+        
+            
+<li >
+    <a href="../02%20Creating%20a%20window/">创建窗口</a>
+</li>
+
+        
+            
+<li >
+    <a href="../03%20Hello%20Window/">你好，窗口</a>
+</li>
+
+        
+            
+<li >
+    <a href="../04%20Hello%20Triangle/">你好，三角形</a>
+</li>
+
+        
+            
+<li >
+    <a href="../05%20Shaders/">着色器</a>
+</li>
+
+        
+            
+<li class="active">
+    <a href="./">纹理</a>
+</li>
+
+        
+            
+<li >
+    <a href="../07%20Transformations/">变换</a>
+</li>
+
+        
+            
+<li >
+    <a href="../08%20Coordinate%20Systems/">坐标系统</a>
+</li>
+
+        
+            
+<li >
+    <a href="../09%20Camera/">摄像机</a>
+</li>
+
+        
+            
+<li >
+    <a href="../10%20Review/">复习</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                    
+                        
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">光照</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../02%20Lighting/01%20Colors/">颜色</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../02%20Lighting/02%20Basic%20Lighting/">基础光照</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../02%20Lighting/03%20Materials/">材质</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../02%20Lighting/04%20Lighting%20maps/">光照贴图</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../02%20Lighting/05%20Light%20casters/">投光物</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../02%20Lighting/06%20Multiple%20lights/">多光源</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../02%20Lighting/07%20Review/">复习</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                    
+                        
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">模型加载</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../03%20Model%20Loading/01%20Assimp/">Assimp</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../03%20Model%20Loading/02%20Mesh/">网格</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../03%20Model%20Loading/03%20Model/">模型</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                    
+                        
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">高级OpenGL</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../04%20Advanced%20OpenGL/01%20Depth%20testing/">深度测试</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../04%20Advanced%20OpenGL/02%20Stencil%20testing/">模板测试</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../04%20Advanced%20OpenGL/03%20Blending/">混合</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../04%20Advanced%20OpenGL/04%20Face%20culling/">面剔除</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../04%20Advanced%20OpenGL/05%20Framebuffers/">帧缓冲</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../04%20Advanced%20OpenGL/06%20Cubemaps/">立方体贴图</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../04%20Advanced%20OpenGL/07%20Advanced%20Data/">高级数据</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../04%20Advanced%20OpenGL/08%20Advanced%20GLSL/">高级GLSL</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../04%20Advanced%20OpenGL/09%20Geometry%20Shader/">几何着色器</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../04%20Advanced%20OpenGL/10%20Instancing/">实例化</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../04%20Advanced%20OpenGL/11%20Anti%20Aliasing/">抗锯齿</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                    
+                        
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">高级光照</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../05%20Advanced%20Lighting/01%20Advanced%20Lighting/">高级光照</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../05%20Advanced%20Lighting/02%20Gamma%20Correction/">Gamma校正</a>
+</li>
+
+        
+            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">阴影</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../05%20Advanced%20Lighting/03%20Shadows/01%20Shadow%20Mapping/">阴影映射</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../05%20Advanced%20Lighting/03%20Shadows/02%20Point%20Shadows/">点阴影</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../05%20Advanced%20Lighting/03%20Shadows/03%20CSM/">CSM</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+        
+            
+<li >
+    <a href="../../05%20Advanced%20Lighting/04%20Normal%20Mapping/">法线贴图</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../05%20Advanced%20Lighting/05%20Parallax%20Mapping/">视差贴图</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../05%20Advanced%20Lighting/06%20HDR/">HDR</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../05%20Advanced%20Lighting/07%20Bloom/">泛光</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../05%20Advanced%20Lighting/08%20Deferred%20Shading/">延迟着色法</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../05%20Advanced%20Lighting/09%20SSAO/">SSAO</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                    
+                        
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">PBR</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../07%20PBR/01%20Theory/">理论</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../07%20PBR/02%20Lighting/">光照</a>
+</li>
+
+        
+            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">IBL</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../07%20PBR/03%20IBL/01%20Diffuse%20irradiance/">漫反射辐照</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../07%20PBR/03%20IBL/02%20Specular%20IBL/">镜面IBL</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+        
+    </ul>
+  </li>
+
+                    
+                        
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">实战</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../06%20In%20Practice/01%20Debugging/">调试</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../06%20In%20Practice/02%20Text%20Rendering/">文本渲染</a>
+</li>
+
+        
+            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">2D游戏</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../06%20In%20Practice/2D-Game/01%20Breakout/">Breakout</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../06%20In%20Practice/2D-Game/02%20Setting%20up/">准备工作</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../06%20In%20Practice/2D-Game/03%20Rendering%20Sprites/">渲染精灵</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../06%20In%20Practice/2D-Game/04%20Levels/">关卡</a>
+</li>
+
+        
+            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">碰撞</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../06%20In%20Practice/2D-Game/05%20Collisions/01%20Ball/">球</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../06%20In%20Practice/2D-Game/05%20Collisions/02%20Collision%20detection/">碰撞检测</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../06%20In%20Practice/2D-Game/05%20Collisions/03%20Collision%20resolution/">碰撞处理</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+        
+            
+<li >
+    <a href="../../06%20In%20Practice/2D-Game/06%20Particles/">粒子</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../06%20In%20Practice/2D-Game/07%20Postprocessing/">后期处理</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../06%20In%20Practice/2D-Game/08%20Powerups/">道具</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../06%20In%20Practice/2D-Game/09%20Audio/">音效</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../06%20In%20Practice/2D-Game/10%20Render%20Text/">渲染文本</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../06%20In%20Practice/2D-Game/11%20Final%20thoughts/">结语</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+        
+    </ul>
+  </li>
+
+                    
+                        
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">Guest Articles</a>
+    <ul class="dropdown-menu">
+        
+            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">2020</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../08%20Guest%20Articles/2020/01%20Skeletal%20Animation/">骨骼动画</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+        
+            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">2022</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../08%20Guest%20Articles/2022/03%20Area%20Lights/">区域光</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+        
+    </ul>
+  </li>
+
+                    
+                        
+<li >
+    <a href="../../legacy/">历史存档</a>
+</li>
+
+                    
+                    </ul>
+                </li>
+            
+            
+            
+                <li >
+                    <a href="../../code_repo/">代码仓库</a>
+                </li>
+            
+            
+            </ul>
+
+            <!-- Search, Navigation and Repo links -->
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                        <i class="fa fa-search"></i> 搜索
+                    </a>
+                </li>
+                <li >
+                    <a rel="next" href="../05%20Shaders/">
+                        <i class="fa fa-arrow-left"></i> 上一节
+                    </a>
+                </li>
+                <li >
+                    <a rel="prev" href="../07%20Transformations/">
+                        下一节 <i class="fa fa-arrow-right"></i>
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="https://github.com/LearnOpenGL-CN/LearnOpenGL-CN">
+                        
+                            <i class="fa fa-github"></i>
+                        
+                        GitHub
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="https://www.paypal.me/learnopengl/">
+                            <img class="paypal" src="/img/paypal_logo.png" alt="">
+                        支持原作者
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+        <div class="container">
+            <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#_1">纹理</a></li>
+        
+            <li><a href="#_2">纹理环绕方式</a></li>
+        
+            <li><a href="#_3">纹理过滤</a></li>
+        
+    
+        <li class="main "><a href="#_5">加载与创建纹理</a></li>
+        
+            <li><a href="#stb_imageh">stb_image.h</a></li>
+        
+            <li><a href="#_6">生成纹理</a></li>
+        
+            <li><a href="#_7">应用纹理</a></li>
+        
+            <li><a href="#_8">纹理单元</a></li>
+        
+            <li><a href="#_9">练习</a></li>
+        
+    
+    </ul>
+</div></div>
+            <div class="col-md-9" role="main">
+
+<h1 id="_1">纹理</h1>
+<table>
+<thead>
+<tr>
+<th>原文</th>
+<th><a href="http://learnopengl.com/#!Getting-started/Textures">Textures</a></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>作者</td>
+<td>JoeyDeVries</td>
+</tr>
+<tr>
+<td>翻译</td>
+<td><a href="http://bullteacher.com/">Django</a>, Krasjet, Geequlim, <a href="https://github.com/blumia/">BLumia</a></td>
+</tr>
+<tr>
+<td>校对</td>
+<td>暂未校对</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">译注</p>
+<p>注意，由于作者对教程做出了更新，之前本节使用的是SOIL库，但现在改为了使用<code>stb_image.h</code>库，关于SOIL配置的部分现在已经被修改，但我仍决定将这部分教程保留起来，放到一个历史存档中，如果有需要的话可以到<a href="../../legacy/">这里</a>来查看。</p>
+</div>
+<p>我们已经了解到，我们可以为每个顶点添加颜色来增加图形的细节，从而创建出有趣的图像。但是，如果想让图形看起来更真实，我们就必须有足够多的顶点，从而指定足够多的颜色。这将会产生很多额外开销，因为每个模型都会需求更多的顶点，每个顶点又需求一个颜色属性。</p>
+<p>艺术家和程序员更喜欢使用<def>纹理</def>(Texture)。纹理是一个2D图片（甚至也有1D和3D的纹理），它可以用来添加物体的细节；你可以想象纹理是一张绘有砖块的纸，无缝折叠贴合到你的3D的房子上，这样你的房子看起来就像有砖墙外表了。因为我们可以在一张图片上插入非常多的细节，这样就可以让物体非常精细而不用指定额外的顶点。</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>除了图像以外，纹理也可以被用来储存大量的数据，这些数据可以发送到着色器上，但是这不是我们现在的主题。</p>
+</div>
+<p>下面你会看到之前教程的那个三角形贴上了一张<a href="../../img/01/06/wall.jpg">砖墙</a>图片。</p>
+<p><img alt="" src="../../img/01/06/textures.png" /></p>
+<p>为了能够把纹理映射(Map)到三角形上，我们需要指定三角形的每个顶点各自对应纹理的哪个部分。这样每个顶点就会关联着一个<def>纹理坐标</def>(Texture Coordinate)，用来标明该从纹理图像的哪个部分采样（译注：采集片段颜色）。之后在图形的其它片段上进行片段插值(Fragment Interpolation)。</p>
+<p>纹理坐标在x和y轴上，范围为0到1之间（注意我们使用的是2D纹理图像）。使用纹理坐标获取纹理颜色叫做<def>采样</def>(Sampling)。纹理坐标起始于(0, 0)，也就是纹理图片的左下角，终始于(1, 1)，即纹理图片的右上角。下面的图片展示了我们是如何把纹理坐标映射到三角形上的。</p>
+<p><img alt="" src="../../img/01/06/tex_coords.png" /></p>
+<p>我们为三角形指定了3个纹理坐标点。如上图所示，我们希望三角形的左下角对应纹理的左下角，因此我们把三角形左下角顶点的纹理坐标设置为(0, 0)；三角形的上顶点对应于图片的上中位置所以我们把它的纹理坐标设置为(0.5, 1.0)；同理右下方的顶点设置为(1, 0)。我们只要给顶点着色器传递这三个纹理坐标就行了，接下来它们会被传片段着色器中，它会为每个片段进行纹理坐标的插值。</p>
+<p>纹理坐标看起来就像这样：</p>
+<pre><code class="language-c++">float texCoords[] = {
+    0.0f, 0.0f, // 左下角
+    1.0f, 0.0f, // 右下角
+    0.5f, 1.0f // 上中
+};
+</code></pre>
+<p>对纹理采样的解释非常宽松，它可以采用几种不同的插值方式。所以我们需要自己告诉OpenGL该怎样对纹理<strong>采样</strong>。</p>
+<h2 id="_2">纹理环绕方式</h2>
+<p>纹理坐标的范围通常是从(0, 0)到(1, 1)，那如果我们把纹理坐标设置在范围之外会发生什么？OpenGL默认的行为是重复这个纹理图像（我们基本上忽略浮点纹理坐标的整数部分），但OpenGL提供了更多的选择：</p>
+<table>
+<thead>
+<tr>
+<th>环绕方式</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><var>GL_REPEAT</var></td>
+<td>对纹理的默认行为。重复纹理图像。</td>
+</tr>
+<tr>
+<td><var>GL_MIRRORED_REPEAT</var></td>
+<td>和<var>GL_REPEAT</var>一样，但每次重复图片是镜像放置的。</td>
+</tr>
+<tr>
+<td><var>GL_CLAMP_TO_EDGE</var></td>
+<td>纹理坐标会被约束在0到1之间，超出的部分会重复纹理坐标的边缘，产生一种边缘被拉伸的效果。</td>
+</tr>
+<tr>
+<td><var>GL_CLAMP_TO_BORDER</var></td>
+<td>超出的坐标为用户指定的边缘颜色。</td>
+</tr>
+</tbody>
+</table>
+<p>当纹理坐标超出默认范围时，每个选项都有不同的视觉效果输出。我们来看看这些纹理图像的例子：</p>
+<p><img alt="" src="../../img/01/06/texture_wrapping.png" /></p>
+<p>前面提到的每个选项都可以使用<fun>glTexParameter*</fun>函数对单独的一个坐标轴设置（<code>s</code>、<code>t</code>（如果是使用3D纹理那么还有一个<code>r</code>）它们和<code>x</code>、<code>y</code>、<code>z</code>是等价的）：</p>
+<pre><code class="language-c++">glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+</code></pre>
+<p>第一个参数指定了纹理目标；我们使用的是2D纹理，因此纹理目标是<var>GL_TEXTURE_2D</var>。第二个参数需要我们指定设置的选项与应用的纹理轴。我们打算配置的是<code>WRAP</code>选项，并且指定<code>S</code>和<code>T</code>轴。最后一个参数需要我们传递一个环绕方式(Wrapping)，在这个例子中OpenGL会给当前激活的纹理设定纹理环绕方式为<var>GL_MIRRORED_REPEAT</var>。</p>
+<p>如果我们选择<var>GL_CLAMP_TO_BORDER</var>选项，我们还需要指定一个边缘的颜色。这需要使用<fun>glTexParameter</fun>函数的<code>fv</code>后缀形式，用<var>GL_TEXTURE_BORDER_COLOR</var>作为它的选项，并且传递一个float数组作为边缘的颜色值：</p>
+<pre><code class="language-c++">float borderColor[] = { 1.0f, 1.0f, 0.0f, 1.0f };
+glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
+</code></pre>
+<h2 id="_3">纹理过滤</h2>
+<p>纹理坐标不依赖于分辨率(Resolution)，它可以是任意浮点值，所以OpenGL需要知道怎样将纹理像素(Texture Pixel，也叫Texel，译注1)映射到纹理坐标。当你有一个很大的物体但是纹理的分辨率很低的时候这就变得很重要了。你可能已经猜到了，OpenGL也有对于<def>纹理过滤</def>(Texture Filtering)的选项。纹理过滤有很多个选项，但是现在我们只讨论最重要的两种：<var>GL_NEAREST</var>和<var>GL_LINEAR</var>。</p>
+<div class="admonition note">
+<p class="admonition-title">译注1</p>
+<p>Texture Pixel也叫Texel，你可以想象你打开一张<code>.jpg</code>格式图片，不断放大你会发现它是由无数像素点组成的，这个点就是纹理像素；注意不要和纹理坐标搞混，纹理坐标是你给模型顶点设置的那个数组，OpenGL以这个顶点的纹理坐标数据去查找纹理图像上的像素，然后进行采样提取纹理像素的颜色。</p>
+</div>
+<p><var>GL_NEAREST</var>（也叫<def>邻近过滤</def>，Nearest Neighbor Filtering）是OpenGL默认的纹理过滤方式。当设置为<var>GL_NEAREST</var>的时候，OpenGL会选择中心点最接近纹理坐标的那个像素。下图中你可以看到四个像素，加号代表纹理坐标。左上角那个纹理像素的中心距离纹理坐标最近，所以它会被选择为样本颜色：</p>
+<p><img alt="" src="../../img/01/06/filter_nearest.png" /></p>
+<p><var>GL_LINEAR</var>（也叫<def>线性过滤</def>，(Bi)linear Filtering）它会基于纹理坐标附近的纹理像素，计算出一个插值，近似出这些纹理像素之间的颜色。一个纹理像素的中心距离纹理坐标越近，那么这个纹理像素的颜色对最终的样本颜色的贡献越大。下图中你可以看到返回的颜色是邻近像素的混合色：</p>
+<p><img alt="" src="../../img/01/06/filter_linear.png" /></p>
+<p>那么这两种纹理过滤方式有怎样的视觉效果呢？让我们看看在一个很大的物体上应用一张低分辨率的纹理会发生什么吧（纹理被放大了，每个纹理像素都能看到）：</p>
+<p><img alt="" src="../../img/01/06/texture_filtering.png" /></p>
+<p><var>GL_NEAREST</var>产生了颗粒状的图案，我们能够清晰看到组成纹理的像素，而<var>GL_LINEAR</var>能够产生更平滑的图案，很难看出单个的纹理像素。<var>GL_LINEAR</var>可以产生更真实的输出，但有些开发者更喜欢8-bit风格，所以他们会用<var>GL_NEAREST</var>选项。</p>
+<p>当进行<def>放大</def>(Magnify)和<def>缩小</def>(Minify)操作的时候可以设置纹理过滤的选项，比如你可以在纹理被缩小的时候使用邻近过滤，被放大时使用线性过滤。我们需要使用<fun>glTexParameter*</fun>函数为放大和缩小指定过滤方式。这段代码看起来会和纹理环绕方式的设置很相似：</p>
+<pre><code class="language-c++">glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+</code></pre>
+<h3 id="_4">多级渐远纹理</h3>
+<p>想象一下，假设我们有一个包含着上千物体的大房间，每个物体上都有纹理。有些物体会很远，但其纹理会拥有与近处物体同样高的分辨率。由于远处的物体可能只产生很少的片段，OpenGL从高分辨率纹理中为这些片段获取正确的颜色值就很困难，因为它需要对一个跨过纹理很大部分的片段只拾取一个纹理颜色。在小物体上这会产生不真实的感觉，更不用说对它们使用高分辨率纹理浪费内存的问题了。</p>
+<p>OpenGL使用一种叫做<def>多级渐远纹理</def>(Mipmap)的概念来解决这个问题，它简单来说就是一系列的纹理图像，后一个纹理图像是前一个的二分之一。多级渐远纹理背后的理念很简单：距观察者的距离超过一定的阈值，OpenGL会使用不同的多级渐远纹理，即最适合物体的距离的那个。由于距离远，解析度不高也不会被用户注意到。同时，多级渐远纹理另一加分之处是它的性能非常好。让我们看一下多级渐远纹理是什么样子的：</p>
+<p><img alt="" src="../../img/01/06/mipmaps.png" /></p>
+<p>手工为每个纹理图像创建一系列多级渐远纹理很麻烦，幸好OpenGL有一个<fun>glGenerateMipmaps</fun>函数，在创建完一个纹理后调用它OpenGL就会承担接下来的所有工作了。后面的教程中你会看到该如何使用它。</p>
+<p>在渲染中切换多级渐远纹理级别(Level)时，OpenGL在两个不同级别的多级渐远纹理层之间会产生不真实的生硬边界。就像普通的纹理过滤一样，切换多级渐远纹理级别时你也可以在两个不同多级渐远纹理级别之间使用<var>NEAREST</var>和<var>LINEAR</var>过滤。为了指定不同多级渐远纹理级别之间的过滤方式，你可以使用下面四个选项中的一个代替原有的过滤方式：</p>
+<table>
+<thead>
+<tr>
+<th>过滤方式</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><var>GL_NEAREST_MIPMAP_NEAREST</var></td>
+<td>使用最邻近的多级渐远纹理来匹配像素大小，并使用邻近插值进行纹理采样</td>
+</tr>
+<tr>
+<td><var>GL_LINEAR_MIPMAP_NEAREST</var></td>
+<td>使用最邻近的多级渐远纹理级别，并使用线性插值进行采样</td>
+</tr>
+<tr>
+<td><var>GL_NEAREST_MIPMAP_LINEAR</var></td>
+<td>在两个最匹配像素大小的多级渐远纹理之间进行线性插值，使用邻近插值进行采样</td>
+</tr>
+<tr>
+<td><var>GL_LINEAR_MIPMAP_LINEAR</var></td>
+<td>在两个邻近的多级渐远纹理之间使用线性插值，并使用线性插值进行采样</td>
+</tr>
+</tbody>
+</table>
+<p>就像纹理过滤一样，我们可以使用<fun>glTexParameteri</fun>将过滤方式设置为前面四种提到的方法之一：</p>
+<pre><code class="language-c++">glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+</code></pre>
+<p>一个常见的错误是，将放大过滤的选项设置为多级渐远纹理过滤选项之一。这样没有任何效果，因为多级渐远纹理主要是使用在纹理被缩小的情况下的：纹理放大不会使用多级渐远纹理，为放大过滤设置多级渐远纹理的选项会产生一个<var>GL_INVALID_ENUM</var>错误代码。</p>
+<h1 id="_5">加载与创建纹理</h1>
+<p>使用纹理之前要做的第一件事是把它们加载到我们的应用中。纹理图像可能被储存为各种各样的格式，每种都有自己的数据结构和排列，所以我们如何才能把这些图像加载到应用中呢？一个解决方案是选一个需要的文件格式，比如<code>.PNG</code>，然后自己写一个图像加载器，把图像转化为字节序列。写自己的图像加载器虽然不难，但仍然挺麻烦的，而且如果要支持更多文件格式呢？你就不得不为每种你希望支持的格式写加载器了。</p>
+<p>另一个解决方案也许是一种更好的选择，使用一个支持多种流行格式的图像加载库来为我们解决这个问题。比如说我们要用的<code>stb_image.h</code>库。</p>
+<h2 id="stb_imageh">stb_image.h</h2>
+<p><code>stb_image.h</code>是<a href="https://github.com/nothings">Sean Barrett</a>的一个非常流行的单头文件图像加载库，它能够加载大部分流行的文件格式，并且能够很简单得整合到你的工程之中。<code>stb_image.h</code>可以在<a href="https://github.com/nothings/stb/blob/master/stb_image.h">这里</a>下载。下载这一个头文件，将它以<code>stb_image.h</code>的名字加入你的工程，并另创建一个新的C++文件，输入以下代码：</p>
+<pre><code class="language-c++">#define STB_IMAGE_IMPLEMENTATION
+#include &quot;stb_image.h&quot;
+</code></pre>
+<p>通过定义<var>STB_IMAGE_IMPLEMENTATION</var>，预处理器会修改头文件，让其只包含相关的函数定义源码，等于是将这个头文件变为一个 <code>.cpp</code> 文件了。现在只需要在你的程序中包含<code>stb_image.h</code>并编译就可以了。</p>
+<p>下面的教程中，我们会使用一张<a href="../../img/01/06/container.jpg">木箱</a>的图片。要使用<code>stb_image.h</code>加载图片，我们需要使用它的<fun>stbi_load</fun>函数：</p>
+<pre><code class="language-c++">int width, height, nrChannels;
+unsigned char *data = stbi_load(&quot;container.jpg&quot;, &amp;width, &amp;height, &amp;nrChannels, 0);
+</code></pre>
+<p>这个函数首先接受一个图像文件的位置作为输入。接下来它需要三个<code>int</code>作为它的第二、第三和第四个参数，<code>stb_image.h</code>将会用图像的<strong>宽度</strong>、<strong>高度</strong>和<strong>颜色通道的个数</strong>填充这三个变量。我们之后生成纹理的时候会用到的图像的宽度和高度的。</p>
+<h2 id="_6">生成纹理</h2>
+<p>和之前生成的OpenGL对象一样，纹理也是使用ID引用的。让我们来创建一个：</p>
+<pre><code class="language-c++">unsigned int texture;
+glGenTextures(1, &amp;texture);
+</code></pre>
+<p><fun>glGenTextures</fun>函数首先需要输入生成纹理的数量，然后把它们储存在第二个参数的<code>unsigned int</code>数组中（我们的例子中只是单独的一个<code>unsigned int</code>），就像其他对象一样，我们需要绑定它，让之后任何的纹理指令都可以配置当前绑定的纹理：</p>
+<pre><code class="language-c++">glBindTexture(GL_TEXTURE_2D, texture);
+</code></pre>
+<p>现在纹理已经绑定了，我们可以使用前面载入的图片数据生成一个纹理了。纹理可以通过<fun>glTexImage2D</fun>来生成：</p>
+<pre><code class="language-c++">glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+glGenerateMipmap(GL_TEXTURE_2D);
+</code></pre>
+<p>函数很长，参数也不少，所以我们一个一个地讲解：</p>
+<ul>
+<li>第一个参数指定了纹理目标(Target)。设置为<var>GL_TEXTURE_2D</var>意味着会生成与当前绑定的纹理对象在同一个目标上的纹理（任何绑定到<var>GL_TEXTURE_1D</var>和<var>GL_TEXTURE_3D</var>的纹理不会受到影响）。</li>
+<li>第二个参数为纹理指定多级渐远纹理的级别，如果你希望单独手动设置每个多级渐远纹理的级别的话。这里我们填0，也就是基本级别。</li>
+<li>第三个参数告诉OpenGL我们希望把纹理储存为何种格式。我们的图像只有<code>RGB</code>值，因此我们也把纹理储存为<code>RGB</code>值。</li>
+<li>第四个和第五个参数设置最终的纹理的宽度和高度。我们之前加载图像的时候储存了它们，所以我们使用对应的变量。</li>
+<li>下个参数应该总是被设为<code>0</code>（历史遗留的问题）。</li>
+<li>第七第八个参数定义了源图的格式和数据类型。我们使用RGB值加载这个图像，并把它们储存为<code>char</code>(byte)数组，我们将会传入对应值。</li>
+<li>最后一个参数是真正的图像数据。</li>
+</ul>
+<p>当调用<fun>glTexImage2D</fun>时，当前绑定的纹理对象就会被附加上纹理图像。然而，目前只有基本级别(Base-level)的纹理图像被加载了，如果要使用多级渐远纹理，我们必须手动设置所有不同的图像（不断递增第二个参数）。或者，直接在生成纹理之后调用<fun>glGenerateMipmap</fun>。这会为当前绑定的纹理自动生成所有需要的多级渐远纹理。</p>
+<p>生成了纹理和相应的多级渐远纹理后，释放图像的内存是一个很好的习惯。</p>
+<pre><code class="language-c++">stbi_image_free(data);
+</code></pre>
+<p>生成一个纹理的过程应该看起来像这样：</p>
+<pre><code class="language-c++">unsigned int texture;
+glGenTextures(1, &amp;texture);
+glBindTexture(GL_TEXTURE_2D, texture);
+// 为当前绑定的纹理对象设置环绕、过滤方式
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);   
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+// 加载并生成纹理
+int width, height, nrChannels;
+unsigned char *data = stbi_load(&quot;container.jpg&quot;, &amp;width, &amp;height, &amp;nrChannels, 0);
+if (data)
+{
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+    glGenerateMipmap(GL_TEXTURE_2D);
+}
+else
+{
+    std::cout &lt;&lt; &quot;Failed to load texture&quot; &lt;&lt; std::endl;
+}
+stbi_image_free(data);
+</code></pre>
+<h2 id="_7">应用纹理</h2>
+<p>后面的这部分我们会使用<fun>glDrawElements</fun>绘制<a href="../04%20Hello%20Triangle/">「你好，三角形」</a>教程最后一部分的矩形。我们需要告知OpenGL如何采样纹理，所以我们必须使用纹理坐标更新顶点数据：</p>
+<pre><code class="language-c++">float vertices[] = {
+//     ---- 位置 ----       ---- 颜色 ----     - 纹理坐标 -
+     0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // 右上
+     0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // 右下
+    -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // 左下
+    -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // 左上
+};
+</code></pre>
+<p>由于我们添加了一个额外的顶点属性，我们必须告诉OpenGL我们新的顶点格式：</p>
+<p><img alt="" src="../../img/01/06/vertex_attribute_pointer_interleaved_textures.png" /></p>
+<pre><code class="language-c++">glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+glEnableVertexAttribArray(2);
+</code></pre>
+<p>注意，我们同样需要调整前面两个顶点属性的步长参数为<code>8 * sizeof(float)</code>。</p>
+<p>接着我们需要调整顶点着色器使其能够接受顶点坐标为一个顶点属性，并把坐标传给片段着色器：</p>
+<pre><code class="language-c++">#version 330 core
+layout (location = 0) in vec3 aPos;
+layout (location = 1) in vec3 aColor;
+layout (location = 2) in vec2 aTexCoord;
+
+out vec3 ourColor;
+out vec2 TexCoord;
+
+void main()
+{
+    gl_Position = vec4(aPos, 1.0);
+    ourColor = aColor;
+    TexCoord = aTexCoord;
+}
+</code></pre>
+<p>片段着色器应该接下来会把输出变量<code>TexCoord</code>作为输入变量。</p>
+<p>片段着色器也应该能访问纹理对象，但是我们怎样能把纹理对象传给片段着色器呢？GLSL有一个供纹理对象使用的内建数据类型，叫做<def>采样器</def>(Sampler)，它以纹理类型作为后缀，比如<code>sampler1D</code>、<code>sampler3D</code>，或在我们的例子中的<code>sampler2D</code>。我们可以简单声明一个<code>uniform sampler2D</code>把一个纹理添加到片段着色器中，稍后我们会把纹理赋值给这个uniform。</p>
+<pre><code class="language-c++">#version 330 core
+out vec4 FragColor;
+
+in vec3 ourColor;
+in vec2 TexCoord;
+
+uniform sampler2D ourTexture;
+
+void main()
+{
+    FragColor = texture(ourTexture, TexCoord);
+}
+</code></pre>
+<p>我们使用GLSL内建的<fun>texture</fun>函数来采样纹理的颜色，它第一个参数是纹理采样器，第二个参数是对应的纹理坐标。<fun>texture</fun>函数会使用之前设置的纹理参数对相应的颜色值进行采样。这个片段着色器的输出就是纹理的（插值）纹理坐标上的(过滤后的)颜色。</p>
+<p>现在只剩下在调用<fun>glDrawElements</fun>之前绑定纹理了，它会自动把纹理赋值给片段着色器的采样器：</p>
+<pre><code class="language-c++">glBindTexture(GL_TEXTURE_2D, texture);
+glBindVertexArray(VAO);
+glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+</code></pre>
+<p>如果你跟着这个教程正确地做完了，你会看到下面的图像：</p>
+<p><img alt="" src="../../img/01/06/textures2.png" /></p>
+<p>如果你的矩形是全黑或全白的你可能在哪儿做错了什么。检查你的着色器日志，并尝试对比一下<a href="https://learnopengl.com/code_viewer_gh.php?code=src/1.getting_started/4.1.textures/textures.cpp">源码</a>。</p>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>如果你的纹理代码不能正常工作或者显示是全黑，请继续阅读，并一直跟进我们的代码到最后的例子，它是应该能够工作的。在一些驱动中，必须要对每个采样器uniform都附加上纹理单元才可以，这个会在下面介绍。</p>
+</div>
+<p>我们还可以把得到的纹理颜色与顶点颜色混合，来获得更有趣的效果。我们只需把纹理颜色与顶点颜色在片段着色器中相乘来混合二者的颜色：</p>
+<pre><code class="language-c++">FragColor = texture(ourTexture, TexCoord) * vec4(ourColor, 1.0);
+</code></pre>
+<p>最终的效果应该是顶点颜色和纹理颜色的混合色：</p>
+<p><img alt="" src="../../img/01/06/textures_funky.png" /></p>
+<p>我猜你会说我们的箱子喜欢跳70年代的迪斯科。</p>
+<h2 id="_8">纹理单元</h2>
+<p>你可能会奇怪为什么<code>sampler2D</code>变量是个uniform，我们却不用<fun>glUniform</fun>给它赋值。使用<fun>glUniform1i</fun>，我们可以给纹理采样器分配一个位置值，这样的话我们能够在一个片段着色器中设置多个纹理。一个纹理的位置值通常称为一个<def>纹理单元</def>(Texture Unit)。一个纹理的默认纹理单元是0，它是默认的激活纹理单元，所以教程前面部分我们没有分配一个位置值。</p>
+<p>纹理单元的主要目的是让我们在着色器中可以使用多于一个的纹理。通过把纹理单元赋值给采样器，我们可以一次绑定多个纹理，只要我们首先激活对应的纹理单元。就像<fun>glBindTexture</fun>一样，我们可以使用<fun>glActiveTexture</fun>激活纹理单元，传入我们需要使用的纹理单元：</p>
+<pre><code class="language-c++">glActiveTexture(GL_TEXTURE0); // 在绑定纹理之前先激活纹理单元
+glBindTexture(GL_TEXTURE_2D, texture);
+</code></pre>
+<p>激活纹理单元之后，接下来的<fun>glBindTexture</fun>函数调用会绑定这个纹理到当前激活的纹理单元，纹理单元<var>GL_TEXTURE0</var>默认总是被激活，所以我们在前面的例子里当我们使用<code>glBindTexture</code>的时候，无需激活任何纹理单元。</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>OpenGL至少保证有16个纹理单元供你使用，也就是说你可以激活从<var>GL_TEXTURE0</var>到<var>GL_TEXTRUE15</var>。它们都是按顺序定义的，所以我们也可以通过<var>GL_TEXTURE0 + 8</var>的方式获得<var>GL_TEXTURE8</var>，这在当我们需要循环一些纹理单元的时候会很有用。</p>
+</div>
+<p>我们仍然需要编辑片段着色器来接收另一个采样器。这应该相对来说非常直接了：</p>
+<pre><code class="language-c++">#version 330 core
+...
+
+uniform sampler2D texture1;
+uniform sampler2D texture2;
+
+void main()
+{
+    FragColor = mix(texture(texture1, TexCoord), texture(texture2, TexCoord), 0.2);
+}
+</code></pre>
+<p>最终输出颜色现在是两个纹理的结合。GLSL内建的<fun>mix</fun>函数需要接受两个值作为参数，并对它们根据第三个参数进行线性插值。如果第三个值是<code>0.0</code>，它会返回第一个输入；如果是<code>1.0</code>，会返回第二个输入值。<code>0.2</code>会返回<code>80%</code>的第一个输入颜色和<code>20%</code>的第二个输入颜色，即返回两个纹理的混合色。</p>
+<p>我们现在需要载入并创建另一个纹理；你应该对这些步骤很熟悉了。记得创建另一个纹理对象，载入图片，使用<fun>glTexImage2D</fun>生成最终纹理。对于第二个纹理我们使用一张<a href="../../img/01/06/awesomeface.png">你学习OpenGL时的面部表情</a>图片。</p>
+<p>为了使用第二个纹理（以及第一个），我们必须改变一点渲染流程，先绑定两个纹理到对应的纹理单元，然后定义哪个uniform采样器对应哪个纹理单元：</p>
+<pre><code class="language-c++">glActiveTexture(GL_TEXTURE0);
+glBindTexture(GL_TEXTURE_2D, texture1);
+glActiveTexture(GL_TEXTURE1);
+glBindTexture(GL_TEXTURE_2D, texture2);
+
+glBindVertexArray(VAO);
+glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+</code></pre>
+<p>我们还要通过使用<fun>glUniform1i</fun>设置每个采样器的方式告诉OpenGL每个着色器采样器属于哪个纹理单元。我们只需要设置一次即可，所以这个会放在渲染循环的前面：</p>
+<pre><code class="language-c++">ourShader.use(); // 不要忘记在设置uniform变量之前激活着色器程序！
+glUniform1i(glGetUniformLocation(ourShader.ID, &quot;texture1&quot;), 0); // 手动设置
+ourShader.setInt(&quot;texture2&quot;, 1); // 或者使用着色器类设置
+
+while(...) 
+{
+    [...]
+}
+</code></pre>
+<p>通过使用<fun>glUniform1i</fun>设置采样器，我们保证了每个uniform采样器对应着正确的纹理单元。你应该能得到下面的结果：</p>
+<p><img alt="" src="../../img/01/06/textures_combined.png" /></p>
+<p>你可能注意到纹理上下颠倒了！这是因为OpenGL要求y轴<code>0.0</code>坐标是在图片的底部的，但是图片的y轴<code>0.0</code>坐标通常在顶部。很幸运，<code>stb_image.h</code>能够在图像加载时帮助我们翻转y轴，只需要在加载任何图像前加入以下语句即可：</p>
+<pre><code class="language-c++">stbi_set_flip_vertically_on_load(true);
+</code></pre>
+<p>在让<code>stb_image.h</code>在加载图片时翻转y轴之后你就应该能够获得下面的结果了：</p>
+<p><img alt="" src="../../img/01/06/textures_combined2.png" /></p>
+<p>如果你看到了一个开心的箱子，你就做对了。你可以对比一下<a href="https://learnopengl.com/code_viewer_gh.php?code=src/1.getting_started/4.2.textures_combined/textures_combined.cpp">源代码</a>。</p>
+<h2 id="_9">练习</h2>
+<p>为了更熟练地使用纹理，建议在继续之后的学习之前做完这些练习：</p>
+<ul>
+<li>修改片段着色器，<strong>仅</strong>让笑脸图案朝另一个方向看，<a href="https://learnopengl.com/code_viewer_gh.php?code=src/1.getting_started/4.3.textures_exercise1/textures_exercise1.cpp">参考解答</a></li>
+<li>尝试用不同的纹理环绕方式，设定一个从<code>0.0f</code>到<code>2.0f</code>范围内的（而不是原来的<code>0.0f</code>到<code>1.0f</code>）纹理坐标。试试看能不能在箱子的角落放置4个笑脸：<a href="https://learnopengl.com/code_viewer_gh.php?code=src/1.getting_started/4.4.textures_exercise2/textures_exercise2.cpp">参考解答</a>，<a href="../../img/01/06/textures_exercise2.png">结果</a>。记得一定要试试其它的环绕方式。</li>
+<li>尝试在矩形上只显示纹理图像的中间一部分，修改纹理坐标，达到能看见单个的像素的效果。尝试使用<var>GL_NEAREST</var>的纹理过滤方式让像素显示得更清晰：<a href="https://learnopengl.com/code_viewer_gh.php?code=src/1.getting_started/4.5.textures_exercise3/textures_exercise3.cpp">参考解答</a></li>
+<li>使用一个uniform变量作为<fun>mix</fun>函数的第三个参数来改变两个纹理可见度，使用上和下键来改变箱子或笑脸的可见度：<a href="https://learnopengl.com/code_viewer_gh.php?code=src/1.getting_started/4.6.textures_exercise4/textures_exercise4.cpp">参考解答</a>。</li>
+</ul>
+
+<div id="disqus_thread"></div>
+<script>
+    (function() {
+        var d = document, s = d.createElement('script');
+
+        s.src = '//learnopengl-cn.disqus.com/embed.js';
+
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>请启用JavaScript以浏览<a href="https://disqus.com/?ref_noscript" rel="nofollow">Disqus评论。</a></noscript></div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            
+            <center>Powered by <a href="http://www.mkdocs.org/">MkDocs</a> and <a href="http://bootswatch.com/yeti/">Yeti</a></center>
+        </footer>
+
+        <script src="../../js/jquery-1.10.2.min.js"></script>
+        <script src="../../js/bootstrap-3.0.3.min.js"></script>
+        <script src="../../js/highlight.pack.js"></script>
+        <script>var base_url = '../..';</script>
+        <script src="../../js/base.js"></script>
+        <script src="../../mathjax/MathJax.js?config=TeX-AMS_HTML"></script>
+        <script src="../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">关闭</span></button>
+                        <h4 class="modal-title" id="exampleModalLabel">搜索</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            请在下面输入你要搜索的文本（仅支持英文）：
+                        </p>
+                        <form role="form">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="搜索..." id="mkdocs-search-query">
+                            </div>
+                        </form>
+                        <div id="mkdocs-search-results"></div>
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

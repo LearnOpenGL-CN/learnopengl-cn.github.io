@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="http://learnopengl.com 系列教程的简体中文翻译">
+        
+        <link rel="canonical" href="https://learnopengl-cn.github.io/01%20Getting%20started/08%20Coordinate%20Systems/">
+        <link rel="shortcut icon" href="../../img/favicon.ico">
+
+	<title>坐标系统 - LearnOpenGL CN</title>
+
+        <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../../css/font-awesome-4.0.3.css" rel="stylesheet">
+        <link rel="stylesheet" href="../../css/highlight.css">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link href="../../css/style.css" rel="stylesheet">
+        <link href="../../css/admonition_fix.css" rel="stylesheet">
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+        <script>
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+          ga('create', 'UA-80323542-1', 'auto');
+          ga('send', 'pageview');
+        </script>
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <!-- Main title -->
+            <a class="navbar-brand" href="../..">LearnOpenGL CN</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            <!-- Main navigation -->
+            <ul class="nav navbar-nav">
+            
+            
+                <li >
+                    <a href="../..">主页</a>
+                </li>
+            
+            
+            
+                <li class="dropdown active">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">目录 <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        
+<li >
+    <a href="../../intro/">简介</a>
+</li>
+
+                    
+                        
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">入门</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../01%20OpenGL/">OpenGL</a>
+</li>
+
+        
+            
+<li >
+    <a href="../02%20Creating%20a%20window/">创建窗口</a>
+</li>
+
+        
+            
+<li >
+    <a href="../03%20Hello%20Window/">你好，窗口</a>
+</li>
+
+        
+            
+<li >
+    <a href="../04%20Hello%20Triangle/">你好，三角形</a>
+</li>
+
+        
+            
+<li >
+    <a href="../05%20Shaders/">着色器</a>
+</li>
+
+        
+            
+<li >
+    <a href="../06%20Textures/">纹理</a>
+</li>
+
+        
+            
+<li >
+    <a href="../07%20Transformations/">变换</a>
+</li>
+
+        
+            
+<li class="active">
+    <a href="./">坐标系统</a>
+</li>
+
+        
+            
+<li >
+    <a href="../09%20Camera/">摄像机</a>
+</li>
+
+        
+            
+<li >
+    <a href="../10%20Review/">复习</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                    
+                        
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">光照</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../02%20Lighting/01%20Colors/">颜色</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../02%20Lighting/02%20Basic%20Lighting/">基础光照</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../02%20Lighting/03%20Materials/">材质</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../02%20Lighting/04%20Lighting%20maps/">光照贴图</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../02%20Lighting/05%20Light%20casters/">投光物</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../02%20Lighting/06%20Multiple%20lights/">多光源</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../02%20Lighting/07%20Review/">复习</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                    
+                        
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">模型加载</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../03%20Model%20Loading/01%20Assimp/">Assimp</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../03%20Model%20Loading/02%20Mesh/">网格</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../03%20Model%20Loading/03%20Model/">模型</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                    
+                        
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">高级OpenGL</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../04%20Advanced%20OpenGL/01%20Depth%20testing/">深度测试</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../04%20Advanced%20OpenGL/02%20Stencil%20testing/">模板测试</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../04%20Advanced%20OpenGL/03%20Blending/">混合</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../04%20Advanced%20OpenGL/04%20Face%20culling/">面剔除</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../04%20Advanced%20OpenGL/05%20Framebuffers/">帧缓冲</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../04%20Advanced%20OpenGL/06%20Cubemaps/">立方体贴图</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../04%20Advanced%20OpenGL/07%20Advanced%20Data/">高级数据</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../04%20Advanced%20OpenGL/08%20Advanced%20GLSL/">高级GLSL</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../04%20Advanced%20OpenGL/09%20Geometry%20Shader/">几何着色器</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../04%20Advanced%20OpenGL/10%20Instancing/">实例化</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../04%20Advanced%20OpenGL/11%20Anti%20Aliasing/">抗锯齿</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                    
+                        
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">高级光照</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../05%20Advanced%20Lighting/01%20Advanced%20Lighting/">高级光照</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../05%20Advanced%20Lighting/02%20Gamma%20Correction/">Gamma校正</a>
+</li>
+
+        
+            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">阴影</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../05%20Advanced%20Lighting/03%20Shadows/01%20Shadow%20Mapping/">阴影映射</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../05%20Advanced%20Lighting/03%20Shadows/02%20Point%20Shadows/">点阴影</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../05%20Advanced%20Lighting/03%20Shadows/03%20CSM/">CSM</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+        
+            
+<li >
+    <a href="../../05%20Advanced%20Lighting/04%20Normal%20Mapping/">法线贴图</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../05%20Advanced%20Lighting/05%20Parallax%20Mapping/">视差贴图</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../05%20Advanced%20Lighting/06%20HDR/">HDR</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../05%20Advanced%20Lighting/07%20Bloom/">泛光</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../05%20Advanced%20Lighting/08%20Deferred%20Shading/">延迟着色法</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../05%20Advanced%20Lighting/09%20SSAO/">SSAO</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                    
+                        
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">PBR</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../07%20PBR/01%20Theory/">理论</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../07%20PBR/02%20Lighting/">光照</a>
+</li>
+
+        
+            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">IBL</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../07%20PBR/03%20IBL/01%20Diffuse%20irradiance/">漫反射辐照</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../07%20PBR/03%20IBL/02%20Specular%20IBL/">镜面IBL</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+        
+    </ul>
+  </li>
+
+                    
+                        
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">实战</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../06%20In%20Practice/01%20Debugging/">调试</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../06%20In%20Practice/02%20Text%20Rendering/">文本渲染</a>
+</li>
+
+        
+            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">2D游戏</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../06%20In%20Practice/2D-Game/01%20Breakout/">Breakout</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../06%20In%20Practice/2D-Game/02%20Setting%20up/">准备工作</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../06%20In%20Practice/2D-Game/03%20Rendering%20Sprites/">渲染精灵</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../06%20In%20Practice/2D-Game/04%20Levels/">关卡</a>
+</li>
+
+        
+            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">碰撞</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../06%20In%20Practice/2D-Game/05%20Collisions/01%20Ball/">球</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../06%20In%20Practice/2D-Game/05%20Collisions/02%20Collision%20detection/">碰撞检测</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../06%20In%20Practice/2D-Game/05%20Collisions/03%20Collision%20resolution/">碰撞处理</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+        
+            
+<li >
+    <a href="../../06%20In%20Practice/2D-Game/06%20Particles/">粒子</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../06%20In%20Practice/2D-Game/07%20Postprocessing/">后期处理</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../06%20In%20Practice/2D-Game/08%20Powerups/">道具</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../06%20In%20Practice/2D-Game/09%20Audio/">音效</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../06%20In%20Practice/2D-Game/10%20Render%20Text/">渲染文本</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../06%20In%20Practice/2D-Game/11%20Final%20thoughts/">结语</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+        
+    </ul>
+  </li>
+
+                    
+                        
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">Guest Articles</a>
+    <ul class="dropdown-menu">
+        
+            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">2020</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../08%20Guest%20Articles/2020/01%20Skeletal%20Animation/">骨骼动画</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+        
+            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" class="nav-title">2022</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../08%20Guest%20Articles/2022/03%20Area%20Lights/">区域光</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+        
+    </ul>
+  </li>
+
+                    
+                        
+<li >
+    <a href="../../legacy/">历史存档</a>
+</li>
+
+                    
+                    </ul>
+                </li>
+            
+            
+            
+                <li >
+                    <a href="../../code_repo/">代码仓库</a>
+                </li>
+            
+            
+            </ul>
+
+            <!-- Search, Navigation and Repo links -->
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                        <i class="fa fa-search"></i> 搜索
+                    </a>
+                </li>
+                <li >
+                    <a rel="next" href="../07%20Transformations/">
+                        <i class="fa fa-arrow-left"></i> 上一节
+                    </a>
+                </li>
+                <li >
+                    <a rel="prev" href="../09%20Camera/">
+                        下一节 <i class="fa fa-arrow-right"></i>
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="https://github.com/LearnOpenGL-CN/LearnOpenGL-CN">
+                        
+                            <i class="fa fa-github"></i>
+                        
+                        GitHub
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="https://www.paypal.me/learnopengl/">
+                            <img class="paypal" src="/img/paypal_logo.png" alt="">
+                        支持原作者
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+        <div class="container">
+            <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#_1">坐标系统</a></li>
+        
+            <li><a href="#_2">概述</a></li>
+        
+            <li><a href="#_3">局部空间</a></li>
+        
+            <li><a href="#_4">世界空间</a></li>
+        
+            <li><a href="#_5">观察空间</a></li>
+        
+            <li><a href="#_6">裁剪空间</a></li>
+        
+            <li><a href="#_9">把它们都组合到一起</a></li>
+        
+    
+        <li class="main "><a href="#3d">进入3D</a></li>
+        
+            <li><a href="#3d_1">更加 3D</a></li>
+        
+            <li><a href="#_11">练习</a></li>
+        
+    
+    </ul>
+</div></div>
+            <div class="col-md-9" role="main">
+
+<h1 id="_1">坐标系统</h1>
+<table>
+<thead>
+<tr>
+<th>原文</th>
+<th><a href="http://learnopengl.com/#!Getting-started/Coordinate-Systems">Coordinate Systems</a></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>作者</td>
+<td>JoeyDeVries</td>
+</tr>
+<tr>
+<td>翻译</td>
+<td>linkoln, Geequlim, Krasjet, <a href="https://github.com/blumia/">BLumia</a></td>
+</tr>
+<tr>
+<td>校对</td>
+<td>暂未校对</td>
+</tr>
+</tbody>
+</table>
+<p>在上一个教程中，我们学习了如何有效地利用矩阵的变换来对所有顶点进行变换。OpenGL希望在每次顶点着色器运行后，我们可见的所有顶点都为标准化设备坐标(Normalized Device Coordinate, NDC)。也就是说，每个顶点的<strong>x</strong>，<strong>y</strong>，<strong>z</strong>坐标都应该在<strong>-1.0</strong>到<strong>1.0</strong>之间，超出这个坐标范围的顶点都将不可见。我们通常会自己设定一个坐标的范围，之后再在顶点着色器中将这些坐标变换为标准化设备坐标。然后将这些标准化设备坐标传入光栅器(Rasterizer)，将它们变换为屏幕上的二维坐标或像素。</p>
+<p>将坐标变换为标准化设备坐标，接着再转化为屏幕坐标的过程通常是分步进行的，也就是类似于流水线那样子。在流水线中，物体的顶点在最终转化为屏幕坐标之前还会被变换到多个坐标系统(Coordinate System)。将物体的坐标变换到几个<strong>过渡</strong>坐标系(Intermediate Coordinate System)的优点在于，在这些特定的坐标系统中，一些操作或运算更加方便和容易，这一点很快就会变得很明显。对我们来说比较重要的总共有5个不同的坐标系统：</p>
+<ul>
+<li>局部空间(Local Space，或者称为物体空间(Object Space))</li>
+<li>世界空间(World Space)</li>
+<li>观察空间(View Space，或者称为视觉空间(Eye Space))</li>
+<li>裁剪空间(Clip Space)</li>
+<li>屏幕空间(Screen Space)</li>
+</ul>
+<p>这就是一个顶点在最终被转化为片段之前需要经历的所有不同状态。</p>
+<p>你现在可能会对什么是坐标空间，什么是坐标系统感到非常困惑，所以我们将用一种更加通俗的方式来解释它们。下面，我们将显示一个整体的图片，之后我们会讲解每个空间的具体功能。</p>
+<h2 id="_2">概述</h2>
+<p>为了将坐标从一个坐标系变换到另一个坐标系，我们需要用到几个变换矩阵，最重要的几个分别是<def>模型</def>(Model)、<def>观察</def>(View)、<def>投影</def>(Projection)三个矩阵。我们的顶点坐标起始于<def>局部空间</def>(Local Space)，在这里它称为<def>局部坐标</def>(Local Coordinate)，它在之后会变为<def>世界坐标</def>(World Coordinate)，<def>观察坐标</def>(View Coordinate)，<def>裁剪坐标</def>(Clip Coordinate)，并最后以<def>屏幕坐标</def>(Screen Coordinate)的形式结束。下面的这张图展示了整个流程以及各个变换过程做了什么：</p>
+<p><img alt="coordinate_systems" src="../../img/01/08/coordinate_systems.png" /></p>
+<ol>
+<li>局部坐标是对象相对于局部原点的坐标，也是物体起始的坐标。</li>
+<li>下一步是将局部坐标变换为世界空间坐标，世界空间坐标是处于一个更大的空间范围的。这些坐标相对于世界的全局原点，它们会和其它物体一起相对于世界的原点进行摆放。</li>
+<li>接下来我们将世界坐标变换为观察空间坐标，使得每个坐标都是从摄像机或者说观察者的角度进行观察的。</li>
+<li>坐标到达观察空间之后，我们需要将其投影到裁剪坐标。裁剪坐标会被处理至-1.0到1.0的范围内，并判断哪些顶点将会出现在屏幕上。</li>
+<li>最后，我们将裁剪坐标变换为屏幕坐标，我们将使用一个叫做<def>视口变换</def>(Viewport Transform)的过程。视口变换将位于-1.0到1.0范围的坐标变换到由<fun>glViewport</fun>函数所定义的坐标范围内。最后变换出来的坐标将会送到光栅器，将其转化为片段。</li>
+</ol>
+<p>你可能已经大致了解了每个坐标空间的作用。我们之所以将顶点变换到各个不同的空间的原因是有些操作在特定的坐标系统中才有意义且更方便。例如，当需要对物体进行修改的时候，在局部空间中来操作会更说得通；如果要对一个物体做出一个相对于其它物体位置的操作时，在世界坐标系中来做这个才更说得通，等等。如果我们愿意，我们也可以定义一个直接从局部空间变换到裁剪空间的变换矩阵，但那样会失去很多灵活性。</p>
+<p>接下来我们将要更仔细地讨论各个坐标系统。</p>
+<h2 id="_3">局部空间</h2>
+<p>局部空间是指物体所在的坐标空间，即对象最开始所在的地方。想象你在一个建模软件（比如说Blender）中创建了一个立方体。你创建的立方体的原点有可能位于(0, 0, 0)，即便它有可能最后在程序中处于完全不同的位置。甚至有可能你创建的所有模型都以(0, 0, 0)为初始位置（译注：然而它们会最终出现在世界的不同位置）。所以，你的模型的所有顶点都是在<strong>局部</strong>空间中：它们相对于你的物体来说都是局部的。</p>
+<p>我们一直使用的那个箱子的顶点是被设定在-0.5到0.5的坐标范围中，(0, 0)是它的原点。这些都是局部坐标。</p>
+<h2 id="_4">世界空间</h2>
+<p>如果我们将我们所有的物体导入到程序当中，它们有可能会全挤在世界的原点(0, 0, 0)上，这并不是我们想要的结果。我们想为每一个物体定义一个位置，从而能在更大的世界当中放置它们。世界空间中的坐标正如其名：是指顶点相对于（游戏）世界的坐标。如果你希望将物体分散在世界上摆放（特别是非常真实的那样），这就是你希望物体变换到的空间。物体的坐标将会从局部变换到世界空间；该变换是由<def>模型</def>矩阵(Model Matrix)实现的。</p>
+<p>模型矩阵是一种变换矩阵，它能通过对物体进行位移、缩放、旋转来将它置于它本应该在的位置或朝向。你可以将它想像为变换一个房子，你需要先将它缩小（它在局部空间中太大了），并将其位移至郊区的一个小镇，然后在y轴上往左旋转一点以搭配附近的房子。你也可以把上一节将箱子到处摆放在场景中用的那个矩阵大致看作一个模型矩阵；我们将箱子的局部坐标变换到场景/世界中的不同位置。</p>
+<h2 id="_5">观察空间</h2>
+<p>观察空间经常被人们称之OpenGL的<def>摄像机</def>(Camera)（所以有时也称为<def>摄像机空间</def>(Camera Space)或<def>视觉空间</def>(Eye Space)）。观察空间是将世界空间坐标转化为用户视野前方的坐标而产生的结果。因此观察空间就是从摄像机的视角所观察到的空间。而这通常是由一系列的位移和旋转的组合来完成，平移/旋转场景从而使得特定的对象被变换到摄像机的前方。这些组合在一起的变换通常存储在一个<def>观察矩阵</def>(View Matrix)里，它被用来将世界坐标变换到观察空间。在下一节中我们将深入讨论如何创建一个这样的观察矩阵来模拟一个摄像机。</p>
+<h2 id="_6">裁剪空间</h2>
+<p>在一个顶点着色器运行的最后，OpenGL期望所有的坐标都能落在一个特定的范围内，且任何在这个范围之外的点都应该被<def>裁剪掉</def>(Clipped)。被裁剪掉的坐标就会被忽略，所以剩下的坐标就将变为屏幕上可见的片段。这也就是<def>裁剪空间</def>(Clip Space)名字的由来。</p>
+<p>因为将所有可见的坐标都指定在-1.0到1.0的范围内不是很直观，所以我们会指定自己的坐标集(Coordinate Set)并将它变换回标准化设备坐标系，就像OpenGL期望的那样。</p>
+<p>为了将顶点坐标从观察变换到裁剪空间，我们需要定义一个<def>投影矩阵</def>(Projection Matrix)，它指定了一个范围的坐标，比如在每个维度上的-1000到1000。投影矩阵接着会将在这个指定的范围内的坐标变换为标准化设备坐标的范围(-1.0, 1.0)。所有在范围外的坐标不会被映射到在-1.0到1.0的范围之间，所以会被裁剪掉。在上面这个投影矩阵所指定的范围内，坐标(1250, 500, 750)将是不可见的，这是由于它的x坐标超出了范围，它被转化为一个大于1.0的标准化设备坐标，所以被裁剪掉了。</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>如果只是图元(Primitive)，例如三角形，的一部分超出了<def>裁剪体积</def>(Clipping Volume)，则OpenGL会重新构建这个三角形为一个或多个三角形让其能够适合这个裁剪范围。</p>
+</div>
+<p>由投影矩阵创建的<strong>观察箱</strong>(Viewing Box)被称为<def>平截头体</def>(Frustum)，每个出现在平截头体范围内的坐标都会最终出现在用户的屏幕上。将特定范围内的坐标转化到标准化设备坐标系的过程（而且它很容易被映射到2D观察空间坐标）被称之为<def>投影</def>(Projection)，因为使用投影矩阵能将3D坐标<def>投影</def>(Project)到很容易映射到2D的标准化设备坐标系中。</p>
+<p>一旦所有顶点被变换到裁剪空间，最终的操作——<def>透视除法</def>(Perspective Division)将会执行，在这个过程中我们将位置向量的x，y，z分量分别除以向量的齐次w分量；透视除法是将4D裁剪空间坐标变换为3D标准化设备坐标的过程。这一步会在每一个顶点着色器运行的最后被自动执行。</p>
+<p>在这一阶段之后，最终的坐标将会被映射到屏幕空间中（使用<fun>glViewport</fun>中的设定），并被变换成片段。</p>
+<p>将观察坐标变换为裁剪坐标的投影矩阵可以为两种不同的形式，每种形式都定义了不同的平截头体。我们可以选择创建一个<def>正射</def>投影矩阵(Orthographic Projection Matrix)或一个<def>透视</def>投影矩阵(Perspective Projection Matrix)。</p>
+<h3 id="_7">正射投影</h3>
+<p>正射投影矩阵定义了一个类似立方体的平截头箱，它定义了一个裁剪空间，在这空间之外的顶点都会被裁剪掉。创建一个正射投影矩阵需要指定可见平截头体的宽、高和长度。在使用正射投影矩阵变换至裁剪空间之后处于这个平截头体内的所有坐标将不会被裁剪掉。它的平截头体看起来像一个容器：</p>
+<p><img alt="orthographic projection frustum" src="../../img/01/08/orthographic_frustum.png" /></p>
+<p>上面的平截头体定义了可见的坐标，它由由宽、高、<def>近</def>(Near)平面和<def>远</def>(Far)平面所指定。任何出现在近平面之前或远平面之后的坐标都会被裁剪掉。正射平截头体直接将平截头体内部的所有坐标映射为标准化设备坐标，因为每个向量的w分量都没有进行改变；如果w分量等于1.0，透视除法则不会改变这个坐标。</p>
+<p>要创建一个正射投影矩阵，我们可以使用GLM的内置函数<code>glm::ortho</code>：</p>
+<pre><code class="language-c++">glm::ortho(0.0f, 800.0f, 0.0f, 600.0f, 0.1f, 100.0f);
+</code></pre>
+<p>前两个参数指定了平截头体的左右坐标，第三和第四参数指定了平截头体的底部和顶部。通过这四个参数我们定义了近平面和远平面的大小，然后第五和第六个参数则定义了近平面和远平面的距离。这个投影矩阵会将处于这些x，y，z值范围内的坐标变换为标准化设备坐标。</p>
+<p>正射投影矩阵直接将坐标映射到2D平面中，即你的屏幕，但实际上一个直接的投影矩阵会产生不真实的结果，因为这个投影没有将<def>透视</def>(Perspective)考虑进去。所以我们需要<def>透视投影</def>矩阵来解决这个问题。</p>
+<h3 id="_8">透视投影</h3>
+<p>如果你曾经体验过<strong>实际生活</strong>给你带来的景象，你就会注意到离你越远的东西看起来更小。这个奇怪的效果称之为<def>透视</def>(Perspective)。透视的效果在我们看一条无限长的高速公路或铁路时尤其明显，正如下面图片显示的那样：</p>
+<p><img alt="perspective" src="../../img/01/08/perspective.png" /></p>
+<p>正如你看到的那样，由于透视，这两条线在很远的地方看起来会相交。这正是透视投影想要模仿的效果，它是使用<def>透视投影矩阵</def>来完成的。这个投影矩阵将给定的平截头体范围映射到裁剪空间，除此之外还修改了每个顶点坐标的w值，从而使得离观察者越远的顶点坐标w分量越大。被变换到裁剪空间的坐标都会在-w到w的范围之间（任何大于这个范围的坐标都会被裁剪掉）。OpenGL要求所有可见的坐标都落在-1.0到1.0范围内，作为顶点着色器最后的输出，因此，一旦坐标在裁剪空间内之后，透视除法就会被应用到裁剪空间坐标上：</p>
+<p>
+<script type="math/tex; mode=display">
+out = \begin{pmatrix} x /w \\ y / w \\ z / w \end{pmatrix}
+</script>
+</p>
+<p>顶点坐标的每个分量都会除以它的w分量，距离观察者越远顶点坐标就会越小。这是也是w分量非常重要的另一个原因，它能够帮助我们进行透视投影。最后的结果坐标就是处于标准化设备空间中的。如果你对正射投影矩阵和透视投影矩阵是如何计算的很感兴趣（且不会对数学感到恐惧的话）我推荐这篇由Songho写的<a href="http://www.songho.ca/opengl/gl_projectionmatrix.html">文章</a>。</p>
+<p>在GLM中可以这样创建一个透视投影矩阵：</p>
+<pre><code class="language-c++">glm::mat4 proj = glm::perspective(glm::radians(45.0f), (float)width/(float)height, 0.1f, 100.0f);
+</code></pre>
+<p>同样，<code>glm::perspective</code>所做的其实就是创建了一个定义了可视空间的大<strong>平截头体</strong>，任何在这个平截头体以外的东西最后都不会出现在裁剪空间体积内，并且将会受到裁剪。一个透视平截头体可以被看作一个不均匀形状的箱子，在这个箱子内部的每个坐标都会被映射到裁剪空间上的一个点。下面是一张透视平截头体的图片：</p>
+<p><img alt=" perspective_frustum" src="../../img/01/08/perspective_frustum.png" /></p>
+<p>它的第一个参数定义了<def>fov</def>的值，它表示的是<def>视野</def>(Field of View)，并且设置了观察空间的大小。如果想要一个真实的观察效果，它的值通常设置为45.0f，但想要一个末日风格的结果你可以将其设置一个更大的值。第二个参数设置了宽高比，由视口的宽除以高所得。第三和第四个参数设置了平截头体的<strong>近</strong>和<strong>远</strong>平面。我们通常设置近距离为0.1f，而远距离设为100.0f。所有在近平面和远平面内且处于平截头体内的顶点都会被渲染。</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>当你把透视矩阵的 <em>near</em> 值设置太大时（如10.0f），OpenGL会将靠近摄像机的坐标（在0.0f和10.0f之间）都裁剪掉，这会导致一个你在游戏中很熟悉的视觉效果：在太过靠近一个物体的时候你的视线会直接穿过去。</p>
+</div>
+<p>当使用正射投影时，每一个顶点坐标都会直接映射到裁剪空间中而不经过任何精细的透视除法（它仍然会进行透视除法，只是w分量没有被改变（它保持为1），因此没有起作用）。因为正射投影没有使用透视，远处的物体不会显得更小，所以产生奇怪的视觉效果。由于这个原因，正射投影主要用于二维渲染以及一些建筑或工程的程序，在这些场景中我们更希望顶点不会被透视所干扰。某些如 <em>Blender</em> 等进行三维建模的软件有时在建模时也会使用正射投影，因为它在各个维度下都更准确地描绘了每个物体。下面你能够看到在Blender里面使用两种投影方式的对比：</p>
+<p><img alt="perspective_orthographic" src="../../img/01/08/perspective_orthographic.png" /></p>
+<p>你可以看到，使用透视投影的话，远处的顶点看起来比较小，而在正射投影中每个顶点距离观察者的距离都是一样的。</p>
+<h2 id="_9">把它们都组合到一起</h2>
+<p>我们为上述的每一个步骤都创建了一个变换矩阵：模型矩阵、观察矩阵和投影矩阵。一个顶点坐标将会根据以下过程被变换到裁剪坐标：</p>
+<p>
+<script type="math/tex; mode=display">
+V_{clip} = M_{projection} \cdot M_{view} \cdot M_{model} \cdot V_{local}
+</script>
+</p>
+<p>注意矩阵运算的顺序是相反的（记住我们需要从右往左阅读矩阵的乘法）。最后的顶点应该被赋值到顶点着色器中的<var>gl_Position</var>，OpenGL将会自动进行透视除法和裁剪。</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p><strong>然后呢？</strong></p>
+<p>顶点着色器的输出要求所有的顶点都在裁剪空间内，这正是我们刚才使用变换矩阵所做的。OpenGL然后对<strong>裁剪坐标</strong>执行<strong>透视除法</strong>从而将它们变换到<strong>标准化设备坐标</strong>。OpenGL会使用<fun>glViewPort</fun>内部的参数来将标准化设备坐标映射到<strong>屏幕坐标</strong>，每个坐标都关联了一个屏幕上的点（在我们的例子中是一个800x600的屏幕）。这个过程称为视口变换。</p>
+</div>
+<p>这一章的主题可能会比较难理解，如果你仍然不确定每个空间的作用的话，你也不必太担心。接下来你会看到我们是怎样运用这些坐标空间的，而且之后也会有足够多的例子。</p>
+<h1 id="3d">进入3D</h1>
+<p>既然我们知道了如何将3D坐标变换为2D坐标，我们可以开始使用真正的3D物体，而不是枯燥的2D平面了。</p>
+<p>在开始进行3D绘图时，我们首先创建一个模型矩阵。这个模型矩阵包含了位移、缩放与旋转操作，它们会被应用到所有物体的顶点上，以<strong>变换</strong>它们到全局的世界空间。让我们变换一下我们的平面，将其绕着x轴旋转，使它看起来像放在地上一样。这个模型矩阵看起来是这样的：</p>
+<pre><code class="language-c++">glm::mat4 model;
+model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+</code></pre>
+<p>通过将顶点坐标乘以这个模型矩阵，我们将该顶点坐标变换到世界坐标。我们的平面看起来就是在地板上，代表全局世界里的平面。</p>
+<p>接下来我们需要创建一个观察矩阵。我们想要在场景里面稍微往后移动，以使得物体变成可见的（当在世界空间时，我们位于原点(0,0,0)）。要想在场景里面移动，先仔细想一想下面这个句子：</p>
+<ul>
+<li>将摄像机向后移动，和将整个场景向前移动是一样的。</li>
+</ul>
+<p>这正是观察矩阵所做的，我们以相反于摄像机移动的方向移动整个场景。因为我们想要往后移动，并且OpenGL是一个右手坐标系(Right-handed System)，所以我们需要沿着z轴的正方向移动。我们会通过将场景沿着z轴负方向平移来实现。它会给我们一种我们在往后移动的感觉。</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p><strong>右手坐标系(Right-handed System)</strong></p>
+<p>按照惯例，OpenGL是一个右手坐标系。简单来说，就是正x轴在你的右手边，正y轴朝上，而正z轴是朝向后方的。想象你的屏幕处于三个轴的中心，则正z轴穿过你的屏幕朝向你。坐标系画起来如下：</p>
+<p><img alt="coordinate_systems_right_handed" src="../../img/01/08/coordinate_systems_right_handed.png" /></p>
+<p>为了理解为什么被称为右手坐标系，按如下的步骤做：</p>
+<ul>
+<li>沿着正y轴方向伸出你的右臂，手指着上方。</li>
+<li>大拇指指向右方。</li>
+<li>食指指向上方。</li>
+<li>中指向下弯曲90度。 </li>
+</ul>
+<p>如果你的动作正确，那么你的大拇指指向正x轴方向，食指指向正y轴方向，中指指向正z轴方向。如果你用左臂来做这些动作，你会发现z轴的方向是相反的。这个叫做左手坐标系，它被DirectX广泛地使用。注意在标准化设备坐标系中OpenGL实际上使用的是左手坐标系（投影矩阵交换了左右手）。</p>
+</div>
+<p>在下一个教程中我们将会详细讨论如何在场景中移动。就目前来说，观察矩阵是这样的：</p>
+<pre><code class="language-c++">glm::mat4 view;
+// 注意，我们将矩阵向我们要进行移动场景的反方向移动。
+view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+</code></pre>
+<p>最后我们需要做的是定义一个投影矩阵。我们希望在场景中使用透视投影，所以像这样声明一个投影矩阵：</p>
+<pre><code class="language-c++">glm::mat4 projection;
+projection = glm::perspective(glm::radians(45.0f), screenWidth / screenHeight, 0.1f, 100.0f);
+</code></pre>
+<p>既然我们已经创建了变换矩阵，我们应该将它们传入着色器。首先，让我们在顶点着色器中声明一个uniform变换矩阵然后将它乘以顶点坐标：</p>
+<pre><code class="language-c++">#version 330 core
+layout (location = 0) in vec3 aPos;
+...
+uniform mat4 model;
+uniform mat4 view;
+uniform mat4 projection;
+
+void main()
+{
+    // 注意乘法要从右向左读
+    gl_Position = projection * view * model * vec4(aPos, 1.0);
+    ...
+}
+</code></pre>
+<p>我们还应该将矩阵传入着色器（这通常在每次的渲染迭代中进行，因为变换矩阵会经常变动）：</p>
+<pre><code class="language-c++">int modelLoc = glGetUniformLocation(ourShader.ID, &quot;model&quot;));
+glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+... // 观察矩阵和投影矩阵与之类似
+</code></pre>
+<p>我们的顶点坐标已经使用模型、观察和投影矩阵进行变换了，最终的物体应该会：</p>
+<ul>
+<li>稍微向后倾斜至地板方向。</li>
+<li>离我们有一些距离。</li>
+<li>有透视效果（顶点越远，变得越小）。</li>
+</ul>
+<p>让我们检查一下结果是否满足这些要求：</p>
+<p><img alt="coordinate_systems_result" src="../../img/01/08/coordinate_systems_result.png" /></p>
+<p>它看起来就像是一个3D的平面，静止在一个虚构的地板上。如果你得到的不是相同的结果，请检查下完整的<a href="https://learnopengl.com/code_viewer_gh.php?code=src/1.getting_started/6.1.coordinate_systems/coordinate_systems.cpp">源代码</a>。</p>
+<h2 id="3d_1">更加 3D</h2>
+<p>到目前为止，我们一直都在使用一个2D平面，而且甚至是在3D空间里！所以，让我们大胆地拓展我们的2D平面为一个3D立方体。要想渲染一个立方体，我们一共需要36个顶点（6个面 x 每个面有2个三角形组成 x 每个三角形有3个顶点），这36个顶点的位置你可以从<a href="https://learnopengl.com/code_viewer.php?code=getting-started/cube_vertices">这里</a>获取。</p>
+<p>为了有趣一点，我们将让立方体随着时间旋转：</p>
+<pre><code class="language-c++">model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
+</code></pre>
+<p>然后我们使用<fun>glDrawArrays</fun>来绘制立方体，但这一次总共有36个顶点。</p>
+<pre><code class="language-c++">glDrawArrays(GL_TRIANGLES, 0, 36);
+</code></pre>
+<p>如果一切顺利的话你应该能得到下面这样的效果：</p>
+<video src="../../img/01/08/coordinate_system_no_depth.mp4" controls="controls"></video>
+
+<p>这的确有点像是一个立方体，但又有种说不出的奇怪。立方体的某些本应被遮挡住的面被绘制在了这个立方体其他面之上。之所以这样是因为OpenGL是一个三角形一个三角形地来绘制你的立方体的，所以即便之前那里有东西它也会覆盖之前的像素。因为这个原因，有些三角形会被绘制在其它三角形上面，虽然它们本不应该是被覆盖的。</p>
+<p>幸运的是，OpenGL存储深度信息在一个叫做<def>Z缓冲</def>(Z-buffer)的缓冲中，它允许OpenGL决定何时覆盖一个像素而何时不覆盖。通过使用Z缓冲，我们可以配置OpenGL来进行深度测试。</p>
+<h3 id="z">Z缓冲</h3>
+<p>OpenGL存储它的所有深度信息于一个Z缓冲(Z-buffer)中，也被称为<def>深度缓冲</def>(Depth Buffer)。GLFW会自动为你生成这样一个缓冲（就像它也有一个颜色缓冲来存储输出图像的颜色）。深度值存储在每个片段里面（作为片段的<strong>z</strong>值），当片段想要输出它的颜色时，OpenGL会将它的深度值和z缓冲进行比较，如果当前的片段在其它片段之后，它将会被丢弃，否则将会覆盖。这个过程称为<def>深度测试</def>(Depth Testing)，它是由OpenGL自动完成的。</p>
+<p>然而，如果我们想要确定OpenGL真的执行了深度测试，首先我们要告诉OpenGL我们想要启用深度测试；它默认是关闭的。我们可以通过<fun>glEnable</fun>函数来开启深度测试。<fun>glEnable</fun>和<fun>glDisable</fun>函数允许我们启用或禁用某个OpenGL功能。这个功能会一直保持启用/禁用状态，直到另一个调用来禁用/启用它。现在我们想启用深度测试，需要开启<var>GL_DEPTH_TEST</var>：</p>
+<pre><code class="language-c++">glEnable(GL_DEPTH_TEST);
+</code></pre>
+<p>因为我们使用了深度测试，我们也想要在每次渲染迭代之前清除深度缓冲（否则前一帧的深度信息仍然保存在缓冲中）。就像清除颜色缓冲一样，我们可以通过在<fun>glClear</fun>函数中指定<var>DEPTH_BUFFER_BIT</var>位来清除深度缓冲：</p>
+<pre><code class="language-c++">glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+</code></pre>
+<p>我们来重新运行下程序看看OpenGL是否执行了深度测试：</p>
+<video src="../../img/01/08/coordinate_system_depth.mp4" controls="controls"></video>
+
+<p>就是这样！一个开启了深度测试，各个面都是纹理，并且还在旋转的立方体！如果你的程序有问题可以到<a href="https://learnopengl.com/code_viewer_gh.php?code=src/1.getting_started/6.2.coordinate_systems_depth/coordinate_systems_depth.cpp">这里</a>下载源码进行比对。</p>
+<h3 id="_10">更多的立方体！</h3>
+<p>现在我们想在屏幕上显示10个立方体。每个立方体看起来都是一样的，区别在于它们在世界的位置及旋转角度不同。立方体的图形布局已经定义好了，所以当渲染更多物体的时候我们不需要改变我们的缓冲数组和属性数组，我们唯一需要做的只是改变每个对象的模型矩阵来将立方体变换到世界坐标系中。</p>
+<p>首先，让我们为每个立方体定义一个位移向量来指定它在世界空间的位置。我们将在一个<code>glm::vec3</code>数组中定义10个立方体位置：</p>
+<pre><code class="language-c++">glm::vec3 cubePositions[] = {
+  glm::vec3( 0.0f,  0.0f,  0.0f), 
+  glm::vec3( 2.0f,  5.0f, -15.0f), 
+  glm::vec3(-1.5f, -2.2f, -2.5f),  
+  glm::vec3(-3.8f, -2.0f, -12.3f),  
+  glm::vec3( 2.4f, -0.4f, -3.5f),  
+  glm::vec3(-1.7f,  3.0f, -7.5f),  
+  glm::vec3( 1.3f, -2.0f, -2.5f),  
+  glm::vec3( 1.5f,  2.0f, -2.5f), 
+  glm::vec3( 1.5f,  0.2f, -1.5f), 
+  glm::vec3(-1.3f,  1.0f, -1.5f)  
+};
+</code></pre>
+<p>现在，在游戏循环中，我们调用<fun>glDrawArrays</fun> 10次，但这次在我们渲染之前每次传入一个不同的模型矩阵到顶点着色器中。我们将会在游戏循环中创建一个小的循环用不同的模型矩阵渲染我们的物体10次。注意我们也对每个箱子加了一点旋转：</p>
+<pre><code class="language-c++">glBindVertexArray(VAO);
+for(unsigned int i = 0; i &lt; 10; i++)
+{
+  glm::mat4 model;
+  model = glm::translate(model, cubePositions[i]);
+  float angle = 20.0f * i; 
+  model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+  ourShader.setMat4(&quot;model&quot;, model);
+
+  glDrawArrays(GL_TRIANGLES, 0, 36);
+}
+</code></pre>
+<p>这段代码将会在每次新立方体绘制出来的时候更新模型矩阵，如此总共重复10次。然后我们应该就能看到一个拥有10个正在奇葩地旋转着的立方体的世界。</p>
+<p><img alt="coordinate_systems_multiple_objects" src="../../img/01/08/coordinate_systems_multiple_objects.png" /></p>
+<p>完美！看起来我们的箱子已经找到志同道合的小伙伴了。如果你在这里卡住了，你可以对照一下<a href="https://learnopengl.com/code_viewer_gh.php?code=src/1.getting_started/6.3.coordinate_systems_multiple/coordinate_systems_multiple.cpp">源代码</a> 。</p>
+<h2 id="_11">练习</h2>
+<ul>
+<li>对GLM的<code>projection</code>函数中的<code>FoV</code>和<code>aspect-ratio</code>参数进行实验。看能否搞懂它们是如何影响透视平截头体的。</li>
+<li>将观察矩阵在各个方向上进行位移，来看看场景是如何改变的。注意把观察矩阵当成摄像机对象。</li>
+<li>使用模型矩阵只让是3倍数的箱子旋转（以及第1个箱子），而让剩下的箱子保持静止。<a href="https://learnopengl.com/code_viewer.php?code=getting-started/coordinate_systems-exercise3">参考解答</a>。</li>
+</ul>
+
+<div id="disqus_thread"></div>
+<script>
+    (function() {
+        var d = document, s = d.createElement('script');
+
+        s.src = '//learnopengl-cn.disqus.com/embed.js';
+
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>请启用JavaScript以浏览<a href="https://disqus.com/?ref_noscript" rel="nofollow">Disqus评论。</a></noscript></div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            
+            <center>Powered by <a href="http://www.mkdocs.org/">MkDocs</a> and <a href="http://bootswatch.com/yeti/">Yeti</a></center>
+        </footer>
+
+        <script src="../../js/jquery-1.10.2.min.js"></script>
+        <script src="../../js/bootstrap-3.0.3.min.js"></script>
+        <script src="../../js/highlight.pack.js"></script>
+        <script>var base_url = '../..';</script>
+        <script src="../../js/base.js"></script>
+        <script src="../../mathjax/MathJax.js?config=TeX-AMS_HTML"></script>
+        <script src="../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">关闭</span></button>
+                        <h4 class="modal-title" id="exampleModalLabel">搜索</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            请在下面输入你要搜索的文本（仅支持英文）：
+                        </p>
+                        <form role="form">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="搜索..." id="mkdocs-search-query">
+                            </div>
+                        </form>
+                        <div id="mkdocs-search-results"></div>
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
